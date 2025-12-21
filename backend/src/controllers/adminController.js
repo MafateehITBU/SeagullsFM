@@ -543,6 +543,7 @@ export const sendOTP = async (req, res) => {
 
     user.otp = otp;
     user.otpExpires = otpExpiresAt;
+    user.otpVerified = false; // Reset verification flag when sending new OTP
     await user.save();
 
     // Send OTP via email
@@ -589,6 +590,10 @@ export const verifyOTP = async (req, res) => {
       return res.status(401).json({ error: "Invalid or expired OTP" });
     }
 
+    // Mark OTP as verified - allows one password reset
+    user.otpVerified = true;
+    await user.save();
+
     res.status(200).json({ message: "OTP correct!" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -626,6 +631,14 @@ export const resetPassword = async (req, res) => {
       });
     }
 
+    // Check if OTP has been verified (allows one password reset per verification)
+    if (!user.otpVerified) {
+      return res.status(401).json({
+        success: false,
+        message: "OTP must be verified first. Please verify your OTP before resetting password.",
+      });
+    }
+
     const isPasswordMatch = newPassword === confirmNewPassword;
     if (!isPasswordMatch) {
       return res.status(400).json({
@@ -642,7 +655,14 @@ export const resetPassword = async (req, res) => {
       });
     }
 
+    // Reset password
     user.password = newPassword;
+    
+    // Clear OTP and verification flag after successful password reset to prevent reuse
+    user.otp = null;
+    user.otpExpires = null;
+    user.otpVerified = false;
+    
     await user.save();
 
     res.status(200).json({

@@ -71,6 +71,10 @@ const adminSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    otpVerified: {
+      type: Boolean,
+      default: false,
+    },
     channelId:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Channel",

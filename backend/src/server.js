@@ -14,6 +14,12 @@ import advertisementRoutes from './routes/advertisement.js';
 import eventRoutes from './routes/event.js';
 import interviewApplicantRoutes from './routes/interviewApplicant.js';
 import competitionRoutes from './routes/competition.js';
+import broadcasterRoutes from './routes/broadcaster.js';
+import programRoutes from './routes/program.js';
+import interviewRoutes from './routes/interview.js';
+import staticInfoRoutes from './routes/staticInfo.js';
+import uploadTrackRoutes from './routes/uploadTrack.js';
+import userRoutes from './routes/user.js';
 
 // Load environment variables
 dotenv.config();
@@ -52,6 +58,13 @@ app.use('/api/ad', advertisementRoutes);
 app.use('/api/event', eventRoutes);
 app.use('/api/interview-applicant', interviewApplicantRoutes);
 app.use('/api/competition', competitionRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/broadcaster', broadcasterRoutes);
+app.use('/api/program', programRoutes);
+app.use('/api/interview', interviewRoutes);
+app.use('/api/staticinfo', staticInfoRoutes);
+app.use('/api/uploadtrack', uploadTrackRoutes);
+app.use('/api/user', userRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
