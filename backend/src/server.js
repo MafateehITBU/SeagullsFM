@@ -9,6 +9,11 @@ import cookieParser from "cookie-parser";
 import superAdminRoutes from './routes/superAdmin.js';
 import channelRoutes from './routes/channel.js';
 import adminRoutes from './routes/admin.js';
+import newsRoutes from './routes/news.js';
+import advertisementRoutes from './routes/advertisement.js';
+import eventRoutes from './routes/event.js';
+import interviewApplicantRoutes from './routes/interviewApplicant.js';
+import competitionRoutes from './routes/competition.js';
 
 // Load environment variables
 dotenv.config();
@@ -41,7 +46,12 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/superadmin', superAdminRoutes);
 app.use('/api/channel', channelRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminRoutes); 
+app.use('/api/news', newsRoutes);  
+app.use('/api/ad', advertisementRoutes);
+app.use('/api/event', eventRoutes);
+app.use('/api/interview-applicant', interviewApplicantRoutes);
+app.use('/api/competition', competitionRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
