@@ -164,6 +164,7 @@ export const updateEvent = async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
+
     const { type, title, description, startDate, endDate, address } = req.body;
 
     const updatedData = {};
@@ -171,29 +172,47 @@ export const updateEvent = async (req, res) => {
     if (type) updatedData.type = type;
     if (title) {
       if (title.length > 200) {
-        return res.status(400).json({
-          message: "Title cannot exceed 200 characters",
-        });
+        return res
+          .status(400)
+          .json({ message: "Title cannot exceed 200 characters" });
       }
       updatedData.title = title;
     }
 
     if (description) {
       if (description.length > 1000) {
-        return res.status(400).json({
-          message: "Description cannot exceed 1000 characters",
-        });
+        return res
+          .status(400)
+          .json({ message: "Description cannot exceed 1000 characters" });
       }
       updatedData.description = description;
     }
 
+    // Resolve final dates (new or existing)
+    const effectiveStartDate = startDate
+      ? new Date(startDate)
+      : event.startDate;
+    const effectiveEndDate = endDate ? new Date(endDate) : event.endDate;
+
+    // Validate dates only if both exist
+    if (
+      effectiveStartDate &&
+      effectiveEndDate &&
+      effectiveStartDate > effectiveEndDate
+    ) {
+      return res.status(400).json({
+        message: "Start date cannot be after end date",
+      });
+    }
+
     if (startDate) updatedData.startDate = new Date(startDate);
     if (endDate) updatedData.endDate = new Date(endDate);
+
     if (address) {
       if (address.length > 300) {
-        return res.status(400).json({
-          message: "Address cannot exceed 300 characters",
-        });
+        return res
+          .status(400)
+          .json({ message: "Address cannot exceed 300 characters" });
       }
       updatedData.address = address;
     }
@@ -225,10 +244,12 @@ export const updateEvent = async (req, res) => {
         const result = await cloudinary.uploader.upload(req.file.path, {
           folder: "seagulls/events",
         });
+
         updatedEvent.image = {
           public_id: result.public_id,
           url: result.secure_url,
         };
+
         await updatedEvent.save();
         // Remove file from server after upload
         fs.unlinkSync(req.file.path);

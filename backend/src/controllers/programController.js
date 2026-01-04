@@ -9,7 +9,7 @@ import fs from "fs";
 export const createProgram = async (req, res) => {
   try {
     // Clean values (remove quotes if present)
-    let { channelId, title, description, day, startTime, endTime, status } = req.body;
+    let { channelId, title, description, day, startTime, endTime } = req.body;
 
     // Additional cleaning as backup
     if (typeof channelId === "string") {
@@ -29,9 +29,6 @@ export const createProgram = async (req, res) => {
     }
     if (typeof endTime === "string") {
       endTime = endTime.replace(/^["']|["']$/g, "").trim();
-    }
-    if (typeof status === "string") {
-      status = status.replace(/^["']|["']$/g, "").trim();
     }
 
     // Validation
@@ -94,14 +91,6 @@ export const createProgram = async (req, res) => {
       });
     }
 
-    // Validate status
-    if (status && !["active", "inactive"].includes(status)) {
-      return res.status(400).json({
-        success: false,
-        message: "Status must be either 'active' or 'inactive'",
-      });
-    }
-
     // Check if channelId is a valid channel
     const channel = await Channel.findById(channelId);
     if (!channel) {
@@ -142,7 +131,6 @@ export const createProgram = async (req, res) => {
       day,
       startTime,
       endTime,
-      status: status || "active",
     });
 
     await program.save();
@@ -213,7 +201,7 @@ export const getProgramById = async (req, res) => {
 export const updateProgram = async (req, res) => {
   try {
     // Clean values
-    let { channelId, title, description, day, startTime, endTime, status } = req.body;
+    let { channelId, title, description, day, startTime, endTime } = req.body;
 
     // Additional cleaning as backup
     if (typeof channelId === "string") {
@@ -233,9 +221,6 @@ export const updateProgram = async (req, res) => {
     }
     if (typeof endTime === "string") {
       endTime = endTime.replace(/^["']|["']$/g, "").trim();
-    }
-    if (typeof status === "string") {
-      status = status.replace(/^["']|["']$/g, "").trim();
     }
 
     const updateData = {};
@@ -321,16 +306,6 @@ export const updateProgram = async (req, res) => {
       }
     }
 
-    if (status !== undefined) {
-      if (!["active", "inactive"].includes(status)) {
-        return res.status(400).json({
-          success: false,
-          message: "Status must be either 'active' or 'inactive'",
-        });
-      }
-      updateData.status = status;
-    }
-
     if (channelId) {
       // Check if channelId is a valid channel
       const channel = await Channel.findById(channelId);
@@ -397,6 +372,38 @@ export const updateProgram = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error updating program",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Toggle Active Status
+// @route   PUT /api/program/:id/toggle-active
+// @access  Private
+export const toggleActive = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if Program exists
+    const program = await Program.findById(id);
+    if (!program) {
+      return res.status(404).json({ message: "Program not found" });
+    }
+
+    // Toggle verification status
+    program.isActive = !program.isActive;
+    await program.save();
+
+    return res.status(200).json({
+      success: true,
+      message: `Program ${
+        program.isActive ? "activated" : "deactivated"
+      } successfully`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error toggling Program Active Status",
       error: error.message,
     });
   }

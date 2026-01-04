@@ -60,13 +60,9 @@ const programSchema = new mongoose.Schema(
         message: "End time must be in HH:MM format (24-hour)",
       },
     },
-    status: {
-      type: String,
-      enum: {
-        values: ["active", "inactive"],
-        message: "Status must be either 'active' or 'inactive'",
-      },
-      default: "active",
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   {

@@ -234,7 +234,7 @@ export const getCurrentAdmin = async (req, res) => {
 // @access  Private
 export const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admin.find();
+    const admins = await Admin.find().populate("channelId", "name");
 
     res.status(200).json({
       success: true,

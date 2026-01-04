@@ -5,6 +5,7 @@ import {
   getPrograms,
   getProgramById,
   updateProgram,
+  toggleActive,
   deleteProgram
 } from '../controllers/programController.js';
 import { protect, authorize } from '../middleware/auth.js';
@@ -85,16 +86,6 @@ const programValidation = [
     .withMessage('End time is required')
     .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
     .withMessage('End time must be in HH:MM format (24-hour)'),
-  body('status')
-    .optional()
-    .customSanitizer((value) => {
-      if (typeof value === 'string') {
-        return value.replace(/^["']|["']$/g, '');
-      }
-      return value;
-    })
-    .isIn(['active', 'inactive'])
-    .withMessage('Status must be either active or inactive')
 ];
 
 const updateProgramValidation = [
@@ -161,16 +152,6 @@ const updateProgramValidation = [
     .trim()
     .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
     .withMessage('End time must be in HH:MM format (24-hour)'),
-  body('status')
-    .optional()
-    .customSanitizer((value) => {
-      if (typeof value === 'string') {
-        return value.replace(/^["']|["']$/g, '');
-      }
-      return value;
-    })
-    .isIn(['active', 'inactive'])
-    .withMessage('Status must be either active or inactive')
 ];
 
 // Routes
@@ -178,6 +159,7 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.single('image
 router.get('/', getPrograms);
 router.get('/:id', getProgramById);
 router.put('/:id', protect, authorize('admin', 'superadmin'), upload.single('image'), cleanFormData, updateProgramValidation, validate, updateProgram);
+router.put('/:id/toggle-active', protect, authorize('admin', 'superadmin'), toggleActive);
 router.delete('/:id', protect, authorize('admin', 'superadmin'), deleteProgram);
 
 export default router;
