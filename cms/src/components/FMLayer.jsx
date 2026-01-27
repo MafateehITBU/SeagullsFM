@@ -30,7 +30,7 @@ const FMLayer = () => {
 
   const handleFmSelect = (fmId) => {
     setChannelId(fmId);
-    navigate("/");
+    navigate("/admins");
   };
 
   return (

@@ -31,13 +31,28 @@ const ProfilePageLayer = () => {
     currentPassword: "",
     newPassword: "",
   });
+  const [channel, setChannel] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     setImagePreview(
       user?.image || "assets/images/user-grid/user-grid-img13.png"
     );
+
+    if (user.role === "admin") {
+      fetchChannel();
+    }
   }, [user?.image]);
+
+  const fetchChannel = async () => {
+    try {
+      const res = await axiosInstance.get(`/channel/${user.channelId}`);
+      setChannel(res.data.data.name);
+    } catch (error) {
+      console.error("Error fetching channel name:", error);
+      toast.error("Failed to fetch channel name");
+    }
+  };
 
   // Toggle function for password field
   const togglePasswordVisibility = () => {
@@ -188,14 +203,6 @@ const ProfilePageLayer = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const validatePassword = (password) => {
-    // Password must be at least 8 characters long
-    // and contain at least one uppercase letter, one lowercase letter, one number, and one special character
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return passwordRegex.test(password);
   };
 
   const handlePasswordChange = (e) => {
@@ -359,15 +366,21 @@ const ProfilePageLayer = () => {
                     )}
                   </span>
                 </li>
-                {user?.permissions?.length > 0 ? (
+                {/* Channel (FM) */}
+                {user?.role === "admin" && (
                   <li className="d-flex align-items-center gap-1 mb-12">
                     <span className="w-30 text-md fw-semibold text-primary-light">
-                      Permissions
+                      FM
                     </span>
-                    <span>{user.permissions.join(", ")}</span>
+                    <span className="w-70 text-secondary-light fw-medium">
+                      :{" "}
+                      {loading ? (
+                        <div className="h-4 w-32 bg-neutral-200 rounded animate-pulse" />
+                      ) : (
+                        channel || "Not set"
+                      )}
+                    </span>
                   </li>
-                ) : (
-                  <li></li>
                 )}
               </ul>
             </div>

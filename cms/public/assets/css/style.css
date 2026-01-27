@@ -1507,6 +1507,23 @@ th {
   color: var(--primary-600) !important;
 }
 
+.superadmin-channel-btn[aria-expanded="true"] {
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+/* When dropdown is open */
+.dropdown.show .superadmin-channel-btn,
+.superadmin-channel-btn[aria-expanded="true"],
+.superadmin-channel-btn:focus,
+.superadmin-channel-btn:active {
+  color: #fff !important;
+  border-color: #fff !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+
 .hover-text-success:hover,
 .btn.hover-text-success:hover {
   color: var(--success-main) !important;

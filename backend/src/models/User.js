@@ -75,6 +75,11 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    channelId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Channel",
+      default: null,
+    },
   },
   {
     timestamps: true,

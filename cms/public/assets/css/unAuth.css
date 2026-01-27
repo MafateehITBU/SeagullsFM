@@ -88,7 +88,7 @@
   font-family: var(--font-display);
   animation-delay: calc(var(--delay-base) + 2 * var(--delay-added));
   z-index: 0;
-  background: linear-gradient(to top, rgba(46, 58, 38, 0) 25%, rgba(63, 77, 59, 1) 100%);
+  background: linear-gradient(to top, rgba(58, 167, 255, 0) 25%, rgba(54, 139, 249, 0.3) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   transform: translateX(-25%) translateZ(-100px) skewY(-3deg);
@@ -102,7 +102,7 @@
   right: -21px;
   font-size: 34px;
   animation-delay: calc(var(--delay-base) + 3 * var(--delay-added));
-  color: #63A331;
+  color: #3aa7ff;
   margin-top: 144px;
   letter-spacing: 2px;
 }
@@ -231,7 +231,7 @@
 }
 
 .unAuth-page .lock {
-    box-shadow: 32px 8px 0 0 #e4e4e4, 40px 8px 0 0 #e4e4e4, 48px 8px 0 0 #e4e4e4, 56px 8px 0 0 #e4e4e4, 24px 16px 0 0 #cbcbcb, 32px 16px 0 0 #cbcbcb, 40px 16px 0 0 #909090, 48px 16px 0 0 #909090, 56px 16px 0 0 #cbcbcb, 64px 16px 0 0 #e4e4e4, 16px 24px 0 0 #cbcbcb, 24px 24px 0 0 #cbcbcb, 32px 24px 0 0 #909090, 56px 24px 0 0 #909090, 64px 24px 0 0 #cbcbcb, 72px 24px 0 0 #e4e4e4, 16px 32px 0 0 #cbcbcb, 24px 32px 0 0 #909090, 64px 32px 0 0 #909090, 72px 32px 0 0 #cbcbcb, 16px 40px 0 0 #cbcbcb, 24px 40px 0 0 #909090, 64px 40px 0 0 #909090, 72px 40px 0 0 #cbcbcb, 16px 48px 0 0 #909090, 24px 48px 0 0 #909090, 64px 48px 0 0 #909090, 72px 48px 0 0 #909090, 8px 56px 0 0 #63A331, 16px 56px 0 0 #63A331, 24px 56px 0 0 #63A331, 32px 56px 0 0 #63A331, 40px 56px 0 0 #63A331, 48px 56px 0 0 #63A331, 56px 56px 0 0 #63A331, 64px 56px 0 0 #63A331, 72px 56px 0 0 #63A331, 80px 56px 0 0 #63A331, 8px 64px 0 0 #6aaf34, 16px 64px 0 0 #6aaf34, 24px 64px 0 0 #6aaf34, 32px 64px 0 0 #6aaf34, 40px 64px 0 0 #6aaf34, 48px 64px 0 0 #6aaf34, 56px 64px 0 0 #6aaf34, 64px 64px 0 0 #6aaf34, 72px 64px 0 0 #6aaf34, 80px 64px 0 0 #6aaf34, 8px 72px 0 0 #6aaf34, 16px 72px 0 0 #6aaf34, 24px 72px 0 0 #6aaf34, 32px 72px 0 0 #6aaf34, 40px 72px 0 0 #6aaf34, 48px 72px 0 0 #6aaf34, 56px 72px 0 0 #6aaf34, 64px 72px 0 0 #6aaf34, 72px 72px 0 0 #6aaf34, 80px 72px 0 0 #6aaf34, 8px 80px 0 0 #63A331, 16px 80px 0 0 #6aaf34, 24px 80px 0 0 #6aaf34, 32px 80px 0 0 #6aaf34, 40px 80px 0 0 #6aaf34, 48px 80px 0 0 #63A331, 56px 80px 0 0 #63A331, 64px 80px 0 0 #63A331, 72px 80px 0 0 #63A331, 16px 88px 0 0 #63A331, 24px 88px 0 0 #63A331, 32px 88px 0 0 #63A331, 40px 88px 0 0 #63A331, 48px 88px 0 0 #63A331, 56px 88px 0 0 #63A331, 64px 88px 0 0 #63A331, 72px 88px 0 0 #63A331, 24px 96px 0 0 #63A331, 32px 96px 0 0 #63A331, 40px 96px 0 0 #63A331, 48px 96px 0 0 #63A331, 56px 96px 0 0 #63A331, 64px 96px 0 0 #63A331;
+    box-shadow: 32px 8px 0 0 #e4e4e4, 40px 8px 0 0 #e4e4e4, 48px 8px 0 0 #e4e4e4, 56px 8px 0 0 #e4e4e4, 24px 16px 0 0 #cbcbcb, 32px 16px 0 0 #cbcbcb, 40px 16px 0 0 #909090, 48px 16px 0 0 #909090, 56px 16px 0 0 #cbcbcb, 64px 16px 0 0 #e4e4e4, 16px 24px 0 0 #cbcbcb, 24px 24px 0 0 #cbcbcb, 32px 24px 0 0 #909090, 56px 24px 0 0 #909090, 64px 24px 0 0 #cbcbcb, 72px 24px 0 0 #e4e4e4, 16px 32px 0 0 #cbcbcb, 24px 32px 0 0 #909090, 64px 32px 0 0 #909090, 72px 32px 0 0 #cbcbcb, 16px 40px 0 0 #cbcbcb, 24px 40px 0 0 #909090, 64px 40px 0 0 #909090, 72px 40px 0 0 #cbcbcb, 16px 48px 0 0 #909090, 24px 48px 0 0 #909090, 64px 48px 0 0 #909090, 72px 48px 0 0 #909090, 8px 56px 0 0 #3aa7ff, 16px 56px 0 0 #3aa7ff, 24px 56px 0 0 #3aa7ff, 32px 56px 0 0 #3aa7ff, 40px 56px 0 0 #3aa7ff, 48px 56px 0 0 #3aa7ff, 56px 56px 0 0 #3aa7ff, 64px 56px 0 0 #3aa7ff, 72px 56px 0 0 #3aa7ff, 80px 56px 0 0 #3aa7ff, 8px 64px 0 0 #368bf9, 16px 64px 0 0 #368bf9, 24px 64px 0 0 #368bf9, 32px 64px 0 0 #368bf9, 40px 64px 0 0 #368bf9, 48px 64px 0 0 #368bf9, 56px 64px 0 0 #368bf9, 64px 64px 0 0 #368bf9, 72px 64px 0 0 #368bf9, 80px 64px 0 0 #368bf9, 8px 72px 0 0 #368bf9, 16px 72px 0 0 #368bf9, 24px 72px 0 0 #368bf9, 32px 72px 0 0 #368bf9, 40px 72px 0 0 #368bf9, 48px 72px 0 0 #368bf9, 56px 72px 0 0 #368bf9, 64px 72px 0 0 #368bf9, 72px 72px 0 0 #368bf9, 80px 72px 0 0 #368bf9, 8px 80px 0 0 #3aa7ff, 16px 80px 0 0 #368bf9, 24px 80px 0 0 #368bf9, 32px 80px 0 0 #368bf9, 40px 80px 0 0 #368bf9, 48px 80px 0 0 #3aa7ff, 56px 80px 0 0 #3aa7ff, 64px 80px 0 0 #3aa7ff, 72px 80px 0 0 #3aa7ff, 16px 88px 0 0 #3aa7ff, 24px 88px 0 0 #3aa7ff, 32px 88px 0 0 #3aa7ff, 40px 88px 0 0 #3aa7ff, 48px 88px 0 0 #3aa7ff, 56px 88px 0 0 #3aa7ff, 64px 88px 0 0 #3aa7ff, 72px 88px 0 0 #3aa7ff, 24px 96px 0 0 #3aa7ff, 32px 96px 0 0 #3aa7ff, 40px 96px 0 0 #3aa7ff, 48px 96px 0 0 #3aa7ff, 56px 96px 0 0 #3aa7ff, 64px 96px 0 0 #3aa7ff;
     height: 8px;
     width: 8px;
     position: absolute;

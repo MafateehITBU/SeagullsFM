@@ -20,18 +20,6 @@ const ProtectedRoute = ({
         return <Navigate to="/unauthorized" state={{ from: location }} replace />;
     }
 
-    // Admin permission check
-    // if (user.role === 'admin') {
-    //     if (location.pathname !== '/') {
-    //         const pathSegment = location.pathname.split('/')[1]; // e.g. 'users'
-    //         const requiredPermission = pathSegment.charAt(0).toUpperCase() + pathSegment.slice(1); // → 'Users'
-
-    //         if (!user.permissions || !user.permissions.includes(requiredPermission)) {
-    //             return <Navigate to="/unauthorized" state={{ from: location }} replace />;
-    //         }
-    //     }
-    // }
-
     return children;
 };
 

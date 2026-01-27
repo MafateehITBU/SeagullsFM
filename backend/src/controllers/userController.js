@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Admin from "../models/Admin.js";
 import SuperAdmin from "../models/SuperAdmin.js";
+import Channel from "../models/Channel.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 import path from "path";
@@ -14,13 +15,22 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 // @access  Public
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, phoneNumber } = req.body;
+    const { name, email, password, phoneNumber, channelId } = req.body;
 
     // Validation
-    if (!name || !email || !password || !phoneNumber) {
+    if (!name || !email || !password || !phoneNumber || !channelId) {
       return res.status(400).json({
         success: false,
-        message: "Please provide all required fields: name, email, password, and phoneNumber",
+        message: "Please provide all required fields: name, email, password, phoneNumber, and channelId",
+      });
+    }
+
+    // Check if channelId is valid
+    const channel = await Channel.findById(channelId);
+    if (!channel) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid channelId provided",
       });
     }
 
@@ -84,6 +94,7 @@ export const registerUser = async (req, res) => {
       password,
       phoneNumber: normalizedPhone,
       image: getAvatarUrl({ name }),
+      channelId,
     });
 
     // Handle image upload if provided

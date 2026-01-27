@@ -3,58 +3,66 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggleButton from "../helper/ThemeToggleButton";
 import { useAuth } from "../context/AuthContext";
+import axiosInstance from "../axiosConfig";
 
 const MasterLayout = ({ children }) => {
   let [sidebarActive, seSidebarActive] = useState(false);
   let [mobileMenu, setMobileMenu] = useState(false);
   const location = useLocation(); // Hook to get the current route
   const navigate = useNavigate();
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, setChannelId } = useAuth();
 
   const sidebarItems = [
-    { path: "/admins", label: "Admins", icon: "line-md:account" },
-    { path: "/users", label: "Users", icon: "line-md:account" },
-    { path: "/static-info", label: "Static Info", icon: "line-md:account" },
-    { path: "/broadcasters", label: "Broadcasters", icon: "line-md:account" },
-    { path: "/programs", label: "Programs", icon: "line-md:account" },
-    { path: "/news", label: "News", icon: "line-md:account" },
-    { path: "/events", label: "Events & Partnerships", icon: "line-md:account" },
-    { path: "/advertisement", label: "Advertisement Requests", icon: "line-md:account" },
-    { path: "/interview-applicants", label: "Interview Applicants", icon: "line-md:account" },
-    { path: "/uploaded-tracks", label: "Uploaded Tracks", icon: "line-md:account" },
-    // {
-    //   path: "/categories",
-    //   label: "Categories",
-    //   icon: "material-symbols:category-rounded",
-    // },
-    // {
-    //   path: "/products",
-    //   label: "Products",
-    //   icon: "line-md:clipboard-list-twotone",
-    // },
-    // {
-    //   path: "/quotations",
-    //   label: "Quotations",
-    //   icon: "line-md:briefcase-twotone",
-    // },
-    // {
-    //   path: "/files",
-    //   label: "Files Center",
-    //   icon: "line-md:folder-settings-twotone",
-    // },
-    // { path: "/contact-us", label: "Contact Us", icon: "line-md:chat-twotone" },
-    // { path: "/gallery", label: "Gallery", icon: "line-md:image-twotone" },
-    // {
-    //   path: "/videoGallery",
-    //   label: "Video Gallery",
-    //   icon: "line-md:image-twotone",
-    // },
-    // {
-    //   path: "/posts",
-    //   label: "Job Posts",
-    //   icon: "material-symbols:post-add-rounded",
-    // },
-    // { path: "/cvs", label: "CVs", icon: "material-symbols:post-add-rounded" },
+    {
+      path: "/admins",
+      label: "Admins",
+      icon: "mdi:account-tie",
+    },
+    {
+      path: "/users",
+      label: "Users",
+      icon: "mdi:account-group",
+    },
+    {
+      path: "/static-info",
+      label: "Static Info",
+      icon: "mdi:file-document-outline",
+    },
+    {
+      path: "/broadcasters",
+      label: "Broadcasters",
+      icon: "mdi:radio",
+    },
+    {
+      path: "/programs",
+      label: "Programs",
+      icon: "mdi:clipboard-list-outline",
+    },
+    {
+      path: "/news",
+      label: "News",
+      icon: "mdi:newspaper-variant-outline",
+    },
+    {
+      path: "/events",
+      label: "Events & Partnerships",
+      icon: "mdi:calendar-month-outline",
+    },
+    {
+      path: "/advertisement",
+      label: "Advertisement Requests",
+      icon: "mdi:bullhorn-outline",
+    },
+    {
+      path: "/interview-applicants",
+      label: "Interview Applicants",
+      icon: "mdi:account-question-outline",
+    },
+    {
+      path: "/uploaded-tracks",
+      label: "Uploaded Tracks",
+      icon: "mdi:music-note",
+    },
   ];
 
   useEffect(() => {
@@ -126,6 +134,21 @@ const MasterLayout = ({ children }) => {
     };
   }, [location.pathname]);
 
+  // Get channel list for dropdown
+  const [channels, setChannels] = useState([]);
+  useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        const response = await axiosInstance.get("/channel");
+        setChannels(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching channels:", error);
+      }
+    };
+
+    fetchChannels();
+  }, []);
+
   let sidebarControl = () => {
     seSidebarActive(!sidebarActive);
   };
@@ -190,10 +213,7 @@ const MasterLayout = ({ children }) => {
                         navData.isActive ? "active-page" : ""
                       }
                     >
-                      <Icon
-                        icon="line-md:home-simple-twotone"
-                        className="menu-icon"
-                      />
+                      <Icon icon="mdi:home-outline" className="menu-icon" />
                       <span>Dashboard</span>
                     </NavLink>
                   </li>
@@ -202,13 +222,24 @@ const MasterLayout = ({ children }) => {
                 {sidebarItems
                   .filter((item) => {
                     const role = user.role?.toLowerCase?.();
+
+                    // Superadmin sees everything
                     if (role === "superadmin") return true;
 
+                    // Admin sees everything EXCEPT dashboard and admins
+                    if (role === "admin") {
+                      return (
+                        item.path !== "/admins" && item.path !== "/dashboard"
+                      );
+                    }
+
+                    // Other roles fallback to permissions
                     const cap = (str) =>
                       str.charAt(0).toUpperCase() + str.slice(1);
                     const routeName = cap(item.path.replace("/", ""));
                     return user.permissions?.includes(routeName);
                   })
+
                   .map((item) => (
                     <li key={item.path}>
                       <NavLink
@@ -265,6 +296,32 @@ const MasterLayout = ({ children }) => {
               <div className="d-flex flex-wrap align-items-center gap-3">
                 {/* ThemeToggleButton */}
                 <ThemeToggleButton />
+
+                {/* Channels Drop-down only if user role is superadmin */}
+                {user?.role?.toLowerCase() === "superadmin" && (
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-outline-primary btn-sm dropdown-toggle superadmin-channel-btn"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                    >
+                      {channels.find((ch) => ch._id === user.channelId)?.name ||
+                        "Select Channel"}
+                    </button>
+                    <ul className="dropdown-menu">
+                      {channels.map((channel) => (
+                        <li key={channel._id}>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => setChannelId(channel._id)}
+                          >
+                            {channel.name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <div className="dropdown">
                   <button
