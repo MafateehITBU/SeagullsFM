@@ -37,7 +37,7 @@ export const eventSchema = new mongoose.Schema(
       required: [true, "Event address is required"],
       maxlength: [300, "Address cannot exceed 300 characters"],
     },
-    image: {
+    coverImage: {
       public_id: {
         type: String,
         default: null,
@@ -47,6 +47,18 @@ export const eventSchema = new mongoose.Schema(
         default: null,
       },
     },
+    images: [
+      {
+        public_id: {
+          type: String,
+          default: null,
+        },
+        url: {
+          type: String,
+          default: null,
+        },
+      }
+    ]
   },
   {
     timestamps: true,

@@ -7,7 +7,7 @@ import {
   updateBroadcaster,
   deleteBroadcaster
 } from '../controllers/broadcasterController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, permissions } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import upload from '../middleware/upload.js';
 import { cleanFormData } from '../middleware/cleanFormData.js';
@@ -113,11 +113,11 @@ const updateBroadcasterValidation = [
 ];
 
 // Routes
-router.post('/', protect, authorize('admin', 'superadmin'), upload.single('image'), cleanFormData, broadcasterValidation, validate, createBroadcaster);
+router.post('/', protect, authorize('admin', 'superadmin'), permissions('broadcasters'), upload.single('image'), cleanFormData, broadcasterValidation, validate, createBroadcaster);
 router.get('/', getBroadcasters);
 router.get('/:id', getBroadcasterById);
-router.put('/:id', protect, authorize('admin', 'superadmin'), upload.single('image'), cleanFormData, updateBroadcasterValidation, validate, updateBroadcaster);
-router.delete('/:id', protect, authorize('admin', 'superadmin'), deleteBroadcaster);
+router.put('/:id', protect, authorize('admin', 'superadmin'), permissions('broadcasters'), upload.single('image'), cleanFormData, updateBroadcasterValidation, validate, updateBroadcaster);
+router.delete('/:id', protect, authorize('admin', 'superadmin'), permissions('broadcasters'), deleteBroadcaster);
 
 export default router;
 

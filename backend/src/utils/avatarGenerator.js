@@ -7,7 +7,7 @@
 export const generateAvatarUrl = (name, options = {}) => {
   const {
     size = 200,
-    background = '3398ff',
+    background = '2c2c2c',
     color = 'fff',
     rounded = true,
     bold = true,

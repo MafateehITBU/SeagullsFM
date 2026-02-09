@@ -6,8 +6,9 @@ import {
     updateEvent,
     deleteEvent
 } from '../controllers/eventController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, permissions } from '../middleware/auth.js';
 import upload from '../middleware/upload.js';
+import { cleanFormData } from '../middleware/cleanFormData.js';
 
 const router = express.Router();
 
@@ -18,9 +19,10 @@ router.get('/:id', getEventById);
 // Protected routes (Admin, SuperAdmin)
 router.use(protect);
 router.use(authorize('admin', 'superadmin'));
+router.use(permissions('events'));
 
-router.post('/', upload.single('image'), createEvent);
-router.put('/:id', upload.single('image'), updateEvent);
+router.post('/', upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 10 }]), cleanFormData, createEvent);
+router.put('/:id', upload.fields([{ name: 'coverImage', maxCount: 1 }, { name: 'images', maxCount: 10 }]), cleanFormData, updateEvent);
 router.delete('/:id', deleteEvent);
 
 export default router;

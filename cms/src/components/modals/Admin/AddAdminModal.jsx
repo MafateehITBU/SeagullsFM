@@ -10,11 +10,24 @@ const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null);
+  const [permissions, setPermissions] = useState([]);
   const [channelId, setChannelId] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [channels, setChannels] = useState([]);
+
+  const allPermissions = [
+    "users",
+    "static-info",
+    "broadcasters",
+    "programs",
+    "news",
+    "events",
+    "advertisement",
+    "interview-applicants",
+    "uploaded-tracks",
+  ];
 
   useEffect(() => {
     const fetchChannels = async () => {
@@ -29,6 +42,14 @@ const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
     fetchChannels();
   }, []);
 
+  const handlePermissionChange = (perm) => {
+    setPermissions((prev) => {
+      if (prev.includes(perm)) {
+        return prev.filter((p) => p !== perm);
+      }
+      return [...prev, perm];
+    });
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -61,6 +82,7 @@ const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
     setPhone("");
     setImage(null);
     setChannelId("");
+    setPermissions([]);
     setErrors({});
   };
 
@@ -79,6 +101,7 @@ const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
       formData.append("phoneNumber", phoneNumber.number);
       if (image) formData.append("image", image);
       formData.append("channelId", channelId);
+      permissions.forEach((p) => formData.append("permissions[]", p));
 
       await axiosInstance.post("/admin/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -164,6 +187,26 @@ const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
               </Form.Group>
             </Col>
           </Row>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Permissions</Form.Label>
+            <Row>
+              {allPermissions.map((perm) => (
+                <Col md={4} key={perm} className="mb-2">
+                  <Form.Check className="d-flex align-items-start">
+                    <Form.Check.Input
+                      type="checkbox"
+                      value={perm}
+                      checked={permissions.includes(perm)}
+                      onChange={() => handlePermissionChange(perm)}
+                      className="mt-1"
+                    />
+                    <Form.Check.Label className="ms-2">{perm}</Form.Check.Label>
+                  </Form.Check>
+                </Col>
+              ))}
+            </Row>
+          </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Image (optional)</Form.Label>

@@ -22,18 +22,34 @@ const programSchema = new mongoose.Schema(
         required: [true, "Image URL is required"],
       },
     },
+    programDetailsImage: {
+      public_id: {
+        type: String,
+        required: [true, "Program details image public_id is required"],
+      },
+      url: {
+        type: String,
+        required: [true, "Program details image URL is required"],
+      },
+    },
     description: {
       type: String,
       required: [true, "Description is required"],
       trim: true,
-      maxlength: [100, "Description cannot exceed 100 characters"],
+      maxlength: [500, "Description cannot exceed 500 characters"],
     },
-    day: {
-      type: String,
-      required: [true, "Day is required"],
-      enum: {
-        values: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-        message: "Day must be one of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+    days: {
+      type: [String],
+      required: [true, "Days are required"],
+      validate: {
+        validator: function (v) {
+          if (!Array.isArray(v) || v.length === 0) {
+            return false;
+          }
+          const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+          return v.every(day => validDays.includes(day));
+        },
+        message: "Days must be an array containing one or more of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
       },
     },
     startTime: {

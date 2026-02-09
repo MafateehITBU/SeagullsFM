@@ -21,6 +21,12 @@ export const advertisementSchema = new mongoose.Schema(
       trim: true,
       maxlength: [100, "Email cannot exceed 100 characters"],
     },
+    companyName: {
+      type: String,
+      required: [true, "Company name is required"],
+      trim: true,
+      maxlength: [100, "Company name cannot exceed 100 characters"],
+    },
     phoneNumber: {
       type: String,
       required: [true, "Phone number is required"],

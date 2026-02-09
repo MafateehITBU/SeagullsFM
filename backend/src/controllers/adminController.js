@@ -15,14 +15,28 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 // @access  Private
 export const registerAdmin = async (req, res) => {
   try {
-    const { name, email, password, phoneNumber, channelId } = req.body;
+    const { name, email, password, phoneNumber, channelId, permissions } = req.body;
 
     // Validation
-    if (!name || !email || !password || !phoneNumber || !channelId) {
+    if (!name || !email || !password || !phoneNumber || !channelId || !permissions) {
       return res.status(400).json({
         success: false,
         message:
-          "Please provide all required fields: name, email, password, phoneNumber and channelId",
+          "Please provide all required fields: name, email, password, phoneNumber, channelId and permissions",
+      });
+    }
+
+    // Ensure permissions is an array
+    let permissionsArray = Array.isArray(permissions) ? permissions : [permissions];
+    
+    // Validate that all permissions are valid
+    const validPermissions = ["users", "static-info", "broadcasters", "programs", "news", "events", "advertisement", "interview-applicants", "uploaded-tracks", "competitions"];
+    const invalidPermissions = permissionsArray.filter(permission => !validPermissions.includes(permission));
+    
+    if (invalidPermissions.length > 0 || permissionsArray.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid permissions: ${invalidPermissions.join(", ")}. Valid permissions are: ${validPermissions.join(", ")}`,
       });
     }
 
@@ -96,6 +110,7 @@ export const registerAdmin = async (req, res) => {
       phoneNumber: normalizedPhone,
       image: getAvatarUrl({ name }),
       channelId,
+      permissions: permissionsArray,
     });
 
     // Handle image upload if provided
@@ -255,7 +270,7 @@ export const getAllAdmins = async (req, res) => {
 // @access  Private
 export const updateAdmin = async (req, res) => {
   try {
-    const { name, email, phoneNumber, channelId } = req.body;
+    const { name, email, phoneNumber, channelId, permissions } = req.body;
     const updateData = {};
 
     // Validation for provided fields
@@ -344,6 +359,23 @@ export const updateAdmin = async (req, res) => {
       updateData.channelId = channelId;
     }
 
+    if (permissions) {
+      // Ensure permissions is an array
+      let permissionsArray = Array.isArray(permissions) ? permissions : [permissions];
+      
+      // Validate that all permissions are valid
+      const validPermissions = ["users", "static-info", "broadcasters", "programs", "news", "events", "advertisement", "interview-applicants", "uploaded-tracks", "competitions"];
+      const invalidPermissions = permissionsArray.filter(permission => !validPermissions.includes(permission));
+      
+      if (invalidPermissions.length > 0 || permissionsArray.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid permissions: ${invalidPermissions.join(", ")}. Valid permissions are: ${validPermissions.join(", ")}`,
+        });
+      }
+      
+      updateData.permissions = permissionsArray;
+    }
     const admin = await Admin.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
       runValidators: true,

@@ -48,20 +48,47 @@ const programValidation = [
     .trim()
     .notEmpty()
     .withMessage('Description is required')
-    .isLength({ max: 100 })
-    .withMessage('Description cannot exceed 100 characters'),
-  body('day')
-    .customSanitizer((value) => {
+    .isLength({ max: 500 })
+    .withMessage('Description cannot exceed 500 characters'),
+  body('days')
+    .custom((value) => {
+      // Accept array (from form-data or already parsed) or string
+      let daysArray = value;
       if (typeof value === 'string') {
-        return value.replace(/^["']|["']$/g, '');
+        // Try to parse as JSON first
+        try {
+          daysArray = JSON.parse(value);
+        } catch {
+          // If not JSON, check if it's a string representation of an array
+          // Handle formats like: "['Sunday', 'Monday']" or '["Sunday", "Monday"]'
+          const trimmed = value.trim();
+          if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+            try {
+              // Remove outer brackets and split
+              const inner = trimmed.slice(1, -1);
+              daysArray = inner.split(',').map(item => {
+                return item.trim().replace(/^["']|["']$/g, '').replace(/^['"]|['"]$/g, '');
+              }).filter(item => item.length > 0);
+            } catch {
+              daysArray = [value];
+            }
+          } else {
+            // Single day string
+            daysArray = [value];
+          }
+        }
       }
-      return value;
+      if (!Array.isArray(daysArray) || daysArray.length === 0) {
+        throw new Error('Days must be a non-empty array');
+      }
+      const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const invalidDays = daysArray.filter(day => !validDays.includes(day));
+      if (invalidDays.length > 0) {
+        throw new Error(`Invalid days: ${invalidDays.join(', ')}. Days must be one or more of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday`);
+      }
+      return true;
     })
-    .trim()
-    .notEmpty()
-    .withMessage('Day is required')
-    .isIn(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
-    .withMessage('Day must be one of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday'),
+    .withMessage('Days must be a non-empty array of valid days'),
   body('startTime')
     .customSanitizer((value) => {
       if (typeof value === 'string') {
@@ -117,19 +144,51 @@ const updateProgramValidation = [
       return value;
     })
     .trim()
-    .isLength({ max: 100 })
-    .withMessage('Description cannot exceed 100 characters'),
-  body('day')
+    .isLength({ max: 500 })
+    .withMessage('Description cannot exceed 500 characters'),
+  body('days')
     .optional()
-    .customSanitizer((value) => {
-      if (typeof value === 'string') {
-        return value.replace(/^["']|["']$/g, '');
+    .custom((value) => {
+      if (value === undefined || value === null) {
+        return true; // Optional field
       }
-      return value;
+      // Accept array (from form-data or already parsed) or string
+      let daysArray = value;
+      if (typeof value === 'string') {
+        // Try to parse as JSON first
+        try {
+          daysArray = JSON.parse(value);
+        } catch {
+          // If not JSON, check if it's a string representation of an array
+          // Handle formats like: "['Sunday', 'Monday']" or '["Sunday", "Monday"]'
+          const trimmed = value.trim();
+          if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+            try {
+              // Remove outer brackets and split
+              const inner = trimmed.slice(1, -1);
+              daysArray = inner.split(',').map(item => {
+                return item.trim().replace(/^["']|["']$/g, '').replace(/^['"]|['"]$/g, '');
+              }).filter(item => item.length > 0);
+            } catch {
+              daysArray = [value];
+            }
+          } else {
+            // Single day string
+            daysArray = [value];
+          }
+        }
+      }
+      if (!Array.isArray(daysArray) || daysArray.length === 0) {
+        throw new Error('Days must be a non-empty array');
+      }
+      const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const invalidDays = daysArray.filter(day => !validDays.includes(day));
+      if (invalidDays.length > 0) {
+        throw new Error(`Invalid days: ${invalidDays.join(', ')}. Days must be one or more of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday`);
+      }
+      return true;
     })
-    .trim()
-    .isIn(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
-    .withMessage('Day must be one of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday'),
+    .withMessage('Days must be a non-empty array of valid days'),
   body('startTime')
     .optional()
     .customSanitizer((value) => {
@@ -155,10 +214,10 @@ const updateProgramValidation = [
 ];
 
 // Routes
-router.post('/', protect, authorize('admin', 'superadmin'), upload.single('image'), cleanFormData, programValidation, validate, createProgram);
+router.post('/', protect, authorize('admin', 'superadmin'), upload.fields([{ name: 'image', maxCount: 1 }, { name: 'programDetailsImage', maxCount: 1 }]), cleanFormData, programValidation, validate, createProgram);
 router.get('/', getPrograms);
 router.get('/:id', getProgramById);
-router.put('/:id', protect, authorize('admin', 'superadmin'), upload.single('image'), cleanFormData, updateProgramValidation, validate, updateProgram);
+router.put('/:id', protect, authorize('admin', 'superadmin'), upload.fields([{ name: 'image', maxCount: 1 }, { name: 'programDetailsImage', maxCount: 1 }]), cleanFormData, updateProgramValidation, validate, updateProgram);
 router.put('/:id/toggle-active', protect, authorize('admin', 'superadmin'), toggleActive);
 router.delete('/:id', protect, authorize('admin', 'superadmin'), deleteProgram);
 

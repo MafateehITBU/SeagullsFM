@@ -55,6 +55,11 @@ const adminSchema = new mongoose.Schema(
       default: "admin",
       enum: ["admin"],
     },
+    permissions: {
+      type: [String],
+      enum: ["users", "static-info", "broadcasters", "programs", "news", "events", "advertisement", "interview-applicants", "uploaded-tracks", "competitions"],
+      required: [true, "Permissions are required"],
+    },
     isActive: {
       type: Boolean,
       default: true,

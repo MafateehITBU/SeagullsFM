@@ -19,14 +19,31 @@ import UnauthorizedPage from "./pages/UnauthorizedPage";
 import ForgotPasswordLayer from "./components/ForgotPasswordLayer";
 import { useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import Cookie from "js-cookie";
 
 function App() {
   const { user } = useAuth(); // use your context to get user
+  
+  // Check if token exists in cookie
+  const token = Cookie.get("token");
+  const isLoggedIn = !!token && !!user?.id;
 
   return (
     <BrowserRouter>
       <RouteScrollToTop />
       <Routes>
+        {/* Root route - redirect based on authentication */}
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Navigate to="/sign-in" replace />
+            )
+          }
+        />
+
         {/* Public Routes */}
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordLayer />} />

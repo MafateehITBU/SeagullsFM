@@ -20,6 +20,46 @@ const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
   />
 );
 
+// Function to format days
+const formatDays = (days) => {
+  if (!days || !Array.isArray(days) || days.length === 0) {
+    return "-";
+  }
+
+  // Day order mapping
+  const dayOrder = {
+    Sunday: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
+  };
+
+  // Sort days by their order
+  const sortedDays = [...days].sort((a, b) => dayOrder[a] - dayOrder[b]);
+
+  // Check if days are consecutive (including wrap-around)
+  const isConsecutive = sortedDays.every((day, index) => {
+    if (index === 0) return true;
+    const prevDayIndex = dayOrder[sortedDays[index - 1]];
+    const currentDayIndex = dayOrder[day];
+    // Check if consecutive (including wrap-around: Saturday to Sunday)
+    const isNextDay = currentDayIndex === prevDayIndex + 1;
+    const isWrapAround = prevDayIndex === 6 && currentDayIndex === 0;
+    return isNextDay || isWrapAround;
+  });
+
+  if (isConsecutive && sortedDays.length > 1) {
+    // Format as range: "Sunday - Tuesday"
+    return `${sortedDays[0]} - ${sortedDays[sortedDays.length - 1]}`;
+  } else {
+    // Format as comma-separated: "Sunday, Monday, Friday"
+    return sortedDays.join(", ");
+  }
+};
+
 const ProgramsLayer = () => {
   const { user } = useAuth();
   const [allPrograms, setAllPrograms] = useState([]);
@@ -97,6 +137,21 @@ const ProgramsLayer = () => {
           />
         ),
       },
+      { Header: "Program Details Image", 
+        accessor: "programDetailsImage",
+        Cell: ({ value }) => (
+          value ? (
+            <img
+              src={value?.url}
+              alt="Program Details"
+              style={{ width: "40px", height: "40px", borderRadius: "6px" }}
+              onClick={() => setPreviewImage(value?.url)}
+            />
+          ) : (
+            "-"
+          )
+        ),
+      },
       { Header: "Title", accessor: "title" },
       {
         Header: "Description",
@@ -118,7 +173,11 @@ const ProgramsLayer = () => {
           </span>
         ),
       },
-      { Header: "Day", accessor: "day" },
+      {
+        Header: "Days",
+        accessor: "days",
+        Cell: ({ value }) => formatDays(value),
+      },
       { Header: "Start Time", accessor: "startTime" },
       { Header: "End Time", accessor: "endTime" },
       {

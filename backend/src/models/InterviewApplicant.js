@@ -52,17 +52,6 @@ const interviewApplicantSchema = new mongoose.Schema(
         trim: true,
         default: null,
       },
-      twitter: {
-        type: String,
-        trim: true,
-        default: null,
-      },
-    },
-    job: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: [100, "Job cannot exceed 100 characters"],
     },
     status: {
       type: String,

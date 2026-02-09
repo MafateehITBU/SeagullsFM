@@ -91,6 +91,22 @@ const AdminsLayer = () => {
         { Header: 'Name', accessor: 'name' },
         { Header: 'Email', accessor: 'email' },
         { Header: 'Phone', accessor: 'phoneNumber' },
+        {
+            Header: 'Permissions',
+            accessor: 'permissions',
+            Cell: ({ value }) => {
+                const formatted = value?.join(', ') || '';
+                return (
+                    <div style={{
+                        whiteSpace: 'normal',
+                        wordWrap: 'break-word',
+                        maxWidth: '200px',
+                    }}>
+                        {formatted}
+                    </div>
+                );
+            }
+        },
         { Header: 'Channel', accessor: 'channelId.name' }, 
         {
             Header: 'is Active',

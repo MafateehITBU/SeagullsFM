@@ -9,7 +9,7 @@ import fs from "fs";
 export const createProgram = async (req, res) => {
   try {
     // Clean values (remove quotes if present)
-    let { channelId, title, description, day, startTime, endTime } = req.body;
+    let { channelId, title, description, days, startTime, endTime } = req.body;
 
     // Additional cleaning as backup
     if (typeof channelId === "string") {
@@ -21,9 +21,27 @@ export const createProgram = async (req, res) => {
     if (typeof description === "string") {
       description = description.replace(/^["']|["']$/g, "").trim();
     }
-    if (typeof day === "string") {
-      day = day.replace(/^["']|["']$/g, "").trim();
+    // Handle days - can be array or string (for backward compatibility)
+    let daysArray = days;
+    if (typeof days === "string") {
+      try {
+        // Try to parse as JSON array
+        daysArray = JSON.parse(days);
+      } catch {
+        // If not JSON, treat as single day and convert to array
+        daysArray = [days.replace(/^["']|["']$/g, "").trim()];
+      }
     }
+    if (!Array.isArray(daysArray)) {
+      daysArray = [daysArray];
+    }
+    // Clean each day string
+    daysArray = daysArray.map(day => {
+      if (typeof day === "string") {
+        return day.replace(/^["']|["']$/g, "").trim();
+      }
+      return day;
+    }).filter(day => day); // Remove empty values
     if (typeof startTime === "string") {
       startTime = startTime.replace(/^["']|["']$/g, "").trim();
     }
@@ -32,34 +50,42 @@ export const createProgram = async (req, res) => {
     }
 
     // Validation
-    if (!channelId || !title || !description || !day || !startTime || !endTime) {
+    if (!channelId || !title || !description || !daysArray || daysArray.length === 0 || !startTime || !endTime) {
       return res.status(400).json({
         success: false,
-        message: "Please provide channelId, title, description, day, startTime, and endTime",
+        message: "Please provide channelId, title, description, days (array), startTime, and endTime",
       });
     }
 
-    // Image is required
-    if (!req.file) {
+    // Images are required
+    if (!req.files || !req.files.image || !req.files.image[0]) {
       return res.status(400).json({
         success: false,
         message: "Image is required",
       });
     }
 
-    if (description.length > 100) {
+    if (!req.files.programDetailsImage || !req.files.programDetailsImage[0]) {
       return res.status(400).json({
         success: false,
-        message: "Description cannot exceed 100 characters",
+        message: "Program details image is required",
       });
     }
 
-    // Validate day
-    const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    if (!validDays.includes(day)) {
+    if (description.length > 500) {
       return res.status(400).json({
         success: false,
-        message: "Day must be one of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+        message: "Description cannot exceed 500 characters",
+      });
+    }
+
+    // Validate days
+    const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const invalidDays = daysArray.filter(day => !validDays.includes(day));
+    if (invalidDays.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid days: ${invalidDays.join(", ")}. Days must be one or more of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday`,
       });
     }
 
@@ -100,17 +126,30 @@ export const createProgram = async (req, res) => {
       });
     }
 
-    // Upload image to Cloudinary (required)
+    // Upload images to Cloudinary (required)
     let imageResult;
+    let programDetailsImageResult;
+    
     try {
-      imageResult = await cloudinary.uploader.upload(req.file.path, {
+      // Upload main image
+      imageResult = await cloudinary.uploader.upload(req.files.image[0].path, {
         folder: "seagulls/programs",
         width: 800,
         crop: "scale",
       });
-      fs.unlinkSync(req.file.path);
+      fs.unlinkSync(req.files.image[0].path);
+
+      // Upload program details image
+      programDetailsImageResult = await cloudinary.uploader.upload(req.files.programDetailsImage[0].path, {
+        folder: "seagulls/programs/details",
+        width: 800,
+        crop: "scale",
+      });
+      fs.unlinkSync(req.files.programDetailsImage[0].path);
     } catch (uploadError) {
-      if (req.file) fs.unlinkSync(req.file.path);
+      // Clean up uploaded files on error
+      if (req.files?.image?.[0]) fs.unlinkSync(req.files.image[0].path);
+      if (req.files?.programDetailsImage?.[0]) fs.unlinkSync(req.files.programDetailsImage[0].path);
       console.error("Image upload error:", uploadError);
       return res.status(500).json({
         success: false,
@@ -127,8 +166,12 @@ export const createProgram = async (req, res) => {
         public_id: imageResult.public_id,
         url: imageResult.secure_url,
       },
+      programDetailsImage: {
+        public_id: programDetailsImageResult.public_id,
+        url: programDetailsImageResult.secure_url,
+      },
       description,
-      day,
+      days: daysArray,
       startTime,
       endTime,
     });
@@ -141,7 +184,9 @@ export const createProgram = async (req, res) => {
       data: program,
     });
   } catch (error) {
-    if (req.file) fs.unlinkSync(req.file.path);
+    // Clean up uploaded files on error
+    if (req.files?.image?.[0]) fs.unlinkSync(req.files.image[0].path);
+    if (req.files?.programDetailsImage?.[0]) fs.unlinkSync(req.files.programDetailsImage[0].path);
     res.status(500).json({
       success: false,
       message: "Error creating program",
@@ -201,7 +246,7 @@ export const getProgramById = async (req, res) => {
 export const updateProgram = async (req, res) => {
   try {
     // Clean values
-    let { channelId, title, description, day, startTime, endTime } = req.body;
+    let { channelId, title, description, days, startTime, endTime } = req.body;
 
     // Additional cleaning as backup
     if (typeof channelId === "string") {
@@ -213,8 +258,28 @@ export const updateProgram = async (req, res) => {
     if (typeof description === "string") {
       description = description.replace(/^["']|["']$/g, "").trim();
     }
-    if (typeof day === "string") {
-      day = day.replace(/^["']|["']$/g, "").trim();
+    // Handle days - can be array or string (for backward compatibility)
+    let daysArray = days;
+    if (days !== undefined) {
+      if (typeof days === "string") {
+        try {
+          // Try to parse as JSON array
+          daysArray = JSON.parse(days);
+        } catch {
+          // If not JSON, treat as single day and convert to array
+          daysArray = [days.replace(/^["']|["']$/g, "").trim()];
+        }
+      }
+      if (!Array.isArray(daysArray)) {
+        daysArray = [daysArray];
+      }
+      // Clean each day string
+      daysArray = daysArray.map(day => {
+        if (typeof day === "string") {
+          return day.replace(/^["']|["']$/g, "").trim();
+        }
+        return day;
+      }).filter(day => day); // Remove empty values
     }
     if (typeof startTime === "string") {
       startTime = startTime.replace(/^["']|["']$/g, "").trim();
@@ -231,24 +296,25 @@ export const updateProgram = async (req, res) => {
     }
 
     if (description !== undefined) {
-      if (description.length > 100) {
+      if (description.length > 500) {
         return res.status(400).json({
           success: false,
-          message: "Description cannot exceed 100 characters",
+          message: "Description cannot exceed 500 characters",
         });
       }
       updateData.description = description;
     }
 
-    if (day) {
+    if (daysArray && daysArray.length > 0) {
       const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-      if (!validDays.includes(day)) {
+      const invalidDays = daysArray.filter(day => !validDays.includes(day));
+      if (invalidDays.length > 0) {
         return res.status(400).json({
           success: false,
-          message: "Day must be one of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+          message: `Invalid days: ${invalidDays.join(", ")}. Days must be one or more of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday`,
         });
       }
-      updateData.day = day;
+      updateData.days = daysArray;
     }
 
     if (startTime) {
@@ -330,15 +396,15 @@ export const updateProgram = async (req, res) => {
       });
     }
 
-    // Handle image upload if provided
-    if (req.file) {
+    // Handle image uploads if provided
+    if (req.files?.image?.[0]) {
       try {
         // Delete old image from cloudinary if exists
         if (program.image && program.image.public_id) {
           await cloudinary.uploader.destroy(program.image.public_id);
         }
 
-        const result = await cloudinary.uploader.upload(req.file.path, {
+        const result = await cloudinary.uploader.upload(req.files.image[0].path, {
           folder: "seagulls/programs",
           width: 800,
           crop: "scale",
@@ -350,13 +416,45 @@ export const updateProgram = async (req, res) => {
         };
         await program.save();
 
-        fs.unlinkSync(req.file.path);
+        fs.unlinkSync(req.files.image[0].path);
       } catch (uploadError) {
-        if (req.file) fs.unlinkSync(req.file.path);
+        if (req.files?.image?.[0]) fs.unlinkSync(req.files.image[0].path);
         console.error("Image upload error:", uploadError);
         return res.status(500).json({
           success: false,
           message: "Error uploading image",
+          error: uploadError.message,
+        });
+      }
+    }
+
+    // Handle programDetailsImage upload if provided
+    if (req.files?.programDetailsImage?.[0]) {
+      try {
+        // Delete old programDetailsImage from cloudinary if exists
+        if (program.programDetailsImage && program.programDetailsImage.public_id) {
+          await cloudinary.uploader.destroy(program.programDetailsImage.public_id);
+        }
+
+        const result = await cloudinary.uploader.upload(req.files.programDetailsImage[0].path, {
+          folder: "seagulls/programs/details",
+          width: 800,
+          crop: "scale",
+        });
+
+        program.programDetailsImage = {
+          public_id: result.public_id,
+          url: result.secure_url,
+        };
+        await program.save();
+
+        fs.unlinkSync(req.files.programDetailsImage[0].path);
+      } catch (uploadError) {
+        if (req.files?.programDetailsImage?.[0]) fs.unlinkSync(req.files.programDetailsImage[0].path);
+        console.error("Program details image upload error:", uploadError);
+        return res.status(500).json({
+          success: false,
+          message: "Error uploading program details image",
           error: uploadError.message,
         });
       }
@@ -368,7 +466,9 @@ export const updateProgram = async (req, res) => {
       data: program,
     });
   } catch (error) {
-    if (req.file) fs.unlinkSync(req.file.path);
+    // Clean up uploaded files on error
+    if (req.files?.image?.[0]) fs.unlinkSync(req.files.image[0].path);
+    if (req.files?.programDetailsImage?.[0]) fs.unlinkSync(req.files.programDetailsImage[0].path);
     res.status(500).json({
       success: false,
       message: "Error updating program",
@@ -423,12 +523,21 @@ export const deleteProgram = async (req, res) => {
       });
     }
 
-    // Delete image from cloudinary if exists
+    // Delete images from cloudinary if exists
     if (program.image && program.image.public_id) {
       try {
         await cloudinary.uploader.destroy(program.image.public_id);
       } catch (cloudinaryError) {
         console.error("Error deleting image from cloudinary:", cloudinaryError);
+      }
+    }
+
+    // Delete programDetailsImage from cloudinary if exists
+    if (program.programDetailsImage && program.programDetailsImage.public_id) {
+      try {
+        await cloudinary.uploader.destroy(program.programDetailsImage.public_id);
+      } catch (cloudinaryError) {
+        console.error("Error deleting program details image from cloudinary:", cloudinaryError);
       }
     }
 

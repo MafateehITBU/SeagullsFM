@@ -7,10 +7,10 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 // @access Public
 export const createInterviewApplicant = async (req, res) => {
   try {
-    const { channelId, name, email, phoneNumber, topic, socialLinks, job } =
+    const { channelId, name, email, phoneNumber, topic, socialLinks } =
       req.body;
 
-    if (!channelId || !name || !email || !phoneNumber || !topic || !job) {
+    if (!channelId || !name || !email || !phoneNumber || !topic) {
       return res.status(400).json({
         success: false,
         message: "Please provide all required fields",
@@ -57,15 +57,8 @@ export const createInterviewApplicant = async (req, res) => {
       });
     }
 
-    if (job.length < 2 || job.length > 100) {
-      return res.status(400).json({
-        success: false,
-        message: "Job must be between 2 and 100 characters",
-      });
-    }
-
     // validate social links (if provided)
-    const socialLinkFields = ["ig", "fb", "twitter"];
+    const socialLinkFields = ["ig", "fb"];
     for (const field of socialLinkFields) {
       if (socialLinks && socialLinks[field]) {
         if (socialLinks[field].length < 5 || socialLinks[field].length > 100) {
@@ -84,7 +77,6 @@ export const createInterviewApplicant = async (req, res) => {
       phoneNumber,
       topic,
       socialLinks,
-      job,
     });
 
     await newApplicant.save();

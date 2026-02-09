@@ -7,7 +7,7 @@ import {
   updateInterview,
   deleteInterview
 } from '../controllers/interviewController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, permissions } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import uploadVideo from '../middleware/uploadVideo.js';
 import { cleanFormData } from '../middleware/cleanFormData.js';
@@ -131,11 +131,11 @@ const updateInterviewValidation = [
 ];
 
 // Routes
-router.post('/', protect, authorize('admin', 'superadmin'), uploadVideo.single('content'), cleanFormData, interviewValidation, validate, createInterview);
+router.post('/', protect, authorize('admin', 'superadmin'), permissions('interview-applicants'), uploadVideo.single('content'), cleanFormData, interviewValidation, validate, createInterview);
 router.get('/', getInterviews);
 router.get('/:id', getInterviewById);
-router.put('/:id', protect, authorize('admin', 'superadmin'), uploadVideo.single('content'), cleanFormData, updateInterviewValidation, validate, updateInterview);
-router.delete('/:id', protect, authorize('admin', 'superadmin'), deleteInterview);
+router.put('/:id', protect, authorize('admin', 'superadmin'), permissions('interview-applicants'), uploadVideo.single('content'), cleanFormData, updateInterviewValidation, validate, updateInterview);
+router.delete('/:id', protect, authorize('admin', 'superadmin'), permissions('interview-applicants'), deleteInterview);
 
 export default router;
 

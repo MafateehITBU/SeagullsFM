@@ -54,6 +54,14 @@ export const createEvent = async (req, res) => {
       });
     }
 
+    // Validate coverImage is required
+    if (!req.files || !req.files.coverImage || !req.files.coverImage[0]) {
+      return res.status(400).json({
+        success: false,
+        message: "Cover image is required",
+      });
+    }
+
     // Create new event
     const newEvent = new Event({
       channelId,
@@ -65,32 +73,59 @@ export const createEvent = async (req, res) => {
       address,
     });
 
-    // Handle image upload if file is provided
-    if (req.file) {
+    // Handle coverImage upload
+    try {
+      const coverImageResult = await cloudinary.uploader.upload(
+        req.files.coverImage[0].path,
+        {
+          folder: "seagulls/events/cover",
+        }
+      );
+      newEvent.coverImage = {
+        public_id: coverImageResult.public_id,
+        url: coverImageResult.secure_url,
+      };
+      fs.unlinkSync(req.files.coverImage[0].path);
+    } catch (uploadError) {
+      if (req.files?.coverImage?.[0]) fs.unlinkSync(req.files.coverImage[0].path);
+      return res.status(500).json({
+        success: false,
+        message: "Cover image upload failed",
+        error: uploadError.message,
+      });
+    }
+
+    // Handle images array upload (optional)
+    if (req.files && req.files.images && req.files.images.length > 0) {
       try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-          folder: "seagulls/events",
+        const imageUploadPromises = req.files.images.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "seagulls/events/images",
+          });
+          fs.unlinkSync(file.path);
+          return {
+            public_id: result.public_id,
+            url: result.secure_url,
+          };
         });
-        newEvent.image = {
-          public_id: result.public_id,
-          url: result.secure_url,
-        };
-        await newEvent.save();
-        // Remove file from server after upload
-        fs.unlinkSync(req.file.path);
+
+        newEvent.images = await Promise.all(imageUploadPromises);
       } catch (uploadError) {
+        // Clean up uploaded files on error
+        if (req.files?.images) {
+          req.files.images.forEach((file) => {
+            if (file.path) fs.unlinkSync(file.path);
+          });
+        }
         return res.status(500).json({
           success: false,
-          message: "Image upload failed",
+          message: "Images upload failed",
           error: uploadError.message,
         });
       }
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Event image is required",
-      });
     }
+
+    await newEvent.save();
 
     res.status(201).json({
       success: true,
@@ -233,29 +268,106 @@ export const updateEvent = async (req, res) => {
       });
     }
 
-    // Handle image update if new file is provided
-    if (req.file) {
+    // Handle coverImage update if new file is provided
+    if (req.files && req.files.coverImage && req.files.coverImage[0]) {
       try {
-        // Delete old image from Cloudinary if exists
-        if (event.image && event.image.public_id) {
-          await cloudinary.uploader.destroy(event.image.public_id);
+        // Delete old coverImage from Cloudinary if exists
+        if (event.coverImage && event.coverImage.public_id) {
+          await cloudinary.uploader.destroy(event.coverImage.public_id);
         }
-        // Upload new image
-        const result = await cloudinary.uploader.upload(req.file.path, {
-          folder: "seagulls/events",
-        });
+        // Upload new coverImage
+        const coverImageResult = await cloudinary.uploader.upload(
+          req.files.coverImage[0].path,
+          {
+            folder: "seagulls/events/cover",
+          }
+        );
 
-        updatedEvent.image = {
-          public_id: result.public_id,
-          url: result.secure_url,
+        updatedEvent.coverImage = {
+          public_id: coverImageResult.public_id,
+          url: coverImageResult.secure_url,
         };
 
         await updatedEvent.save();
         // Remove file from server after upload
-        fs.unlinkSync(req.file.path);
+        fs.unlinkSync(req.files.coverImage[0].path);
       } catch (uploadError) {
+        if (req.files?.coverImage?.[0]) fs.unlinkSync(req.files.coverImage[0].path);
         return res.status(500).json({
-          message: "Image upload failed",
+          success: false,
+          message: "Cover image upload failed",
+          error: uploadError.message,
+        });
+      }
+    }
+
+    // Handle deleted images first (before adding new ones)
+    if (req.body.deletedImages) {
+      try {
+        let deletedImageUrls = [];
+        if (Array.isArray(req.body.deletedImages)) {
+          deletedImageUrls = req.body.deletedImages;
+        } else if (typeof req.body.deletedImages === 'string') {
+          try {
+            deletedImageUrls = JSON.parse(req.body.deletedImages);
+          } catch {
+            deletedImageUrls = [req.body.deletedImages];
+          }
+        }
+
+        if (deletedImageUrls.length > 0) {
+          // Find and delete images from Cloudinary by matching URLs
+          const imagesToKeep = (updatedEvent.images || []).filter((img) => {
+            const shouldKeep = !deletedImageUrls.includes(img.url);
+            if (!shouldKeep && img.public_id) {
+              // Delete from Cloudinary
+              cloudinary.uploader.destroy(img.public_id).catch((err) => {
+                console.error(`Error deleting image ${img.public_id} from cloudinary:`, err);
+              });
+            }
+            return shouldKeep;
+          });
+
+          updatedEvent.images = imagesToKeep;
+          await updatedEvent.save();
+        }
+      } catch (deleteError) {
+        console.error("Error deleting images:", deleteError);
+        // Continue with update even if deletion fails
+      }
+    }
+
+    // Handle images array update if new files are provided
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      try {
+        // Upload new images
+        const imageUploadPromises = req.files.images.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "seagulls/events/images",
+          });
+          fs.unlinkSync(file.path);
+          return {
+            public_id: result.public_id,
+            url: result.secure_url,
+          };
+        });
+
+        const newImages = await Promise.all(imageUploadPromises);
+        
+        // Append new images to existing ones (after deletion)
+        updatedEvent.images = [...(updatedEvent.images || []), ...newImages];
+        
+        await updatedEvent.save();
+      } catch (uploadError) {
+        // Clean up uploaded files on error
+        if (req.files?.images) {
+          req.files.images.forEach((file) => {
+            if (file.path) fs.unlinkSync(file.path);
+          });
+        }
+        return res.status(500).json({
+          success: false,
+          message: "Images upload failed",
           error: uploadError.message,
         });
       }
@@ -284,9 +396,25 @@ export const deleteEvent = async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    // Delete image from Cloudinary if exists
-    if (event.image && event.image.public_id) {
-      await cloudinary.uploader.destroy(event.image.public_id);
+    // Delete coverImage from Cloudinary if exists
+    if (event.coverImage && event.coverImage.public_id) {
+      try {
+        await cloudinary.uploader.destroy(event.coverImage.public_id);
+      } catch (cloudinaryError) {
+        console.error("Error deleting cover image from cloudinary:", cloudinaryError);
+      }
+    }
+
+    // Delete all images from Cloudinary if they exist
+    if (event.images && event.images.length > 0) {
+      try {
+        const deletePromises = event.images
+          .filter((img) => img.public_id)
+          .map((img) => cloudinary.uploader.destroy(img.public_id));
+        await Promise.all(deletePromises);
+      } catch (cloudinaryError) {
+        console.error("Error deleting images from cloudinary:", cloudinaryError);
+      }
     }
     await Event.findByIdAndDelete(req.params.id);
     res.status(200).json({

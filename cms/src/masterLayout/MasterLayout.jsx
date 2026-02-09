@@ -12,56 +12,68 @@ const MasterLayout = ({ children }) => {
   const navigate = useNavigate();
   const { user, loading, logout, setChannelId } = useAuth();
 
+  // Sidebar items + the permission key they map to in backend
   const sidebarItems = [
     {
       path: "/admins",
       label: "Admins",
       icon: "mdi:account-tie",
+      // No explicit permission key – only superadmin should see this
+      permission: null,
     },
     {
       path: "/users",
       label: "Users",
       icon: "mdi:account-group",
+      permission: "users",
     },
     {
       path: "/static-info",
       label: "Static Info",
       icon: "mdi:file-document-outline",
+      permission: "static-info",
     },
     {
       path: "/broadcasters",
       label: "Broadcasters",
       icon: "mdi:radio",
+      permission: "broadcasters",
     },
     {
       path: "/programs",
       label: "Programs",
       icon: "mdi:clipboard-list-outline",
+      permission: "programs",
     },
     {
       path: "/news",
       label: "News",
       icon: "mdi:newspaper-variant-outline",
+      permission: "news",
     },
     {
       path: "/events",
       label: "Events & Partnerships",
       icon: "mdi:calendar-month-outline",
+      permission: "events",
     },
     {
       path: "/advertisement",
       label: "Advertisement Requests",
       icon: "mdi:bullhorn-outline",
+      permission: "advertisement",
     },
     {
       path: "/interview-applicants",
       label: "Interview Applicants",
       icon: "mdi:account-question-outline",
+      permission: "interview-applicants",
     },
     {
       path: "/uploaded-tracks",
       label: "Uploaded Tracks",
       icon: "mdi:music-note",
+      permission: "uploaded-tracks",
     },
   ];
 
@@ -205,7 +217,7 @@ const MasterLayout = ({ children }) => {
             {user && (
               <>
                 {/* Dashboard */}
-                {user.role && user.role.toLowerCase() === "superadmin" && (
+                {/* {user.role && user.role.toLowerCase() === "superadmin" && (
                   <li>
                     <NavLink
                       to="/"
@@ -217,42 +229,36 @@ const MasterLayout = ({ children }) => {
                       <span>Dashboard</span>
                     </NavLink>
                   </li>
-                )}
+                )} */}
 
-                {sidebarItems
-                  .filter((item) => {
-                    const role = user.role?.toLowerCase?.();
+                  {sidebarItems
+                    .filter((item) => {
+                      const role = user.role?.toLowerCase?.();
 
-                    // Superadmin sees everything
-                    if (role === "superadmin") return true;
+                      // Superadmin sees everything
+                      if (role === "superadmin") return true;
 
-                    // Admin sees everything EXCEPT dashboard and admins
-                    if (role === "admin") {
-                      return (
-                        item.path !== "/admins" && item.path !== "/dashboard"
-                      );
-                    }
+                      // For admins, show only items they have explicit permission for
+                      if (!item.permission) {
+                        // Items without a permission key (like /admins) are hidden for non-superadmin
+                        return false;
+                      }
 
-                    // Other roles fallback to permissions
-                    const cap = (str) =>
-                      str.charAt(0).toUpperCase() + str.slice(1);
-                    const routeName = cap(item.path.replace("/", ""));
-                    return user.permissions?.includes(routeName);
-                  })
-
-                  .map((item) => (
-                    <li key={item.path}>
-                      <NavLink
-                        to={item.path}
-                        className={(navData) =>
-                          navData.isActive ? "active-page" : ""
-                        }
-                      >
-                        <Icon icon={item.icon} className="menu-icon" />
-                        <span>{item.label}</span>
-                      </NavLink>
-                    </li>
-                  ))}
+                      return user.permissions?.includes(item.permission);
+                    })
+                    .map((item) => (
+                      <li key={item.path}>
+                        <NavLink
+                          to={item.path}
+                          className={(navData) =>
+                            navData.isActive ? "active-page" : ""
+                          }
+                        >
+                          <Icon icon={item.icon} className="menu-icon" />
+                          <span>{item.label}</span>
+                        </NavLink>
+                      </li>
+                    ))}
               </>
             )}
           </ul>

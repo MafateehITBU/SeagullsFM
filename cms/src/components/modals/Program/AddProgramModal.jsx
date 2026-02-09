@@ -6,21 +6,37 @@ import { toast } from "react-toastify";
 const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [day, setDay] = useState("");
+  const [days, setDays] = useState([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [image, setImage] = useState(null);
-
+  const [programDetailsImage, setProgramDetailsImage] = useState(null);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const allDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  const handleDayChange = (day) => {
+    setDays((prevDays) => {
+      if (prevDays.includes(day)) {
+        // Remove day if already selected
+        return prevDays.filter((d) => d !== day);
+      } else {
+        // Add day if not selected
+        return [...prevDays, day];
+      }
+    });
+  };
 
   const validateForm = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!description.trim()) newErrors.description = "Description is required";
-    if (!day.trim()) newErrors.day = "Day is required";
+    if (days.length === 0) newErrors.days = "At least one day is required";
     if (!startTime.trim()) newErrors.startTime = "Start Time is required";
     if (!endTime.trim()) newErrors.endTime = "End Time is required";
+    if (!programDetailsImage) newErrors.programDetailsImage = "Program Details Image is required";
+    if (!image) newErrors.image = "Image is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -28,10 +44,11 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
   const resetForm = () => {
     setTitle("");
     setDescription("");
-    setDay("");
+    setDays([]);
     setStartTime("");
     setEndTime("");
     setImage(null);
+    setProgramDetailsImage(null);
     setErrors({});
   };
 
@@ -45,12 +62,13 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("day", day);
+      // Send days as JSON array string
+      formData.append("days", JSON.stringify(days));
       formData.append("startTime", startTime);
       formData.append("endTime", endTime);
       formData.append("channelId", channelId);
       if (image) formData.append("image", image);
-
+      if (programDetailsImage) formData.append("programDetailsImage", programDetailsImage);
       await axiosInstance.post("/program", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -101,27 +119,25 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          {/* Drop down for the days of the week */}
+          {/* Checkboxes for the days of the week */}
           <Form.Group className="mb-3">
-            <Form.Label>Day</Form.Label>
-            <Form.Control
-              as="select"
-              value={day}
-              onChange={(e) => setDay(e.target.value)}
-              isInvalid={!!errors.day}
-            >
-              <option value="">Select a day</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-              <option value="Sunday">Sunday</option>
-            </Form.Control>
-            <Form.Control.Feedback type="invalid">
-              {errors.day}
-            </Form.Control.Feedback>
+            <Form.Label>Days</Form.Label>
+            <Row>
+              {allDays.map((day) => (
+                <Col md={4} key={day} className="mb-2">
+                  <Form.Check className="d-flex align-items-start">
+                    <Form.Check.Input
+                      type="checkbox"
+                      value={day}
+                      checked={days.includes(day)}
+                      onChange={() => handleDayChange(day)}
+                      className="mt-1"
+                    />
+                    <Form.Check.Label className="ms-2">{day}</Form.Check.Label>
+                  </Form.Check>
+                </Col>
+              ))}
+            </Row>
           </Form.Group>
 
           <Row className="mb-3">
@@ -158,7 +174,7 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
           </Row>
 
           <Form.Group className="mb-3">
-            <Form.Label>Image (optional)</Form.Label>
+            <Form.Label>Image</Form.Label>
             <Form.Control
               type="file"
               accept="image/*"
@@ -166,6 +182,14 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
             />
           </Form.Group>
 
+          <Form.Group className="mb-3">
+            <Form.Label>Program Details Image</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProgramDetailsImage(e.target.files[0])}
+            />
+          </Form.Group>
           <div className="text-center">
             <Button
               type="submit"

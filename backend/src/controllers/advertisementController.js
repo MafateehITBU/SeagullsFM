@@ -6,10 +6,10 @@ import Channel from "../models/Channel.js";
 // @access  Public
 export const createAdvertisement = async (req, res) => {
   try {
-    const { channelId, name, email, phoneNumber, message } = req.body;
+    const { channelId, name, email, companyName, phoneNumber, message } = req.body;
 
     // validations
-    if (!name || !email || !phoneNumber || !message) {
+    if (!name || !email || !companyName || !phoneNumber || !message) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -40,6 +40,7 @@ export const createAdvertisement = async (req, res) => {
       channelId,
       name,
       email,
+      companyName,
       phoneNumber,
       message,
     });

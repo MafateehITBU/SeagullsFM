@@ -10,7 +10,7 @@ import {
   deleteUploadTrack,
   getApprovedTracks
 } from '../controllers/uploadTrackController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, permissions } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import uploadVideo from '../middleware/uploadVideo.js';
 import { cleanFormData } from '../middleware/cleanFormData.js';
@@ -72,15 +72,15 @@ const updateStatusValidation = [
 
 // Routes
 // User routes
-router.post('/', protect, authorize('user'), uploadVideo.single('songFile'), cleanFormData, uploadTrackValidation, validate, uploadTrack);
+router.post('/', protect, authorize('user'), permissions('uploaded-tracks'), uploadVideo.single('songFile'), cleanFormData, uploadTrackValidation, validate, uploadTrack);
 router.get('/my-tracks', protect, authorize('user'), getMyTracks);
 
 // Admin routes
-router.get('/', protect, authorize('admin', 'superadmin'), getUploadTracks);
+router.get('/', protect, authorize('admin', 'superadmin'), permissions('uploaded-tracks'), getUploadTracks);
 router.get('/approved/list', getApprovedTracks); // Public route for approved tracks
 router.get('/:id', protect, getUploadTrackById);
-router.put('/:id/status', protect, authorize('admin', 'superadmin'), updateStatusValidation, validate, updateTrackStatus);
-router.post('/:id/approve', protect, authorize('admin', 'superadmin'), approveTrackValidation, validate, approveTrack);
+router.put('/:id/status', protect, authorize('admin', 'superadmin'), permissions('uploaded-tracks'), updateStatusValidation, validate, updateTrackStatus);
+router.post('/:id/approve', protect, authorize('admin', 'superadmin'), permissions('uploaded-tracks'), approveTrackValidation, validate, approveTrack);
 router.delete('/:id', protect, deleteUploadTrack);
 
 export default router;

@@ -68,3 +68,29 @@ export const authorize = (...roles) => {
     next();
   };
 };
+
+// Check Admin Permissions (only for admin role)
+export const permissions = (...requiredPermissions) => {
+  return (req, res, next) => {
+    // Only apply this middleware to admins
+    if (req.user.role !== 'admin') {
+      return next(); // Skip permission check for non-admins
+    }
+
+    const adminPermissions = req.user.permissions;
+
+    // If adminPermissions is not an array, handle gracefully
+    const hasPermission = Array.isArray(adminPermissions)
+      ? requiredPermissions.some(permission => adminPermissions.includes(permission))
+      : requiredPermissions.includes(adminPermissions);
+
+    if (!hasPermission) {
+      return res.status(403).json({
+        success: false,
+        message: `Admin does not have permission to access this route`,
+      });
+    }
+
+    next();
+  };
+};

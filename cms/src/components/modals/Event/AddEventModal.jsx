@@ -10,7 +10,8 @@ const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
   const [address, setAddress] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [image, setImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
+  const [images, setImages] = useState([]);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,6 +23,7 @@ const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
     if (!address.trim()) newErrors.address = "Address is required";
     if (!startDate.trim()) newErrors.startDate = "Start Date is required";
     if (!endDate.trim()) newErrors.endDate = "End Date is required";
+    if (!coverImage) newErrors.coverImage = "Cover image is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -33,7 +35,8 @@ const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
     setAddress("");
     setStartDate("");
     setEndDate("");
-    setImage(null);
+    setCoverImage(null);
+    setImages([]);
     setErrors({});
   };
 
@@ -52,7 +55,16 @@ const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
       formData.append("channelId", channelId);
-      if (image) formData.append("image", image);
+      
+      // Append coverImage (required)
+      if (coverImage) {
+        formData.append("coverImage", coverImage);
+      }
+      
+      // Append images array (optional)
+      images.forEach((imageFile) => {
+        formData.append("images", imageFile);
+      });
 
       await axiosInstance.post("/event", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -184,12 +196,36 @@ const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
           </Row>
 
           <Form.Group className="mb-3">
-            <Form.Label>Image (optional)</Form.Label>
+            <Form.Label>Cover Image</Form.Label>
             <Form.Control
               type="file"
               accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => setCoverImage(e.target.files[0])}
+              isInvalid={!!errors.coverImage}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.coverImage}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Additional Images (optional)</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => {
+                const files = Array.from(e.target.files);
+                setImages(files);
+              }}
+            />
+            {images.length > 0 && (
+              <div className="mt-2">
+                <small className="text-muted">
+                  {images.length} image{images.length !== 1 ? "s" : ""} selected
+                </small>
+              </div>
+            )}
           </Form.Group>
 
           <div className="text-center">

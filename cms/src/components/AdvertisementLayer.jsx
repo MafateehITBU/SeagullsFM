@@ -61,6 +61,7 @@ const AdvertisementLayer = () => {
       },
       { Header: "Name", accessor: "name" },
       { Header: "Email", accessor: "email" },
+      { Header: "Company Name", accessor: "companyName" },
       { Header: "Phone", accessor: "phoneNumber" },
       {
         Header: "Message",

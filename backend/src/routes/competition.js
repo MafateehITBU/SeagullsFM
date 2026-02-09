@@ -8,7 +8,7 @@ import {
   addCompetitionSubmission,
   deleteCompetition,
 } from "../controllers/competitionController.js";
-import { protect, authorize } from "../middleware/auth.js";
+import { protect, authorize, permissions } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -21,6 +21,8 @@ router.post("/:id/submission", authorize("user"), addCompetitionSubmission);
 
 // Admin/SuperAdmin routes
 router.use(authorize("admin", "superadmin"));
+router.use(permissions("competitions"));
+
 router.post("/", createCompetition);
 router.get("/", getAllCompetitions);
 router.get("/:id/submissions", getCompetitionDetailsWithSubmissions);

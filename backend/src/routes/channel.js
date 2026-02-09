@@ -7,7 +7,7 @@ import {
   updateChannel,
   deleteChannel
 } from '../controllers/channelController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, permissions } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 
 const router = express.Router();
@@ -22,10 +22,10 @@ const channelValidation = [
     .withMessage('Channel name cannot exceed 100 characters')
 ];
 
-router.post('/', protect, authorize('superadmin'), channelValidation, validate, createChannel);
+router.post('/', protect, authorize('superadmin'), permissions('channels'), channelValidation, validate, createChannel);
 router.get('/', getChannels);
 router.get('/:id', getChannelById);
-router.put('/:id', protect, authorize('superadmin'), channelValidation, validate, updateChannel);
-router.delete('/:id', protect, authorize('superadmin'), deleteChannel);
+router.put('/:id', protect, authorize('superadmin'), permissions('channels'), channelValidation, validate, updateChannel);
+router.delete('/:id', protect, authorize('superadmin'), permissions('channels'), deleteChannel);
 
 export default router;

@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     role: null,
     isActive: null,
     channelId: localStorage.getItem("channelId") || null,
+    permissions: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -52,7 +53,9 @@ export const AuthProvider = ({ children }) => {
           userData.channelId !== undefined && userData.channelId !== null
             ? userData.channelId
             : prev.channelId,
+        permissions: userData.permissions || [],
       }));
+      console.log(userData.permissions);
     } catch (error) {
       console.error("Fetch user error:", error);
       logout();
@@ -107,6 +110,7 @@ export const AuthProvider = ({ children }) => {
       role: data.role,
       isActive: data.isActive,
       channelId: data.channelId || localStorage.getItem("channelId") || null,
+      permissions: data.permissions || [],
     });
 
     return response.data;
@@ -125,6 +129,7 @@ export const AuthProvider = ({ children }) => {
       role: null,
       isActive: null,
       channelId: null,
+      permissions: [],
     });
   };
 

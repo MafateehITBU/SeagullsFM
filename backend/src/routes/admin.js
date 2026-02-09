@@ -18,6 +18,7 @@ import {
 import { protect, authorize } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import upload from '../middleware/upload.js';
+import { cleanFormData } from '../middleware/cleanFormData.js';
 
 const router = express.Router();
 
@@ -89,13 +90,13 @@ router.use(protect);
 router.get('/me', getCurrentAdmin);
 router.post('/logout', authorize('admin'), logoutAdmin);
 router.put('/change-password', authorize('admin'), changePasswordValidation, validate, changePassword);
-router.put('/:id', authorize('admin', 'superadmin'), updateValidation, validate, upload.single('image'), updateAdmin);
+router.put('/:id', authorize('admin', 'superadmin'), updateValidation, validate, upload.single('image'), cleanFormData, updateAdmin);
 router.delete('/:id/delete-image', deleteImage);
 
 // SuperAdmin routes
 router.use(authorize('superadmin'));
 
-router.post('/register', upload.single('image'), registerValidation, validate, registerAdmin);
+router.post('/register', upload.single('image'), cleanFormData, registerValidation, validate, registerAdmin);
 router.get('/', getAllAdmins);
 router.put('/:id/toggle-active', toggleActive);
 router.delete('/:id', deleteAdmin);

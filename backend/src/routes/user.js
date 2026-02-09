@@ -15,7 +15,7 @@ import {
   toggleActive,
   deleteUser
 } from '../controllers/userController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect, authorize, permissions } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import upload from '../middleware/upload.js';
 
@@ -101,9 +101,12 @@ router.put('/change-password', authorize('user'), changePasswordValidation, vali
 router.delete('/delete-image', authorize('user'), deleteImage);
 
 // Admin routes (require admin or superadmin role) - MUST be after all user routes
-router.get('/', authorize('admin', 'superadmin'), getAllUsers);
-router.put('/:id/toggle-active', authorize('admin', 'superadmin'), toggleActive);
-router.delete('/:id', authorize('admin', 'superadmin'), deleteUser);
+router.use(authorize('admin', 'superadmin'));
+router.use(permissions('users'));
+
+router.get('/', getAllUsers);
+router.put('/:id/toggle-active', toggleActive);
+router.delete('/:id', deleteUser);
 
 export default router;
 
