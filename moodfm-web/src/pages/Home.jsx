@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 import { Icon } from "@iconify/react";
@@ -23,12 +23,58 @@ const Home = () => {
     const [activeArrow, setActiveArrow] = useState(null); // 'left' | 'right' | null
     const [newsCurrentIndex, setNewsCurrentIndex] = useState(0);
     const [activeNewsArrow, setActiveNewsArrow] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchPrograms();
         fetchNews();
     }, []);
+
+    useEffect(() => {
+        // Initialize audio element
+        if (!audioRef.current) {
+            audioRef.current = new Audio('https://securestreams2.autopo.st:1241/live');
+            audioRef.current.crossOrigin = 'anonymous';
+            
+            // Handle audio events
+            audioRef.current.addEventListener('pause', () => {
+                setIsPlaying(false);
+            });
+            
+            audioRef.current.addEventListener('play', () => {
+                setIsPlaying(true);
+            });
+            
+            audioRef.current.addEventListener('error', (e) => {
+                console.error('Audio error:', e);
+                setIsPlaying(false);
+            });
+        }
+
+        return () => {
+            // Cleanup: pause and remove audio when component unmounts
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current = null;
+            }
+        };
+    }, []);
+
+    const handleListenLive = () => {
+        if (!audioRef.current) return;
+
+        if (isPlaying) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            audioRef.current.play().catch(error => {
+                console.error('Error playing audio:', error);
+            });
+            setIsPlaying(true);
+        }
+    };
 
     const fetchPrograms = async () => {
         try {
@@ -134,9 +180,12 @@ const Home = () => {
                                 LIVES FOREVER</h1>
 
                             {/* Listen Live Button */}
-                            <button className="listen-live-button flex-between mb-4">
+                            <button 
+                                className="listen-live-button flex-between mb-4"
+                                onClick={handleListenLive}
+                            >
                                 <div className="listen">
-                                    Listen
+                                    {isPlaying ? 'Pause' : 'Listen'}
                                 </div>
                                 <div className="live">
                                     Live

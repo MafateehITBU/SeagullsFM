@@ -3,17 +3,14 @@ import axiosInstance from '../axiosConfig'
 import { Icon } from '@iconify/react'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
-import card1 from "../assets/imgs/Events/card1.png";
-import card2 from "../assets/imgs/Events/card2.png";
-import card3 from "../assets/imgs/Events/card3.png";
-import card4 from "../assets/imgs/Events/card4.png";
-
 import eventsHeroImg from "../assets/imgs/Events/events-hero.png";
 
 const Events = () => {
     const [events, setEvents] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [selectedEvent, setSelectedEvent] = useState(null)
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     useEffect(() => {
         fetchEvents()
@@ -40,22 +37,72 @@ const Events = () => {
         }
     };
 
-    const formatDate = (dateString) => {
-        if (!dateString) return ''
-        const date = new Date(dateString)
-        const day = date.getDate().toString().padStart(2, '0')
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const month = monthNames[date.getMonth()]
-        const year = date.getFullYear()
-        return `${day} ${month}, ${year}`
-    }
+    const handleEventClick = (event) => {
+        setSelectedEvent(event);
+        setCurrentImageIndex(0);
+    };
 
-    // Array of card images to cycle through
-    const cardImages = [card1, card2, card3, card4]
-    
-    const getCardImage = (index) => {
-        return cardImages[index % cardImages.length]
-    }
+    const handleCloseModal = () => {
+        setSelectedEvent(null);
+        setCurrentImageIndex(0);
+    };
+
+    const handlePrevImage = () => {
+        if (selectedEvent && selectedEvent.images && selectedEvent.images.length > 0) {
+            setCurrentImageIndex((prev) => 
+                prev === 0 ? selectedEvent.images.length - 1 : prev - 1
+            );
+        }
+    };
+
+    const handleNextImage = () => {
+        if (selectedEvent && selectedEvent.images && selectedEvent.images.length > 0) {
+            setCurrentImageIndex((prev) => 
+                prev === selectedEvent.images.length - 1 ? 0 : prev + 1
+            );
+        }
+    };
+
+    const formatEventDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        return `${month} ${day}`;
+    };
+
+    // Helper function to wrap special characters with fallback font class
+    const formatTextWithSpecialChars = (text) => {
+        if (!text) return '';
+        const parts = [];
+        let currentPart = '';
+        let keyIndex = 0;
+        
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (char === '&' || char === '-') {
+                if (currentPart) {
+                    parts.push(currentPart);
+                    currentPart = '';
+                }
+                parts.push(
+                    <span key={`special-${keyIndex++}`} className="ampersand-fallback">
+                        {char}
+                    </span>
+                );
+            } else {
+                currentPart += char;
+            }
+        }
+        
+        if (currentPart) {
+            parts.push(currentPart);
+        }
+        
+        return parts.length > 0 ? parts : text;
+    };
 
     return (
         <>
@@ -122,29 +169,18 @@ const Events = () => {
                             </div>
                         ) : (
                             <div className="events-cards-grid">
-                                {events.map((event, index) => (
-                                    <div key={event._id} className="event-card">
+                                {events.map((event) => (
+                                    <div 
+                                        key={event._id} 
+                                        className="event-card"
+                                        onClick={() => handleEventClick(event)}
+                                    >
                                         <div className="event-card-image-wrapper">
                                             <img 
-                                                src={getCardImage(index)} 
-                                                alt={event.title}
+                                                src={event?.coverImage?.url || '/placeholder.jpg'} 
+                                                alt={event?.title}
                                                 className="event-card-image"
                                             />
-                                        </div>
-                                        <div className="event-card-content">
-                                            <div className="event-card-top">
-                                                <h4 className="event-card-title">{event.title}</h4>
-                                                <p className="event-card-description">{event.description}</p>
-                                            </div>
-                                            <div className="event-card-bottom">
-                                                <p className="event-card-dates">
-                                                    {formatDate(event.startDate)} - {formatDate(event.endDate)}
-                                                </p>
-                                                <p className="event-card-address">
-                                                    <Icon icon="material-symbols:location-on-outline" />
-                                                    {event.address}
-                                                </p>
-                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -153,6 +189,82 @@ const Events = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Event Details Modal */}
+            {selectedEvent && (
+                <div className="event-modal-overlay" onClick={handleCloseModal}>
+                    <div className="event-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="event-modal-close" onClick={handleCloseModal}>
+                            <Icon icon="material-symbols:close" />
+                        </button>
+
+                        {/* Images Carousel */}
+                        {selectedEvent.images && selectedEvent.images.length > 0 ? (
+                            <div className="event-modal-carousel">
+                                <img 
+                                    src={selectedEvent.images[currentImageIndex]?.url} 
+                                    alt={`Event image ${currentImageIndex + 1}`}
+                                    className="event-modal-carousel-image"
+                                />
+                                {selectedEvent.images.length > 1 && (
+                                    <>
+                                        <button 
+                                            className="event-modal-carousel-prev"
+                                            onClick={handlePrevImage}
+                                        >
+                                            <Icon icon="material-symbols:chevron-left" />
+                                        </button>
+                                        <button 
+                                            className="event-modal-carousel-next"
+                                            onClick={handleNextImage}
+                                        >
+                                            <Icon icon="material-symbols:chevron-right" />
+                                        </button>
+                                        <div className="event-modal-carousel-indicators">
+                                            {selectedEvent.images.map((_, index) => (
+                                                <span
+                                                    key={index}
+                                                    className={`event-modal-indicator ${index === currentImageIndex ? 'active' : ''}`}
+                                                    onClick={() => setCurrentImageIndex(index)}
+                                                />
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        ) : (
+                            selectedEvent.coverImage && (
+                                <div className="event-modal-carousel">
+                                    <img 
+                                        src={selectedEvent.coverImage.url} 
+                                        alt={selectedEvent.title}
+                                        className="event-modal-carousel-image"
+                                    />
+                                </div>
+                            )
+                        )}
+
+                        {/* Event Details */}
+                        <div className="event-modal-details">
+                            <h2 className="event-modal-title">{formatTextWithSpecialChars(selectedEvent.title)}</h2>
+                            <p className="event-modal-description">{formatTextWithSpecialChars(selectedEvent.description)}</p>
+                            
+                            <div className="event-modal-info">
+                                <div className="event-modal-info-item">
+                                    <Icon icon="material-symbols:location-on-outline" className="event-modal-icon" />
+                                    <span>{formatTextWithSpecialChars(selectedEvent.address)}</span>
+                                </div>
+                                <div className="event-modal-info-item">
+                                    <Icon icon="material-symbols:schedule-outline" className="event-modal-icon" />
+                                    <span>
+                                        {formatTextWithSpecialChars(formatEventDate(selectedEvent.startDate))} <span className="ampersand-fallback">-</span> {formatTextWithSpecialChars(formatEventDate(selectedEvent.endDate))}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <Footer />
         </>
