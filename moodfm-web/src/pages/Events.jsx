@@ -11,9 +11,22 @@ const Events = () => {
     const [error, setError] = useState(null)
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [currentEventIndex, setCurrentEventIndex] = useState(0)
+    const [activeArrow, setActiveArrow] = useState(null)
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
     useEffect(() => {
         fetchEvents()
+    }, [])
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
     }, [])
 
     const fetchEvents = async () => {
@@ -62,6 +75,32 @@ const Events = () => {
             );
         }
     };
+
+    const handlePrevEvent = () => {
+        if (events.length === 0) return
+        setCurrentEventIndex((prevIndex) =>
+            prevIndex === 0 ? events.length - 1 : prevIndex - 1
+        )
+        setActiveArrow("left")
+        setTimeout(() => setActiveArrow(null), 300)
+    }
+
+    const handleNextEvent = () => {
+        if (events.length === 0) return
+        setCurrentEventIndex((prevIndex) =>
+            prevIndex === events.length - 1 ? 0 : prevIndex + 1
+        )
+        setActiveArrow("right")
+        setTimeout(() => setActiveArrow(null), 300)
+    }
+
+    // Get visible events based on view
+    const getVisibleEvents = () => {
+        if (isMobile && events.length > 0) {
+            return [events[currentEventIndex]]
+        }
+        return events
+    }
 
     const formatEventDate = (dateString) => {
         if (!dateString) return '';
@@ -150,7 +189,7 @@ const Events = () => {
                 <div className="events-cards-container container flex-column-center">
                     <h3 className="events-cards-title mb-3">Upcoming Events</h3>
                     <p className="events-cards-description text-center">
-                        Discover live concerts, DJ nights, and curated events powered by <br/> mood.fm.
+                        Discover live concerts, DJ nights, and curated events powered by  mood.fm.
                     </p>
                     <div className="events-cards-wrapper">
                         {loading ? (
@@ -168,23 +207,45 @@ const Events = () => {
                                 <p>No upcoming events at the moment.</p>
                             </div>
                         ) : (
-                            <div className="events-cards-grid">
-                                {events.map((event) => (
-                                    <div 
-                                        key={event._id} 
-                                        className="event-card"
-                                        onClick={() => handleEventClick(event)}
-                                    >
-                                        <div className="event-card-image-wrapper">
-                                            <img 
-                                                src={event?.coverImage?.url || '/placeholder.jpg'} 
-                                                alt={event?.title}
-                                                className="event-card-image"
-                                            />
+                            <>
+                                <div className="events-cards-grid">
+                                    {getVisibleEvents().map((event) => (
+                                        <div 
+                                            key={event._id} 
+                                            className="event-card"
+                                            onClick={() => handleEventClick(event)}
+                                        >
+                                            <div className="event-card-image-wrapper">
+                                                <img 
+                                                    src={event?.coverImage?.url || '/placeholder.jpg'} 
+                                                    alt={event?.title}
+                                                    className="event-card-image"
+                                                />
+                                            </div>
                                         </div>
+                                    ))}
+                                </div>
+                                
+                                {/* Arrow Navigation - Mobile */}
+                                {isMobile && events.length > 1 && (
+                                    <div className="events-pagination-arrows mt-3">
+                                        <button
+                                            type="button"
+                                            className={`events-pagination-arrow events-pagination-arrow-left ${activeArrow === "left" ? "events-pagination-arrow-active" : ""}`}
+                                            onClick={handlePrevEvent}
+                                        >
+                                            <Icon icon="ic:round-arrow-back" width="30" height="30" />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={`events-pagination-arrow events-pagination-arrow-right ${activeArrow === "right" ? "events-pagination-arrow-active" : ""}`}
+                                            onClick={handleNextEvent}
+                                        >
+                                            <Icon icon="ic:baseline-arrow-forward" width="30" height="30" />
+                                        </button>
                                     </div>
-                                ))}
-                            </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

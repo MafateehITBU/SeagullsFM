@@ -13,7 +13,10 @@ const Header = () => {
   const { user, logout, loading } = useAuth();
   const { staticInfo } = useStaticInfo();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navbarToggleRef = useRef(null);
+  const navbarCollapseRef = useRef(null);
 
   const isActive = (path) => location.pathname === path;
   
@@ -29,6 +32,48 @@ const Header = () => {
     navigate('/');
     setShowDropdown(false);
   };
+
+  // Close mobile menu
+  const handleCloseMenu = () => {
+    // Trigger the navbar toggle to close the menu
+    if (navbarToggleRef.current) {
+      navbarToggleRef.current.click();
+    }
+    setIsMenuOpen(false);
+  };
+
+  // Watch for menu open/close state
+  useEffect(() => {
+    const handleMenuToggle = () => {
+      if (navbarCollapseRef.current) {
+        const isOpen = navbarCollapseRef.current.classList.contains('show');
+        setIsMenuOpen(isOpen);
+      }
+    };
+
+    // Check initial state
+    handleMenuToggle();
+
+    // Watch for changes using MutationObserver
+    if (navbarCollapseRef.current) {
+      const observer = new MutationObserver(handleMenuToggle);
+      observer.observe(navbarCollapseRef.current, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+
+      // Also listen for Bootstrap's shown/hidden events
+      const collapseElement = navbarCollapseRef.current;
+      collapseElement.addEventListener('shown.bs.collapse', () => setIsMenuOpen(true));
+      collapseElement.addEventListener('hidden.bs.collapse', () => setIsMenuOpen(false));
+
+      return () => {
+        observer.disconnect();
+        collapseElement.removeEventListener('shown.bs.collapse', () => setIsMenuOpen(true));
+        collapseElement.removeEventListener('hidden.bs.collapse', () => setIsMenuOpen(false));
+      };
+    }
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -49,6 +94,14 @@ const Header = () => {
 
   return (
     <Navbar expand="lg" className="custom-navbar">
+      {/* Backdrop overlay for mobile menu */}
+      {isMenuOpen && (
+        <div 
+          className="navbar-backdrop-mobile"
+          onClick={handleCloseMenu}
+        />
+      )}
+      
       <Container fluid className="navbar-container-custom">
         {/* Left: Logo, Frequency, and Burger Menu */}
         <div className="navbar-left-section">
@@ -64,35 +117,85 @@ const Header = () => {
               className="navbar-frequency"
             />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" className="navbar-toggle-custom" />
+          <Navbar.Toggle 
+            ref={navbarToggleRef}
+            aria-controls="basic-navbar-nav" 
+            className="navbar-toggle-custom" 
+          />
         </div>
 
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse 
+          ref={navbarCollapseRef}
+          id="basic-navbar-nav" 
+          className="navbar-collapse-mobile"
+        >
+          {/* Close Button - Mobile Only */}
+          <button 
+            className="navbar-close-btn-mobile"
+            onClick={handleCloseMenu}
+            aria-label="Close menu"
+          >
+            <Icon icon="mdi:close" width="28" height="28" />
+          </button>
+
           {/* Center: Navigation Links */}
-          <Nav className="mx-auto navbar-nav-custom">
-            <Nav.Link as={Link} to="/" className={`navbar-nav-link ${isActive("/") ? "active-navbar-nav-link" : ""}`}>
+          <Nav className="mx-auto navbar-nav-custom navbar-nav-mobile">
+            <Nav.Link 
+              as={Link} 
+              to="/" 
+              className={`navbar-nav-link ${isActive("/") ? "active-navbar-nav-link" : ""}`}
+              onClick={handleCloseMenu}
+            >
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/about" className={`navbar-nav-link ${isActive("/about") ? "active-navbar-nav-link" : ""}`}>
+            <Nav.Link 
+              as={Link} 
+              to="/about" 
+              className={`navbar-nav-link ${isActive("/about") ? "active-navbar-nav-link" : ""}`}
+              onClick={handleCloseMenu}
+            >
               About Us
             </Nav.Link>
-            <Nav.Link as={Link} to="/news" className={`navbar-nav-link ${isActive("/news") ? "active-navbar-nav-link" : ""}`}>
+            <Nav.Link 
+              as={Link} 
+              to="/news" 
+              className={`navbar-nav-link ${isActive("/news") ? "active-navbar-nav-link" : ""}`}
+              onClick={handleCloseMenu}
+            >
               News
             </Nav.Link>
-            <Nav.Link as={Link} to="/events" className={`navbar-nav-link ${isActive("/events") ? "active-navbar-nav-link" : ""}`}>
+            <Nav.Link 
+              as={Link} 
+              to="/events" 
+              className={`navbar-nav-link ${isActive("/events") ? "active-navbar-nav-link" : ""}`}
+              onClick={handleCloseMenu}
+            >
               Events
             </Nav.Link>
-            <Nav.Link as={Link} to="/presenters" className={`navbar-nav-link ${isActive("/presenters") ? "active-navbar-nav-link" : ""}`}>
+            <Nav.Link 
+              as={Link} 
+              to="/presenters" 
+              className={`navbar-nav-link ${isActive("/presenters") ? "active-navbar-nav-link" : ""}`}
+              onClick={handleCloseMenu}
+            >
               Presenters
             </Nav.Link>
             {!isLoggedIn() ? (
-              <Nav.Link as={Link} to="/login" className={`navbar-nav-link ${isActive("/login") ? "active-navbar-nav-link" : ""}`} onClick={() => navigate("/login")}>
+              <Nav.Link 
+                as={Link} 
+                to="/login" 
+                className={`navbar-nav-link ${isActive("/login") ? "active-navbar-nav-link" : ""}`} 
+                onClick={() => {
+                  navigate("/login");
+                  handleCloseMenu();
+                }}
+              >
                 Login
               </Nav.Link>
             ) : (
-              <div className="position-relative" ref={dropdownRef}>
+              <div className="position-relative navbar-user-menu navbar-user-menu-mobile" ref={dropdownRef}>
                 <Nav.Link 
-                  className="navbar-nav-link"
+                  className="navbar-nav-link navbar-user-link navbar-user-link-mobile"
                   onClick={() => setShowDropdown(!showDropdown)}
                   style={{ cursor: 'pointer', padding: '0.25rem' }}
                 >
@@ -108,50 +211,27 @@ const Header = () => {
                       }} 
                     />
                   ) : (
-                    <Icon icon="mdi:account-circle-outline" style={{ fontSize: '28px', color: 'var(--text-primary)' }} />
+                    <Icon icon="mdi:account-circle-outline" style={{ fontSize: '28px', color: 'var(--navbar-text)' }} />
                   )}
                 </Nav.Link>
                 {showDropdown && (
-                  <div 
-                    className="position-absolute"
-                    style={{
-                      top: '100%',
-                      right: 0,
-                      marginTop: '0.5rem',
-                      backgroundColor: 'var(--background-color)',
-                      border: '1px solid var(--lines-color)',
-                      borderRadius: '6px',
-                      minWidth: '150px',
-                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                      zIndex: 1000
-                    }}
-                  >
+                  <div className="navbar-dropdown navbar-dropdown-mobile">
                     <Link
                       to="/profile"
-                      className="d-block px-3 py-2 text-decoration-none"
-                      style={{ 
-                        color: 'var(--text-primary)',
-                        fontSize: '16px',
-                        transition: 'background-color 0.2s'
+                      className="navbar-dropdown-item navbar-dropdown-item-mobile"
+                      onClick={() => {
+                        setShowDropdown(false);
+                        handleCloseMenu();
                       }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                      onClick={() => setShowDropdown(false)}
                     >
                       Profile
                     </Link>
                     <div
-                      className="px-3 py-2"
-                      style={{ 
-                        borderTop: '1px solid var(--lines-color)',
-                        cursor: 'pointer',
-                        color: 'var(--text-primary)',
-                        fontSize: '16px',
-                        transition: 'background-color 0.2s'
+                      className="navbar-dropdown-item navbar-dropdown-item-mobile navbar-dropdown-item-divider"
+                      onClick={() => {
+                        handleLogout();
+                        handleCloseMenu();
                       }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                      onClick={handleLogout}
                     >
                       Logout
                     </div>
@@ -162,7 +242,12 @@ const Header = () => {
           </Nav>
 
           {/* Right: Ad With Us Button */}
-          <Button className="ms-auto navbar-ad-button" as={Link} to="/ad-with-us">
+          <Button 
+            className="ms-auto navbar-ad-button" 
+            as={Link} 
+            to="/ad-with-us"
+            onClick={handleCloseMenu}
+          >
             Ad With Us
           </Button>
         </Navbar.Collapse>

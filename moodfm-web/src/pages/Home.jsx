@@ -124,6 +124,24 @@ const Home = () => {
         setActiveArrow("right");
     };
 
+    const handleDotClick = (index) => {
+        setCurrentIndex(index);
+    };
+
+    // Auto-advance carousel every 20 seconds
+    useEffect(() => {
+        if (programs.length === 0) return;
+
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) =>
+                prevIndex === programs.length - 1 ? 0 : prevIndex + 1
+            );
+            setActiveArrow("right");
+        }, 20000); // 20 seconds
+
+        return () => clearInterval(interval);
+    }, [programs.length]);
+
     const currentProgram =
         programs.length > 0 ? programs[currentIndex] : null;
 
@@ -147,25 +165,53 @@ const Home = () => {
 
     const handlePrevNews = () => {
         if (!news.length) return;
-        const maxIndex = Math.max(0, news.length - slidesToShow);
-        setNewsCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? maxIndex : Math.max(0, prevIndex - 1)
-        );
+        if (news.length === slidesToShow) {
+            // Allow cycling when news.length equals slidesToShow
+            setNewsCurrentIndex((prevIndex) =>
+                prevIndex === 0 ? news.length - 1 : prevIndex - 1
+            );
+        } else {
+            const maxIndex = Math.max(0, news.length - slidesToShow);
+            setNewsCurrentIndex((prevIndex) =>
+                prevIndex === 0 ? maxIndex : Math.max(0, prevIndex - 1)
+            );
+        }
         setActiveNewsArrow("left");
         setTimeout(() => setActiveNewsArrow(null), 300);
     };
 
     const handleNextNews = () => {
         if (!news.length) return;
-        const maxIndex = Math.max(0, news.length - slidesToShow);
-        setNewsCurrentIndex((prevIndex) =>
-            prevIndex >= maxIndex ? 0 : Math.min(maxIndex, prevIndex + 1)
-        );
+        if (news.length === slidesToShow) {
+            // Allow cycling when news.length equals slidesToShow
+            setNewsCurrentIndex((prevIndex) =>
+                prevIndex === news.length - 1 ? 0 : prevIndex + 1
+            );
+        } else {
+            const maxIndex = Math.max(0, news.length - slidesToShow);
+            setNewsCurrentIndex((prevIndex) =>
+                prevIndex >= maxIndex ? 0 : Math.min(maxIndex, prevIndex + 1)
+            );
+        }
         setActiveNewsArrow("right");
         setTimeout(() => setActiveNewsArrow(null), 300);
     };
 
-    const visibleNews = news.slice(newsCurrentIndex, newsCurrentIndex + slidesToShow);
+    // Calculate visible news with wrapping support when news.length === slidesToShow
+    const getVisibleNews = () => {
+        if (news.length === slidesToShow) {
+            // When length equals slidesToShow, create a wrapped array for cycling
+            const wrapped = [];
+            for (let i = 0; i < slidesToShow; i++) {
+                const index = (newsCurrentIndex + i) % news.length;
+                wrapped.push(news[index]);
+            }
+            return wrapped;
+        }
+        return news.slice(newsCurrentIndex, newsCurrentIndex + slidesToShow);
+    };
+    
+    const visibleNews = getVisibleNews();
 
     return (
         <>
@@ -206,7 +252,8 @@ const Home = () => {
 
             {/* Programs Section */}
             <section className="programs-section container ">
-                <div className="programs-container flex-between">
+                {/* Desktop Layout */}
+                <div className="programs-container programs-desktop flex-between">
                     {/* Left Side */}
                     <div className="left-side flex-column-start">
                         <h2 className="programs-title">Our <br /> Programs</h2>
@@ -276,6 +323,84 @@ const Home = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Mobile Layout */}
+                <div className="programs-container programs-mobile flex-column-center">
+                    <h2 className="programs-title">Our Programs</h2>
+                    <p className="programs-mobile-subtitle">DISCOVER OUR AMAZING RADIO PROGRAMS</p>
+                    
+                    <div className="right-side programs-carousel programs-carousel-mobile">
+                        {programs.length > 0 && (
+                            <div className="program-card-wrapper" key={currentProgram?._id}>
+                                <img src={currentProgram.image.url} alt={currentProgram.title} className="program-img" />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Program Title - Mobile Only */}
+                    {currentProgram && (
+                        <h4 
+                            className="programs-mobile-title"
+                            style={{
+                                color:
+                                    currentProgram.title.includes("Moe")
+                                        ? "var(--color-red)"
+                                        : "var(--color-cyan)",
+                            }}
+                        >
+                            {currentProgram.title}
+                        </h4>
+                    )}
+
+                    <div
+                        className="programs-dynamic-wrapper"
+                        key={currentProgram?._id || "empty"}
+                    >
+                        <p className="programs-description-small">
+                            {currentProgram && currentProgram.title.includes("Moe")
+                                ? (
+                                    <>
+                                        Start your morning with good music, fresh <br />
+                                        energy and great vibes
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        Your daily throwback to the golden era of music, <br />
+                                        stories and vibes
+                                    </>
+                                )}
+                        </p>
+                        <button
+                            className="programs-btn programs-btn-mobile"
+                            style={{
+                                backgroundColor:
+                                    currentProgram &&
+                                        currentProgram.title.includes("Moe")
+                                        ? "var(--color-red)"
+                                        : "var(--color-cyan)",
+                            }}
+                            onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
+                        >
+                            View Details
+                        </button>
+                        
+                        {/* Dots Indicator */}
+                        {programs.length > 0 && (
+                            <div className="programs-dots-container">
+                                {programs.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        type="button"
+                                        className={`programs-dot ${index === currentIndex ? 'programs-dot-active' : ''}`}
+                                        onClick={() => handleDotClick(index)}
+                                        aria-label={`Go to program ${index + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
             </section>
 
             {/* App Section */}
@@ -292,6 +417,7 @@ const Home = () => {
                             Download the App
                         </p>
 
+                        {/* Download Buttons */}
                         <div className="flex-between gap-3">
                             <button className="app-btn flex-between gap-3" onClick={() => window.open(staticInfo.appStore, '_blank')}>
                                 <img src={apple} alt="Apple" style={{ width: "26px", height: "32px" }} />
@@ -357,21 +483,21 @@ const Home = () => {
                                 );
                             })}
                         </div>
-                        {news.length > slidesToShow && (
+                        {news.length >= slidesToShow && (
                             <div className="news-carousel-arrows">
                                 <button
                                     type="button"
                                     className={`news-arrow news-arrow-left ${activeNewsArrow === "left" ? "news-arrow-active" : ""}`}
                                     onClick={handlePrevNews}
                                 >
-                                    <Icon icon="material-symbols:play-circle" width="45" height="45" style={{ transform: 'rotate(180deg)' }} />
+                                    <Icon icon="ic:round-arrow-back" width="45" height="45" />
                                 </button>
                                 <button
                                     type="button"
                                     className={`news-arrow news-arrow-right ${activeNewsArrow === "right" ? "news-arrow-active" : ""}`}
                                     onClick={handleNextNews}
                                 >
-                                    <Icon icon="material-symbols:play-circle" width="45" height="45" />
+                                    <Icon icon="ic:baseline-arrow-forward" width="45" height="45" />
                                 </button>
                             </div>
                         )}

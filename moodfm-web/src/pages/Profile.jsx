@@ -266,8 +266,8 @@ const Profile = () => {
                 confirmButton: 'swal2-confirm-custom',
                 cancelButton: 'swal2-cancel-custom'
             },
-            width: '60%',
-            maxWidth: '500px',
+            width: window.innerWidth <= 768 ? '90%' : '60%',
+            maxWidth: window.innerWidth <= 768 ? '95%' : '500px',
             allowOutsideClick: false,
             allowEscapeKey: false,
             didOpen: () => {

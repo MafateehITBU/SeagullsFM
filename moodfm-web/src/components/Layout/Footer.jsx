@@ -51,50 +51,52 @@ const Footer = () => {
                     </div>
 
                     {/* Right Section */}
-                    <div className="footer-right-section">
-                        <div className="footer-subsection">
-                            <h4 className="footer-title">Links</h4>
-                            <Link to="/" className="footer-link">
-                                HOME
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                            <Link to="/about" className="footer-link">
-                                ABOUT US
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                            <Link to="/news" className="footer-link">
-                                NEWS
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                            <Link to="/events" className="footer-link">
-                                EVENTS
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                            <Link to="/presenters" className="footer-link">
-                                PRESENTERS
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                        </div>
-                        <div className="footer-subsection">
-                            <h4 className="footer-title">Get Involved</h4>
-                            <Link to="/get-discovered" className="footer-link">GET DISCOVERED
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                            <Link to="/show-your-talent" className="footer-link">SHOW YOUR TALENT
-                                <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
-                            </Link>
-                        </div>
-                        <div className="footer-subsection">
-                            <h4 className="footer-title">Get In Touch</h4>
-                            {staticInfo.phoneNumber && (
-                                <p className="footer-contact">{staticInfo.phoneNumber}</p>
-                            )}
-                            {staticInfo.email && (
-                                <p className="footer-contact">{staticInfo.email.toUpperCase()}</p>
-                            )}
-                            {staticInfo.address && (
-                                <p className="footer-contact">{staticInfo.address.toUpperCase()}</p>
-                            )}
+                    <div className="footer-right-section-container">
+                        <div className="footer-right-section">
+                            <div className="footer-subsection">
+                                <h4 className="footer-title">Links</h4>
+                                <Link to="/" className="footer-link">
+                                    HOME
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                                <Link to="/about" className="footer-link">
+                                    ABOUT US
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                                <Link to="/news" className="footer-link">
+                                    NEWS
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                                <Link to="/events" className="footer-link">
+                                    EVENTS
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                                <Link to="/presenters" className="footer-link">
+                                    PRESENTERS
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                            </div>
+                            <div className="footer-subsection">
+                                <h4 className="footer-title">Get Involved</h4>
+                                <Link to="/get-discovered" className="footer-link">GET DISCOVERED
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                                <Link to="/show-your-talent" className="footer-link">SHOW YOUR TALENT
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
+                            </div>
+                            <div className="footer-subsection">
+                                <h4 className="footer-title">Get In Touch</h4>
+                                {staticInfo.phoneNumber && (
+                                    <p className="footer-contact">{staticInfo.phoneNumber}</p>
+                                )}
+                                {staticInfo.email && (
+                                    <p className="footer-contact">{staticInfo.email.toUpperCase()}</p>
+                                )}
+                                {staticInfo.address && (
+                                    <p className="footer-contact">{staticInfo.address.toUpperCase()}</p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

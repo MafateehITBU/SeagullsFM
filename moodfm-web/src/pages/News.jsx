@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../axiosConfig';
+import { Icon } from '@iconify/react';
 
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
@@ -12,6 +13,8 @@ const News = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [cardsPerPage, setCardsPerPage] = useState(9);
+    const [activeArrow, setActiveArrow] = useState(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     const totalPages = Math.ceil(news.length / cardsPerPage);
     const startIndex = (currentPage - 1) * cardsPerPage;
@@ -24,11 +27,14 @@ const News = () => {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth <= 480) {
-                setCardsPerPage(2); // Mobile: 2 cards
-            } else if (window.innerWidth <= 768) {
-                setCardsPerPage(2); // Tablet: 2 cards
-            } else if (window.innerWidth <= 1024) {
+            const width = window.innerWidth;
+            setIsMobile(width <= 768);
+            
+            if (width <= 480) {
+                setCardsPerPage(1); // Mobile: 1 card
+            } else if (width <= 768) {
+                setCardsPerPage(1); // Tablet: 1 card
+            } else if (width <= 1024) {
                 setCardsPerPage(3); // Small desktop: 3 cards
             } else {
                 setCardsPerPage(9); // Desktop: 9 cards (3 rows x 3 columns)
@@ -59,6 +65,22 @@ const News = () => {
     const handleReadMoreNews = () => {
         const newsCardsSection = document.querySelector('.news-cards-section');
         newsCardsSection.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage((prevPage) => 
+            prevPage === 1 ? totalPages : prevPage - 1
+        );
+        setActiveArrow("left");
+        setTimeout(() => setActiveArrow(null), 300);
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => 
+            prevPage === totalPages ? 1 : prevPage + 1
+        );
+        setActiveArrow("right");
+        setTimeout(() => setActiveArrow(null), 300);
     };
 
     return (
@@ -102,8 +124,8 @@ const News = () => {
                         )}
                     </div>
 
-                    {/* Pagination */}
-                    {!loading && news.length > 0 && totalPages > 1 && (
+                    {/* Pagination - Desktop */}
+                    {!loading && news.length > 0 && totalPages > 1 && !isMobile && (
                         <div className="news-pagination mb-3">
                             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                                 <button
@@ -114,6 +136,26 @@ const News = () => {
                                     {page}
                                 </button>
                             ))}
+                        </div>
+                    )}
+
+                    {/* Arrow Navigation - Mobile */}
+                    {!loading && news.length > 0 && totalPages > 1 && (
+                        <div className="news-pagination-arrows mb-3">
+                            <button
+                                type="button"
+                                className={`news-pagination-arrow news-pagination-arrow-left ${activeArrow === "left" ? "news-pagination-arrow-active" : ""}`}
+                                onClick={handlePrevPage}
+                            >
+                                <Icon icon="ic:round-arrow-back" width="45" height="45" />
+                            </button>
+                            <button
+                                type="button"
+                                className={`news-pagination-arrow news-pagination-arrow-right ${activeArrow === "right" ? "news-pagination-arrow-active" : ""}`}
+                                onClick={handleNextPage}
+                            >
+                                <Icon icon="ic:baseline-arrow-forward" width="45" height="45" />
+                            </button>
                         </div>
                     )}
                 </div>
