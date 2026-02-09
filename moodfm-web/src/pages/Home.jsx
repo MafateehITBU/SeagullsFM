@@ -13,6 +13,7 @@ import android from "../assets/imgs/Home/android.png";
 import app from "../assets/imgs/Home/mobile.png";
 import eventsImg from "../assets/imgs/Home/events.png";
 import NewsCard from "../components/UI/NewsCard";
+import NoData from "../components/UI/NoData";
 
 const Home = () => {
     const { staticInfo } = useStaticInfo();
@@ -261,44 +262,47 @@ const Home = () => {
                             Fresh programs, timeless music <br />
                             and the vibes you love
                         </p>
-                        <div
-                            className="programs-dynamic-wrapper"
-                            key={currentProgram?._id || "empty"}
-                        >
-                            <p className="programs-description-small">
-                                {currentProgram && currentProgram.title.includes("Moe")
-                                    ? (
-                                        <>
-                                            Start your morning with good music, fresh <br />
-                                            energy and great vibes
-                                        </>
-                                    )
-                                    : (
-                                        <>
-                                            Your daily throwback to the golden era of music, <br />
-                                            stories and vibes
-                                        </>
-                                    )}
-                            </p>
-                            <button
-                                className="programs-btn"
-                                style={{
-                                    backgroundColor:
-                                        currentProgram &&
-                                            currentProgram.title.includes("Moe")
-                                            ? "var(--color-red)"
-                                            : "var(--color-cyan)",
-                                }}
-                                onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
+                        {currentProgram ? (
+                            <div
+                                className="programs-dynamic-wrapper"
+                                key={currentProgram._id}
                             >
-                                View Details
-                            </button>
-                        </div>
+                                <p className="programs-description-small">
+                                    {currentProgram.title.includes("Moe")
+                                        ? (
+                                            <>
+                                                Start your morning with good music, fresh <br />
+                                                energy and great vibes
+                                            </>
+                                        )
+                                        : (
+                                            <>
+                                                Your daily throwback to the golden era of music, <br />
+                                                stories and vibes
+                                            </>
+                                        )}
+                                </p>
+                                <button
+                                    className="programs-btn"
+                                    style={{
+                                        backgroundColor:
+                                            currentProgram.title.includes("Moe")
+                                                ? "var(--color-red)"
+                                                : "var(--color-cyan)",
+                                    }}
+                                    onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        ) : !loading && programs.length === 0 && (
+                            <NoData message="No programs available" icon="material-symbols:radio-outline" />
+                        )}
                     </div>
 
                     {/* Right Side */}
                     <div className="right-side programs-carousel">
-                        {programs.length > 0 && (
+                        {programs.length > 0 ? (
                             <>
                                 <button
                                     type="button"
@@ -320,6 +324,8 @@ const Home = () => {
                                     <Icon icon="material-symbols:play-circle" width="40" height="40" />
                                 </button>
                             </>
+                        ) : !loading && (
+                            <NoData message="No programs available at the moment" icon="material-symbols:radio-outline" />
                         )}
                     </div>
                 </div>
@@ -330,10 +336,12 @@ const Home = () => {
                     <p className="programs-mobile-subtitle">DISCOVER OUR AMAZING RADIO PROGRAMS</p>
                     
                     <div className="right-side programs-carousel programs-carousel-mobile">
-                        {programs.length > 0 && (
+                        {programs.length > 0 ? (
                             <div className="program-card-wrapper" key={currentProgram?._id}>
                                 <img src={currentProgram.image.url} alt={currentProgram.title} className="program-img" />
                             </div>
+                        ) : !loading && (
+                            <NoData message="No programs available at the moment" icon="material-symbols:radio-outline" />
                         )}
                     </div>
 
@@ -352,54 +360,57 @@ const Home = () => {
                         </h4>
                     )}
 
-                    <div
-                        className="programs-dynamic-wrapper"
-                        key={currentProgram?._id || "empty"}
-                    >
-                        <p className="programs-description-small">
-                            {currentProgram && currentProgram.title.includes("Moe")
-                                ? (
-                                    <>
-                                        Start your morning with good music, fresh <br />
-                                        energy and great vibes
-                                    </>
-                                )
-                                : (
-                                    <>
-                                        Your daily throwback to the golden era of music, <br />
-                                        stories and vibes
-                                    </>
-                                )}
-                        </p>
-                        <button
-                            className="programs-btn programs-btn-mobile"
-                            style={{
-                                backgroundColor:
-                                    currentProgram &&
-                                        currentProgram.title.includes("Moe")
-                                        ? "var(--color-red)"
-                                        : "var(--color-cyan)",
-                            }}
-                            onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
+                    {currentProgram ? (
+                        <div
+                            className="programs-dynamic-wrapper"
+                            key={currentProgram._id}
                         >
-                            View Details
-                        </button>
-                        
-                        {/* Dots Indicator */}
-                        {programs.length > 0 && (
-                            <div className="programs-dots-container">
-                                {programs.map((_, index) => (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        className={`programs-dot ${index === currentIndex ? 'programs-dot-active' : ''}`}
-                                        onClick={() => handleDotClick(index)}
-                                        aria-label={`Go to program ${index + 1}`}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                            <p className="programs-description-small">
+                                {currentProgram.title.includes("Moe")
+                                    ? (
+                                        <>
+                                            Start your morning with good music, fresh <br />
+                                            energy and great vibes
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            Your daily throwback to the golden era of music, <br />
+                                            stories and vibes
+                                        </>
+                                    )}
+                            </p>
+                            <button
+                                className="programs-btn programs-btn-mobile"
+                                style={{
+                                    backgroundColor:
+                                        currentProgram.title.includes("Moe")
+                                            ? "var(--color-red)"
+                                            : "var(--color-cyan)",
+                                }}
+                                onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
+                            >
+                                View Details
+                            </button>
+                        </div>
+                    ) : !loading && programs.length === 0 && (
+                        <NoData message="No programs available" icon="material-symbols:radio-outline" />
+                    )}
+                    
+                    {/* Dots Indicator */}
+                    {programs.length > 0 && (
+                        <div className="programs-dots-container">
+                            {programs.map((_, index) => (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    className={`programs-dot ${index === currentIndex ? 'programs-dot-active' : ''}`}
+                                    onClick={() => handleDotClick(index)}
+                                    aria-label={`Go to program ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -461,45 +472,51 @@ const Home = () => {
 
                     {/* News Cards Carousel */}
                     <div className="news-carousel-container">
-                        <div className="news-cards-wrapper">
-                            {visibleNews.map((newsItem, index) => {
-                                let cardClass = '';
-                                if (slidesToShow === 3 && visibleNews.length === 3) {
-                                    if (index === 0) cardClass = 'news-card-left';
-                                    else if (index === 1) cardClass = 'news-card-active';
-                                    else if (index === 2) cardClass = 'news-card-right';
-                                } else if (slidesToShow === 2 && visibleNews.length === 2) {
-                                    if (index === 0) cardClass = 'news-card-left';
-                                    else if (index === 1) cardClass = 'news-card-active';
-                                } else {
-                                    cardClass = 'news-card-active';
-                                }
-                                return (
-                                    <NewsCard
-                                        key={newsItem._id}
-                                        news={newsItem}
-                                        cardClass={cardClass}
-                                    />
-                                );
-                            })}
-                        </div>
-                        {news.length >= slidesToShow && (
-                            <div className="news-carousel-arrows">
-                                <button
-                                    type="button"
-                                    className={`news-arrow news-arrow-left ${activeNewsArrow === "left" ? "news-arrow-active" : ""}`}
-                                    onClick={handlePrevNews}
-                                >
-                                    <Icon icon="ic:round-arrow-back" width="45" height="45" />
-                                </button>
-                                <button
-                                    type="button"
-                                    className={`news-arrow news-arrow-right ${activeNewsArrow === "right" ? "news-arrow-active" : ""}`}
-                                    onClick={handleNextNews}
-                                >
-                                    <Icon icon="ic:baseline-arrow-forward" width="45" height="45" />
-                                </button>
-                            </div>
+                        {!loading && news.length === 0 ? (
+                            <NoData message="No news available at the moment" icon="material-symbols:newspaper-outline" />
+                        ) : (
+                            <>
+                                <div className="news-cards-wrapper">
+                                    {visibleNews.map((newsItem, index) => {
+                                        let cardClass = '';
+                                        if (slidesToShow === 3 && visibleNews.length === 3) {
+                                            if (index === 0) cardClass = 'news-card-left';
+                                            else if (index === 1) cardClass = 'news-card-active';
+                                            else if (index === 2) cardClass = 'news-card-right';
+                                        } else if (slidesToShow === 2 && visibleNews.length === 2) {
+                                            if (index === 0) cardClass = 'news-card-left';
+                                            else if (index === 1) cardClass = 'news-card-active';
+                                        } else {
+                                            cardClass = 'news-card-active';
+                                        }
+                                        return (
+                                            <NewsCard
+                                                key={newsItem._id}
+                                                news={newsItem}
+                                                cardClass={cardClass}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                {news.length >= slidesToShow && (
+                                    <div className="news-carousel-arrows">
+                                        <button
+                                            type="button"
+                                            className={`news-arrow news-arrow-left ${activeNewsArrow === "left" ? "news-arrow-active" : ""}`}
+                                            onClick={handlePrevNews}
+                                        >
+                                            <Icon icon="ic:round-arrow-back" width="45" height="45" />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={`news-arrow news-arrow-right ${activeNewsArrow === "right" ? "news-arrow-active" : ""}`}
+                                            onClick={handleNextNews}
+                                        >
+                                            <Icon icon="ic:baseline-arrow-forward" width="45" height="45" />
+                                        </button>
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

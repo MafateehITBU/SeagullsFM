@@ -17,32 +17,32 @@ const Footer = () => {
                     {/* Left Section - Brand Identity and Social Media */}
                     <div className="footer-left-section">
                         <div className="footer-frequency-logo">
-                            {staticInfo.frequencyimg && (
-                                <img src={staticInfo.frequencyimg} alt="Frequency" className="frequency-img" />
+                            {staticInfo?.frequencyimg && (
+                                <img src={staticInfo?.frequencyimg} alt="Frequency" className="frequency-img" />
                             )}
                         </div>
                         <p className="footer-description">
                             MOOD.FM IS WHERE MUSIC MEETS EMOTION, BRINGING YOU THE PERFECT SOUNDTRACK FOR EVERY MOMENT AND EVERY MOOD.
                         </p>
-                        {staticInfo.socialMediaLinks && (
+                        {staticInfo?.socialMediaLinks && (
                             <div className="social-media-links">
-                                {staticInfo.socialMediaLinks.facebook && (
-                                    <a href={staticInfo.socialMediaLinks.facebook} target="_blank" rel="noopener noreferrer">
+                                {staticInfo?.socialMediaLinks?.facebook && (
+                                    <a href={staticInfo?.socialMediaLinks?.facebook} target="_blank" rel="noopener noreferrer">
                                         <Icon icon="entypo-social:facebook" width="24" height="24" />
                                     </a>
                                 )}
-                                {staticInfo.socialMediaLinks.instagram && (
-                                    <a href={staticInfo.socialMediaLinks.instagram} target="_blank" rel="noopener noreferrer">
+                                {staticInfo?.socialMediaLinks?.instagram && (
+                                    <a href={staticInfo?.socialMediaLinks?.instagram} target="_blank" rel="noopener noreferrer">
                                         <Icon icon="fa6-brands:square-instagram" width="24" height="24" />
                                     </a>
                                 )}
-                                {staticInfo.socialMediaLinks.twitter && (
-                                    <a href={staticInfo.socialMediaLinks.twitter} target="_blank" rel="noopener noreferrer">
+                                {staticInfo?.socialMediaLinks?.twitter && (
+                                    <a href={staticInfo?.socialMediaLinks?.twitter} target="_blank" rel="noopener noreferrer">
                                         <Icon icon="fa6-brands:square-twitter" width="24" height="24" />
                                     </a>
                                 )}
-                                {staticInfo.socialMediaLinks.linkedin && (
-                                    <a href={staticInfo.socialMediaLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                                {staticInfo?.socialMediaLinks?.linkedin && (
+                                    <a href={staticInfo?.socialMediaLinks?.linkedin} target="_blank" rel="noopener noreferrer">
                                         <Icon icon="fa6-brands:linkedin" width="24" height="24" />
                                     </a>
                                 )}
@@ -87,14 +87,14 @@ const Footer = () => {
                             </div>
                             <div className="footer-subsection">
                                 <h4 className="footer-title">Get In Touch</h4>
-                                {staticInfo.phoneNumber && (
-                                    <p className="footer-contact">{staticInfo.phoneNumber}</p>
+                                {staticInfo?.phoneNumber && (
+                                    <p className="footer-contact">{staticInfo?.phoneNumber}</p>
                                 )}
-                                {staticInfo.email && (
-                                    <p className="footer-contact">{staticInfo.email.toUpperCase()}</p>
+                                {staticInfo?.email && (
+                                    <p className="footer-contact">{staticInfo?.email.toUpperCase()}</p>
                                 )}
-                                {staticInfo.address && (
-                                    <p className="footer-contact">{staticInfo.address.toUpperCase()}</p>
+                                {staticInfo?.address && (
+                                    <p className="footer-contact">{staticInfo?.address.toUpperCase()}</p>
                                 )}
                             </div>
                         </div>

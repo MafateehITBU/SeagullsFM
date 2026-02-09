@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axiosInstance from '../axiosConfig'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
+import NoData from '../components/UI/NoData'
 import { Icon } from '@iconify/react'
 
 import presentersHeroImg from "../assets/imgs/Presenters/presenters-hero.png"
@@ -123,7 +124,7 @@ const Presenters = () => {
                             Get to know the hosts who bring music,<br />
                             stories, <span className="ampersand-fallback">&</span> energy on air.
                         </p>
-                        {currentPresenter && (
+                        {currentPresenter ? (
                             <div
                                 className="presenters-dynamic-wrapper"
                                 key={currentPresenter._id}
@@ -145,12 +146,14 @@ const Presenters = () => {
                                     {formatTextWithSpecialChars(currentPresenter.description)}
                                 </p>
                             </div>
+                        ) : presenters.length === 0 && (
+                            <NoData message="No presenters available" icon="material-symbols:person-outline" />
                         )}
                     </div>
 
                     {/* Right Side - Carousel */}
                     <div className="right-side presenters-carousel">
-                        {presenters.length > 0 && (
+                        {presenters.length > 0 ? (
                             <>
                                 <button
                                     type="button"
@@ -178,6 +181,8 @@ const Presenters = () => {
                                     <Icon icon="material-symbols:play-circle" width="40" height="40" />
                                 </button>
                             </>
+                        ) : (
+                            <NoData message="No presenters available at the moment" icon="material-symbols:person-outline" />
                         )}
                     </div>
                 </div>

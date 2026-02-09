@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
+import NoData from '../components/UI/NoData'
 
 const Profile = () => {
     const { user, updateUser } = useAuth()
@@ -523,6 +524,8 @@ const Profile = () => {
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>
+                    ) : tracks.length === 0 ? (
+                        <NoData message="No tracks uploaded yet" icon="material-symbols:music-note-outline" />
                     ) : (
                     <div className="tracks-container d-flex flex-column align-items-start justify-content-start">
                         {tracks.map((track, index) => {

@@ -211,7 +211,7 @@ const GetDiscovered = () => {
             formDataToSend.append('songName', formData.songName.trim());
             formDataToSend.append('genre', formData.genre.trim());
             formDataToSend.append('songFile', formData.songFile);
-            formDataToSend.append('channelId', staticInfo.channelId);
+            formDataToSend.append('channelId', staticInfo?.channelId);
 
             const response = await axiosInstance.post('/uploadtrack', formDataToSend, {
                 headers: {
@@ -467,16 +467,7 @@ const GetDiscovered = () => {
                                     {isSubmitting ? 'SUBMITTING...' : !isLoggedIn ? 'PLEASE LOG IN TO UPLOAD' : 'SUBMIT'}
                                 </button>
                             </div>
-                            {!isLoggedIn && (
-                                <p style={{ 
-                                    color: 'var(--color-red)', 
-                                    fontSize: '14px', 
-                                    marginTop: '1rem',
-                                    textAlign: 'center'
-                                }}>
-                                    You must be logged in to upload a track
-                                </p>
-                            )}
+                            
                         </form>
                     </div>
                 </div>

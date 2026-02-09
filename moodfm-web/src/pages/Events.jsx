@@ -3,6 +3,7 @@ import axiosInstance from '../axiosConfig'
 import { Icon } from '@iconify/react'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
+import NoData from '../components/UI/NoData'
 import eventsHeroImg from "../assets/imgs/Events/events-hero.png";
 
 const Events = () => {
@@ -199,13 +200,9 @@ const Events = () => {
                                 </div>
                             </div>
                         ) : error ? (
-                            <div className="text-center">
-                                <p>Error loading events. Please try again later.</p>
-                            </div>
+                            <NoData message="Error loading events. Please try again later." icon="material-symbols:error-outline" />
                         ) : events.length === 0 ? (
-                            <div className="text-center">
-                                <p>No upcoming events at the moment.</p>
-                            </div>
+                            <NoData message="No upcoming events at the moment" icon="material-symbols:event-outline" />
                         ) : (
                             <>
                                 <div className="events-cards-grid">

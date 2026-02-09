@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
+import NoData from '../components/UI/NoData'
 
 const ProgramDetails = () => {
     const location = useLocation();
@@ -162,6 +163,8 @@ const ProgramDetails = () => {
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
+                ) : !program ? (
+                    <NoData message="Program not found" icon="material-symbols:radio-outline" />
                 ) : (
                     <>
                         {/* Image on the left */}
@@ -248,9 +251,10 @@ const ProgramDetails = () => {
                             </div>
                         </div>
                     ) : filteredInterviews.length === 0 ? (
-                        <div className="no-interviews text-center">
-                            <p>No interviews found</p>
-                        </div>
+                        <NoData 
+                            message={searchQuery || selectedDate ? "No interviews found matching your search criteria" : "No interviews available for this program"} 
+                            icon="material-symbols:video-library-outline" 
+                        />
                     ) : (
                         <>
                             <div className="interviews-list">

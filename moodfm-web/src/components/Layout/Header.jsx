@@ -112,7 +112,7 @@ const Header = () => {
               className="navbar-logo"
             />
             <img
-              src={staticInfo.frequencyimg}
+              src={staticInfo?.frequencyimg}
               alt="Frequency"
               className="navbar-frequency"
             />

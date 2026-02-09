@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import NewsCardNewsPage from '../components/UI/NewsCard-NewsPage';
+import NoData from '../components/UI/NoData';
 
 import newsHeroImg from "../assets/imgs/News/news-hero.png";
 const News = () => {
@@ -114,13 +115,17 @@ const News = () => {
                    
                     <div className="news-cards-wrapper mt-3 mb-3">
                         {loading ? (
-                            <p>Loading...</p>
+                            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '200px' }}>
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
                         ) : currentNews && currentNews.length > 0 ? (
                             currentNews.map((newsItem) => (
                                 <NewsCardNewsPage key={newsItem._id} news={newsItem} />
                             ))
                         ) : (
-                            <p>No news available</p>
+                            <NoData message="No news available at the moment" icon="material-symbols:newspaper-outline" />
                         )}
                     </div>
 
