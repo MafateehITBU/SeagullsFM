@@ -359,6 +359,46 @@ h3 {
   letter-spacing: 0.3px;
 }
 
+.floating-live-box {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: var(--navbar-footer-color);
+  border: 2px solid var(--navbar-text);
+  color: var(--navbar-text);
+  font-family: 'Gobold Thin Light', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.floating-live-box:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.floating-live-text {
+  letter-spacing: 0.02em;
+}
+.floating-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--navbar-text);
+  animation: floating-live-pulse 1.2s ease-in-out infinite;
+}
+@keyframes floating-live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 .navbar-ad-button {
   background-color: var(--navbar-text) !important;
   color: var(--text-primary) !important;
@@ -1502,6 +1542,47 @@ h3 {
     gap: 0.5rem;
   }
 
+  /* Mobile program card: image left, data + button right */
+  .programs-mobile-card-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 0.5rem;
+    text-align: left;
+  }
+  .programs-mobile-card-image {
+    flex-shrink: 0;
+  }
+  .programs-mobile-card-image .program-card-wrapper {
+    width: 240px;
+    height: 240px;
+  }
+  .programs-mobile-card-image .program-img {
+    width: 240px;
+    height: 240px;
+    object-fit: contain;
+  }
+  .programs-mobile-card-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  .programs-mobile-card-content .programs-mobile-title {
+    margin: 0 0 0.25rem 0;
+    padding: 0;
+  }
+  .programs-mobile-card-content .programs-dynamic-wrapper {
+    margin-top: 0;
+    padding: 0;
+    width: 100%;
+  }
+
   .programs-container,
   .presenters-container {
     flex-direction: column;
@@ -2031,6 +2112,16 @@ h3 {
   .presenter-card-wrapper {
     width: 250px;
     height: 250px;
+  }
+
+  /* Keep mobile program card row image size at small breakpoint */
+  .programs-mobile-card-image .program-card-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+  .programs-mobile-card-image .program-img {
+    width: 220px;
+    height: 220px;
   }
 
   .program-img,
@@ -3022,9 +3113,38 @@ h3 {
     text-align: center;
   }
 
-  .news-hero-btn {
-    align-self: center;
-    margin: 0 auto;
+  /* Hide divider, button, and hero image on News page - responsive */
+  .news-hero-section .about-hero-divider,
+  .news-hero-section .news-hero-btn,
+  .news-hero-section .news-hero-right-side {
+    display: none !important;
+  }
+
+  /* Hide "Latest News & Updates" heading on News page - responsive */
+  .news-cards-section .news-cards-title {
+    display: none !important;
+  }
+
+  /* Hide hero image on Presenters page - responsive */
+  .presenters-hero-right-side {
+    display: none !important;
+  }
+
+  /* Hide hero image on Events page - responsive */
+  .events-hero-section .news-hero-right-side {
+    display: none !important;
+  }
+
+  /* Remove gap when hero image is hidden: shrink section and container */
+  .events-hero-section {
+    height: auto !important;
+    min-height: auto !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  .events-hero-container {
+    margin-top: 0 !important;
+    gap: 0 !important;
   }
 
   .news-hero-right-side {

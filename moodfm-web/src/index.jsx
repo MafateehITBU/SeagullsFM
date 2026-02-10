@@ -7,6 +7,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "./context/AuthContext";
 import { StaticInfoProvider } from "./context/StaticInfoContext";
+import { LiveStreamProvider } from "./context/LiveStreamContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <StaticInfoProvider>
-    <App />
+          <LiveStreamProvider>
+            <App />
+          </LiveStreamProvider>
         </StaticInfoProvider>
       </AuthProvider>
     </BrowserRouter>

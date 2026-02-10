@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { Icon } from "@iconify/react";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import News from "./pages/News";
@@ -16,8 +17,13 @@ import ProgramDetails from "./pages/ProgramDetails";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
+import { useLiveStream } from "./context/LiveStreamContext";
 
 const App = () => {
+  const location = useLocation();
+  const { isPlaying, togglePlay } = useLiveStream();
+  const showFloatingLive = location.pathname !== "/";
+
   return (
     <>
       <ScrollToTop />
@@ -47,6 +53,25 @@ const App = () => {
           }
         />
       </Routes>
+
+      {/* Fixed live stream control - bottom right, only when not on home */}
+      {showFloatingLive && (
+        <button
+          type="button"
+          className="floating-live-box"
+          onClick={togglePlay}
+          title={isPlaying ? "Pause live" : "Listen live"}
+          aria-label={isPlaying ? "Pause live stream" : "Play live stream"}
+        >
+          <Icon
+            icon={isPlaying ? "material-symbols:pause-rounded" : "material-symbols:play-circle-rounded"}
+            width="28"
+            height="28"
+          />
+          <span className="floating-live-text">{isPlaying ? "Live" : "Listen Live"}</span>
+          {isPlaying && <span className="floating-live-dot" aria-hidden />}
+        </button>
+      )}
     </>
   );
 };

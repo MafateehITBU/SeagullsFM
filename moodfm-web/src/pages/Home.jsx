@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 import { Icon } from "@iconify/react";
 import { useStaticInfo } from "../context/StaticInfoContext";
+import { useLiveStream } from "../context/LiveStreamContext";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
 import hero1 from "../assets/imgs/Home/hero1.png";
@@ -24,58 +25,13 @@ const Home = () => {
     const [activeArrow, setActiveArrow] = useState(null); // 'left' | 'right' | null
     const [newsCurrentIndex, setNewsCurrentIndex] = useState(0);
     const [activeNewsArrow, setActiveNewsArrow] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const audioRef = useRef(null);
+    const { isPlaying, togglePlay } = useLiveStream();
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchPrograms();
         fetchNews();
     }, []);
-
-    useEffect(() => {
-        // Initialize audio element
-        if (!audioRef.current) {
-            audioRef.current = new Audio('https://securestreams2.autopo.st:1241/live');
-            audioRef.current.crossOrigin = 'anonymous';
-            
-            // Handle audio events
-            audioRef.current.addEventListener('pause', () => {
-                setIsPlaying(false);
-            });
-            
-            audioRef.current.addEventListener('play', () => {
-                setIsPlaying(true);
-            });
-            
-            audioRef.current.addEventListener('error', (e) => {
-                console.error('Audio error:', e);
-                setIsPlaying(false);
-            });
-        }
-
-        return () => {
-            // Cleanup: pause and remove audio when component unmounts
-            if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current = null;
-            }
-        };
-    }, []);
-
-    const handleListenLive = () => {
-        if (!audioRef.current) return;
-
-        if (isPlaying) {
-            audioRef.current.pause();
-            setIsPlaying(false);
-        } else {
-            audioRef.current.play().catch(error => {
-                console.error('Error playing audio:', error);
-            });
-            setIsPlaying(true);
-        }
-    };
 
     const fetchPrograms = async () => {
         try {
@@ -229,7 +185,7 @@ const Home = () => {
                             {/* Listen Live Button */}
                             <button 
                                 className="listen-live-button flex-between mb-4"
-                                onClick={handleListenLive}
+                                onClick={togglePlay}
                             >
                                 <div className="listen">
                                     {isPlaying ? 'Pause' : 'Listen'}
@@ -330,72 +286,73 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* Mobile Layout */}
+                {/* Mobile Layout - card: image left, data + button right */}
                 <div className="programs-container programs-mobile flex-column-center">
                     <h2 className="programs-title">Our Programs</h2>
                     <p className="programs-mobile-subtitle">DISCOVER OUR AMAZING RADIO PROGRAMS</p>
                     
-                    <div className="right-side programs-carousel programs-carousel-mobile">
-                        {programs.length > 0 ? (
-                            <div className="program-card-wrapper" key={currentProgram?._id}>
-                                <img src={currentProgram.image.url} alt={currentProgram.title} className="program-img" />
-                            </div>
-                        ) : !loading && (
-                            <NoData message="No programs available at the moment" icon="material-symbols:radio-outline" />
-                        )}
-                    </div>
-
-                    {/* Program Title - Mobile Only */}
-                    {currentProgram && (
-                        <h4 
-                            className="programs-mobile-title"
-                            style={{
-                                color:
-                                    currentProgram.title.includes("Moe")
-                                        ? "var(--color-red)"
-                                        : "var(--color-cyan)",
-                            }}
-                        >
-                            {currentProgram.title}
-                        </h4>
-                    )}
-
-                    {currentProgram ? (
-                        <div
-                            className="programs-dynamic-wrapper"
-                            key={currentProgram._id}
-                        >
-                            <p className="programs-description-small">
-                                {currentProgram.title.includes("Moe")
-                                    ? (
-                                        <>
-                                            Start your morning with good music, fresh <br />
-                                            energy and great vibes
-                                        </>
-                                    )
-                                    : (
-                                        <>
-                                            Your daily throwback to the golden era of music, <br />
-                                            stories and vibes
-                                        </>
-                                    )}
-                            </p>
-                            <button
-                                className="programs-btn programs-btn-mobile"
-                                style={{
-                                    backgroundColor:
-                                        currentProgram.title.includes("Moe")
-                                            ? "var(--color-red)"
-                                            : "var(--color-cyan)",
-                                }}
-                                onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
-                            >
-                                View Details
-                            </button>
+                    <div className="programs-mobile-card-row">
+                        <div className="programs-mobile-card-image">
+                            {programs.length > 0 ? (
+                                <div className="program-card-wrapper" key={currentProgram?._id}>
+                                    <img src={currentProgram.image.url} alt={currentProgram.title} className="program-img" />
+                                </div>
+                            ) : !loading && (
+                                <NoData message="No programs available at the moment" icon="material-symbols:radio-outline" />
+                            )}
                         </div>
-                    ) : !loading && programs.length === 0 && (
-                        <NoData message="No programs available" icon="material-symbols:radio-outline" />
-                    )}
+                        <div className="programs-mobile-card-content">
+                            {currentProgram && (
+                                <h4 
+                                    className="programs-mobile-title"
+                                    style={{
+                                        color:
+                                            currentProgram.title.includes("Moe")
+                                                ? "var(--color-red)"
+                                                : "var(--color-cyan)",
+                                    }}
+                                >
+                                    {currentProgram.title}
+                                </h4>
+                            )}
+                            {currentProgram ? (
+                                <div
+                                    className="programs-dynamic-wrapper"
+                                    key={currentProgram._id}
+                                >
+                                    <p className="programs-description-small">
+                                        {currentProgram.title.includes("Moe")
+                                            ? (
+                                                <>
+                                                    Start your morning with good music, fresh <br />
+                                                    energy and great vibes
+                                                </>
+                                            )
+                                            : (
+                                                <>
+                                                    Your daily throwback to the golden era of music, <br />
+                                                    stories and vibes
+                                                </>
+                                            )}
+                                    </p>
+                                    <button
+                                        className="programs-btn programs-btn-mobile"
+                                        style={{
+                                            backgroundColor:
+                                                currentProgram.title.includes("Moe")
+                                                    ? "var(--color-red)"
+                                                    : "var(--color-cyan)",
+                                        }}
+                                        onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
+                                    >
+                                        View Details
+                                    </button>
+                                </div>
+                            ) : !loading && programs.length === 0 && (
+                                <NoData message="No programs available" icon="material-symbols:radio-outline" />
+                            )}
+                        </div>
+                    </div>
                     
                     {/* Dots Indicator */}
                     {programs.length > 0 && (
