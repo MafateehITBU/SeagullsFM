@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import { useStaticInfo } from '../context/StaticInfoContext';
@@ -77,6 +78,36 @@ const CountUp = ({ end, suffix = '', duration = 3500, useKFormat = false }) => {
     );
 };
 
+const formatTextWithSpecialChars = (text) => {
+    if (!text) return '';
+    const parts = [];
+    let currentPart = '';
+    let keyIndex = 0;
+    
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === '&' || char === '-' || char === "'" || char === '’' || char === '‘' || char === '”' || char === '“' || char === '4') {
+            if (currentPart) {
+                parts.push(currentPart);
+                currentPart = '';
+            }
+            parts.push(
+                <span key={`special-${keyIndex++}`} className="ampersand-fallback">
+                    {char}
+                </span>
+            );
+        } else {
+            currentPart += char;
+        }
+    }
+    
+    if (currentPart) {
+        parts.push(currentPart);
+    }
+    
+    return parts.length > 0 ? parts : text;
+};
+
 const About = () => {
     const { staticInfo } = useStaticInfo();
     return (
@@ -91,12 +122,11 @@ const About = () => {
                         <div className="about-hero-left-side flex-column-start">
                             <h1 className="about-hero-title mb-3">About Us</h1>
                             <p className="about-hero-description">
-                                Mood FM is Jordan’s leading adult contemporary radio station, <br />
-                                delivering timeless music and unforgettable listening <br />
-                                experiences.
+                                Mood fm is Jordans leading adult
+                                contemporary radio station, delivering
+                                timeless music and unforgettable
+                                listening experiences
                             </p>
-
-                            <div className="about-hero-divider"></div>
 
                             <div className="flex-between about-numbers">
                                 <div className="flex-column-center">
@@ -127,18 +157,18 @@ const About = () => {
 
             {/* Who we Are Section */}
             <section className="who-we-are-section flex-column-start">
-                <h2 className="who-we-are-title mb-5">Who we Are</h2>
+                <h1 className="who-we-are-title mb-3">Who we Are</h1>
 
                 <p className="who-we-are-description">
-                    {staticInfo.aboutUs}
+                    {formatTextWithSpecialChars(staticInfo.aboutUs)}
                 </p>
 
-                {/* Download Media Kit button */}
-                <button className="download-media-kit-btn flex-between gap-3">
-                    <span>Download Media Kit</span>
-
-                    <Icon icon="mdi:download" />
-                </button>
+                {/* Download link button */}
+                <Link to="/download-media-kit" className="events-btn-link">
+                    <button className="events-btn">
+                        <span>Download Media Kit</span>
+                    </button>
+                </Link>
 
             </section>
 

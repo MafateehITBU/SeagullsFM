@@ -122,7 +122,7 @@ const Events = () => {
         
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
-            if (char === '&' || char === '-') {
+            if (char === '&' || char === '-' || char === "'") {
                 if (currentPart) {
                     parts.push(currentPart);
                     currentPart = '';

@@ -98,8 +98,9 @@ const News = () => {
 
                         <div className="about-hero-divider"></div>
 
-                        <button className="news-hero-btn" onClick={handleReadMoreNews}>
-                            Read More News
+                        <button className="events-btn flex-row gap-3" onClick={handleReadMoreNews}>
+                            <span>Read More</span>
+                            <Icon icon="material-symbols:play-arrow-outline" width="28" />
                         </button>
                     </div>
                     <div className="news-hero-right-side">

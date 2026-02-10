@@ -154,6 +154,25 @@ const Home = () => {
         setTimeout(() => setActiveNewsArrow(null), 300);
     };
 
+    // Auto-advance news carousel every 20 seconds
+    useEffect(() => {
+        if (!news.length) return;
+
+        const interval = setInterval(() => {
+            setNewsCurrentIndex((prevIndex) => {
+                if (news.length === slidesToShow) {
+                    // Cycle when news.length equals slidesToShow
+                    return prevIndex === news.length - 1 ? 0 : prevIndex + 1;
+                } else {
+                    const maxIndex = Math.max(0, news.length - slidesToShow);
+                    return prevIndex >= maxIndex ? 0 : Math.min(maxIndex, prevIndex + 1);
+                }
+            });
+        }, 20000); // 20 seconds
+
+        return () => clearInterval(interval);
+    }, [news.length, slidesToShow]);
+
     // Calculate visible news with wrapping support when news.length === slidesToShow
     const getVisibleNews = () => {
         if (news.length === slidesToShow) {
@@ -167,7 +186,7 @@ const Home = () => {
         }
         return news.slice(newsCurrentIndex, newsCurrentIndex + slidesToShow);
     };
-    
+
     const visibleNews = getVisibleNews();
 
     return (
@@ -183,7 +202,7 @@ const Home = () => {
                                 LIVES FOREVER</h1>
 
                             {/* Listen Live Button */}
-                            <button 
+                            <button
                                 className="listen-live-button flex-between mb-4"
                                 onClick={togglePlay}
                             >
@@ -213,9 +232,9 @@ const Home = () => {
                 <div className="programs-container programs-desktop flex-between">
                     {/* Left Side */}
                     <div className="left-side flex-column-start">
-                        <h2 className="programs-title">Our <br /> Programs</h2>
+                        <h1 className="programs-title">Our Programs</h1>
                         <p className="programs-description">
-                            Fresh programs, timeless music <br />
+                            Fresh programs, timeless music
                             and the vibes you love
                         </p>
                         {currentProgram ? (
@@ -290,7 +309,7 @@ const Home = () => {
                 <div className="programs-container programs-mobile flex-column-center">
                     <h2 className="programs-title">Our Programs</h2>
                     <p className="programs-mobile-subtitle">DISCOVER OUR AMAZING RADIO PROGRAMS</p>
-                    
+
                     <div className="programs-mobile-card-row">
                         <div className="programs-mobile-card-image">
                             {programs.length > 0 ? (
@@ -303,7 +322,7 @@ const Home = () => {
                         </div>
                         <div className="programs-mobile-card-content">
                             {currentProgram && (
-                                <h4 
+                                <h4
                                     className="programs-mobile-title"
                                     style={{
                                         color:
@@ -353,7 +372,7 @@ const Home = () => {
                             )}
                         </div>
                     </div>
-                    
+
                     {/* Dots Indicator */}
                     {programs.length > 0 && (
                         <div className="programs-dots-container">
@@ -375,8 +394,8 @@ const Home = () => {
             <section className="app-section mt-3 pt-4 pb-4">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
-                        <h2 className="app-title">TAKE YOUR MOOD <br />
-                            EVERYWHERE</h2>
+                        <h1 className="app-title">TAKE YOUR MOOD <br />
+                            EVERYWHERE</h1>
                         <p className="app-description">
                             Listen to music that matches your <br />
                             vibe, anytime and anywhere
@@ -387,7 +406,7 @@ const Home = () => {
 
                         {/* Download Buttons */}
                         <div className="flex-between gap-3">
-                            <button className="app-btn flex-between gap-3" onClick={() => window.open(staticInfo.appStore, '_blank')}>
+                            <button className="app-btn d-flex justify-content-center align-items-center gap-3" onClick={() => window.open(staticInfo.appStore, '_blank')}>
                                 <img src={apple} alt="Apple" style={{ width: "26px", height: "32px" }} />
                                 <div className="flex-column-start">
                                     <span className="app-text-small">
@@ -398,7 +417,7 @@ const Home = () => {
                                     </span>
                                 </div>
                             </button>
-                            <button className="app-btn flex-between gap-3" onClick={() => window.open(staticInfo.googlePlay, '_blank')}>
+                            <button className="app-btn d-flex justify-content-center align-items-center gap-3" onClick={() => window.open(staticInfo.googlePlay, '_blank')}>
                                 <img src={android} alt="Android" style={{ width: "29px", height: "33px" }} />
                                 <div className="flex-column-start">
                                     <span className="app-text-small">
@@ -421,11 +440,13 @@ const Home = () => {
 
             {/* News Section */}
             <section className="news-section mt-3 pt-4 pb-4">
-                <div className="news-container flex-column-center">
-                    <h2 className="news-title">NEWS</h2>
-                    <p className="news-description text-center">
-                        Latest updates, Stories and highlights from the <br /> world of music
-                    </p>
+                <div className="news-container flex-column-start">
+                    <div className="news-title-container">
+                        <h1 className="text-left">NEWS</h1>
+                        <p className="news-description text-left">
+                            Latest updates, Stories and highlights from the <br /> world of music
+                        </p>
+                    </div>
 
                     {/* News Cards Carousel */}
                     <div className="news-carousel-container">
@@ -484,12 +505,12 @@ const Home = () => {
             <section className="events-section mt-3 pt-4 pb-4">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
-                        <h2 className="app-title">ON-AIR <span className="ampersand-fallback">&</span> ON GROUND <br />
-                            OUR SIGNATARE EVENTS</h2>
+                        <h1 className="app-title">ON AIR <span className="ampersand-fallback">&</span> ON GROUND <br />
+                            OUR SIGNATARE EVENTS</h1>
                         <p className="app-description">
                             Music. Energy. Real Moments experience mood fm <br />
-                            Live from Sets and concertto special pop-up <br />
-                            eventsthat connect the music with the crowd,
+                            Live from Sets and concertto special pop up <br />
+                            events that connect the music with the crowd.
                         </p>
 
                         {/* This btn takes to the events page */}
