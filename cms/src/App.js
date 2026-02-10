@@ -29,7 +29,7 @@ function App() {
   const isLoggedIn = !!token && !!user?.id;
 
   return (
-    <BrowserRouter basename="/cms">
+    <BrowserRouter basename={process.env.NODE_ENV === "production" ? "/cms" : ""}>
       <RouteScrollToTop />
       <Routes>
         {/* Root route - redirect based on authentication */}
