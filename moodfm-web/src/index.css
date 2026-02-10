@@ -3008,7 +3008,14 @@ h3 {
   color: var(--text-primary);
 }
 
-.news-hero-description,
+.news-hero-description{
+  font-family: 'Fractul', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 .events-hero-description,
 .forgot-password-description {
   font-family: "Gobold Lowplus", sans-serif;

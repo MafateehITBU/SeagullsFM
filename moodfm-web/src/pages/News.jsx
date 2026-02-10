@@ -91,12 +91,10 @@ const News = () => {
             <section className="news-hero-section">
                 <div className="news-hero-container container flex-between">
                     <div className="news-hero-left-side flex-column-start">
-                        <h1 className="news-hero-title mb-3">News <span className="ampersand-fallback">&</span> Updates</h1>
+                        <h1 className="news-hero-title mb-3">News and Updates</h1>
                         <p className="news-hero-description">
-                            Music news, artist stories, and what’s happening at <br/> Mood FM.
+                            Music news, artist stories, and what’s happening at Mood FM.
                         </p>
-
-                        <div className="about-hero-divider"></div>
 
                         <button className="events-btn flex-row gap-3" onClick={handleReadMoreNews}>
                             <span>Read More</span>
