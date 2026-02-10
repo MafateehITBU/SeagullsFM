@@ -2,6 +2,7 @@
   "name": "wowdash",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/cms",
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/modifiers": "^7.0.0",

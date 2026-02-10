@@ -29,7 +29,7 @@ function App() {
   const isLoggedIn = !!token && !!user?.id;
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/cms">
       <RouteScrollToTop />
       <Routes>
         {/* Root route - redirect based on authentication */}
