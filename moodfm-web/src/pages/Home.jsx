@@ -232,7 +232,7 @@ const Home = () => {
                 <div className="programs-container programs-desktop flex-between">
                     {/* Left Side */}
                     <div className="left-side flex-column-start">
-                        <h1 className="programs-title">Our Programs</h1>
+                        <h1 className="programs-title">Our Latest Programs</h1>
                         <p className="programs-description">
                             Fresh programs, timeless music
                             and the vibes you love
@@ -307,7 +307,7 @@ const Home = () => {
 
                 {/* Mobile Layout - card: image left, data + button right */}
                 <div className="programs-container programs-mobile flex-column-center">
-                    <h2 className="programs-title">Our Programs</h2>
+                    <h2 className="programs-title">Our Latest Program</h2>
                     <p className="programs-mobile-subtitle">DISCOVER OUR AMAZING RADIO PROGRAMS</p>
 
                     <div className="programs-mobile-card-row">
