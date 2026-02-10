@@ -154,25 +154,13 @@ const Events = () => {
                     <div className="events-hero-left-side flex-column-start">
                         <h1 className="events-hero-title mb-3">Events</h1>
                         <p className="events-hero-description">
-                            Live music, DJ nights, and unforgettable experiences by Mood <br /> FM.
+                        Live music, DJ night, and unforgettable
+                        experiences by Mood fm.
                         </p>
 
-                        <div className="about-hero-divider"></div>
-
-                        <div className="events-points mb-3 flex-column-start gap-3">
-                            <div className="event-point flex-start gap-2">
-                                <Icon icon="material-symbols:check-rounded" width="20" height="20" className='check-icon' />
-                                <span className="event-point-text">Live concerts & DJ nights</span>
-                            </div>
-                            <div className="event-point d-flex justify-content-start align-items-start gap-2">
-                                <Icon icon="material-symbols:check-rounded" width="20" height="20" className='check-icon' />
-                                <span className="event-point-text">Local and international artists</span>
-                            </div>
-                            <div className="event-point d-flex justify-content-start align-items-start gap-2">
-                                <Icon icon="material-symbols:check-rounded" width="20" height="20" className='check-icon' />
-                                <span className="event-point-text">Weekly & special events</span>
-                            </div>
-                        </div>
+                        <h3>Live Concerts and DJ Nights</h3>
+                        <h3>Local and International Artists</h3>
+<h3>Weekly and Special Events</h3> 
 
                         <button className="events-hero-btn" onClick={handleReadMoreNews}>
                             View Upcoming Events

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Navbar from '../../components/Navbar';
 import ProgramsSlider from '../../components/ProgramsSlider';
 import NewsSlider from '../../components/NewsSlider';
 import CTASection from '../../components/CTASection';
+import { useLiveStream } from '../../context/LiveStreamContext';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
@@ -14,6 +16,7 @@ export default function HomeScreen() {
   const slideAnim = useRef(new Animated.Value(screenWidth)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const buttonSlideAnim = useRef(new Animated.Value(50)).current;
+  const { isPlaying, isLoading, toggle } = useLiveStream();
 
   useEffect(() => {
     // Animate all components with staggered timing
@@ -84,16 +87,28 @@ export default function HomeScreen() {
                 },
               ]}
             >
-              <View style={styles.splitButton}>
-                <TouchableOpacity style={styles.listenButtonLeft}>
-                  <Text style={styles.listenButtonText}>Listen</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.listenButtonRight}>
-                  <Text style={styles.liveButtonText}>Live</Text>
-                  <Image 
-                    source={require('./assets/dot.png')} 
-                    style={styles.dotImage}
-                  />
+              <View style={styles.singleButtonWrap}>
+                <TouchableOpacity
+                  style={styles.liveButton}
+                  onPress={toggle}
+                  disabled={isLoading}
+                  activeOpacity={0.8}
+                >
+                  <View style={styles.liveButtonContent}>
+                    <Ionicons
+                      name={isPlaying ? 'pause' : 'play'}
+                      size={20}
+                      color={colors.navbarBg}
+                      style={styles.liveIcon}
+                    />
+                    <Text style={styles.liveButtonText}>{isPlaying ? 'Pause' : 'Live'}</Text>
+                  </View>
+                  {!isPlaying && (
+                    <Image 
+                      source={require('./assets/dot.png')} 
+                      style={styles.dotImage}
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
             </Animated.View>
@@ -166,44 +181,35 @@ const styles = StyleSheet.create({
     lineHeight: 52,
     letterSpacing: 2,
   },
-  splitButton: {
-    flexDirection: 'row',
+  singleButtonWrap: {
     marginBottom: spacing.lg,
-    minWidth: 200,
-  },
-  listenButtonLeft: {
-    flex: 1,
-    backgroundColor: colors.navbarBg, // Yellow background
-    paddingVertical: 14,
-    paddingHorizontal: 20,
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  listenButtonRight: {
-    flex: 1,
-    backgroundColor: colors.background, // Dark background
+  liveButton: {
+    backgroundColor: colors.background,
     borderWidth: 2,
-    borderColor: colors.navbarBg, // Yellow border
-    borderTopRightRadius: 24, // Only top right corner
+    borderColor: colors.navbarBg,
+    borderRadius: 24,
     paddingVertical: 14,
-    paddingHorizontal: 20,
+    paddingHorizontal: 28,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    overflow: 'visible', // Allow dot to extend beyond border
+    overflow: 'visible',
   },
   dotImage: {
     position: 'absolute',
-    top: -5, // Position at border and extend out
-    right: -5, // Position at border and extend out
+    top: -5,
+    right: -5,
     width: 20,
     height: 20,
   },
-  listenButtonText: {
-    color: colors.navbarText, // Dark text
-    fontSize: 18,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+  liveButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  liveIcon: {
+    marginRight: 6,
   },
   liveButtonText: {
     color: colors.navbarBg, // Yellow text

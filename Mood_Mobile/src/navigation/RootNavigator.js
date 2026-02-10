@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/Home';
 import AboutScreen from '../screens/About';
@@ -15,11 +16,13 @@ import GetDiscoveredScreen from '../screens/GetDiscovered';
 import ShowYourTalentScreen from '../screens/ShowYourTalent';
 import AdWithUsScreen from '../screens/AdWithUs';
 import ProgramDetailScreen from '../screens/ProgramDetails';
+import FloatingStreamButton from '../components/FloatingStreamButton';
 
 const Stack = createNativeStackNavigator();
 
-export default function RootNavigator() {
+export default function RootNavigator({ currentRoute }) {
   return (
+    <View style={styles.container}>
     <Stack.Navigator
       screenOptions={{
         headerShown: false, // We're using custom Navbar instead
@@ -41,6 +44,12 @@ export default function RootNavigator() {
       <Stack.Screen name="AdWithUs" component={AdWithUsScreen} />
       <Stack.Screen name="ProgramDetail" component={ProgramDetailScreen} />
     </Stack.Navigator>
+    <FloatingStreamButton currentRoute={currentRoute} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});
 

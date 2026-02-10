@@ -1,15 +1,18 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { StaticInfoProvider } from './context/StaticInfoContext';
 import { AuthProvider } from './context/AuthContext';
+import { LiveStreamProvider } from './context/LiveStreamContext';
 import RootNavigator from './navigation/RootNavigator';
 import CustomSplashScreen from './components/SplashScreen';
 
 export default function App() {
   const [isSplashReady, setIsSplashReady] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState('Home');
+  const navigationRef = useRef(null);
   
   // Load fonts using useFonts hook
   // Paths are relative to src/App.js: ../ goes to project root, then assets/fonts/
@@ -37,9 +40,21 @@ export default function App() {
     <SafeAreaProvider>
       <StaticInfoProvider>
         <AuthProvider>
-          <NavigationContainer>
-            <RootNavigator />
-          </NavigationContainer>
+          <LiveStreamProvider>
+            <NavigationContainer
+              ref={navigationRef}
+              onReady={() => {
+                const route = navigationRef.current?.getCurrentRoute();
+                if (route?.name) setCurrentRoute(route.name);
+              }}
+              onStateChange={() => {
+                const route = navigationRef.current?.getCurrentRoute();
+                setCurrentRoute(route?.name ?? 'Home');
+              }}
+            >
+              <RootNavigator currentRoute={currentRoute} />
+            </NavigationContainer>
+          </LiveStreamProvider>
         </AuthProvider>
       </StaticInfoProvider>
     </SafeAreaProvider>

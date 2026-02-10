@@ -1,9 +1,113 @@
 /* Font Face Declarations */
+/* Fractul full family wired to CSS font-weight + font-style */
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-hairline.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-thin.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-regular.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-extrabold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+/* Italics */
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-hairlineitalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-thinitalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-lightitalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-mediumitalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-semibolditalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-bolditalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-extrabolditalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fractul';
+  src: url('./assets/fonts/fonnts.com-fractul-blackitalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
 }
 
 @font-face {
@@ -293,6 +397,8 @@ h3 {
 .custom-navbar {
   background-color: var(--navbar-footer-color);
   padding: 0.7rem 0;
+  position: sticky;
+  top: 0;
   z-index: 1000;
 }
 
@@ -321,13 +427,13 @@ h3 {
 }
 
 .navbar-logo {
-  height: 60px;
+  height: 80px;
   margin-right: 1rem;
   margin-left: 70px;
 }
 
 .navbar-frequency {
-  height: 60px;
+  height: 80px;
 }
 
 .navbar-nav-custom {
@@ -336,13 +442,12 @@ h3 {
 
 .navbar-nav-link {
   color: var(--navbar-text) !important;
+  /* Inactive tabs: thin, light text */
   font-family: 'Gobold Thin Light', sans-serif !important;
   text-transform: uppercase;
   font-size: 20px;
-  font-weight: 400;
   text-decoration: none;
   transition: opacity 0.3s ease;
-  letter-spacing: -0.5px;
 }
 
 .navbar-nav-link:hover {
@@ -351,12 +456,14 @@ h3 {
 }
 
 .active-navbar-nav-link {
-  border-bottom: 5px solid var(--navbar-text) !important;
-  margin-bottom: -24px;
+  /* Thinner underline, closer to the text, same light font as inactive */
+  border-bottom: 2px solid var(--navbar-text) !important;
+  margin-bottom: -8px;
   border-radius: 2px;
-  font-family: 'Gobold Thin Light', sans-serif !important;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  /* Active tab: bold text + thin underline */
+  font-family: 'Gobold', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .floating-live-box {
@@ -380,6 +487,8 @@ h3 {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;
 }
+
+
 .floating-live-box:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
@@ -663,7 +772,7 @@ h3 {
   .navbar-nav-mobile .active-navbar-nav-link {
     border-bottom: 1px solid var(--navbar-text) !important;
     margin-bottom: 0 !important;
-    font-weight: 700 !important;
+    font-weight: 500 !important;
   }
 
   /* User Menu - Mobile */
