@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Pressable, Animated, Image, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { fonts } from '../theme/fonts';
 import { useStaticInfo } from '../context/StaticInfoContext';
@@ -95,7 +95,7 @@ export default function CustomDrawerModal({ visible, onClose }) {
             <View style={styles.drawerHeader}>
               <Text style={styles.drawerHeaderText}>Menu</Text>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>✕</Text>
+                <Ionicons name="close" size={24} color={colors.navbarText} />
               </TouchableOpacity>
             </View>
 
@@ -178,10 +178,7 @@ export default function CustomDrawerModal({ visible, onClose }) {
             {/* AD WITH US Button */}
             <TouchableOpacity
               style={styles.adButton}
-              onPress={() => {
-                onClose();
-                // Handle AD WITH US navigation
-              }}
+              onPress={() => handleNavigation('AdWithUs')}
             >
               <Text style={styles.adButtonText}>AD WITH US</Text>
             </TouchableOpacity>

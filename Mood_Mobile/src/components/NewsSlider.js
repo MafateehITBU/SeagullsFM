@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Dimensions, ActivityIndicator, Animated, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { fonts } from '../theme/fonts';
@@ -203,7 +204,7 @@ export default function NewsSlider() {
                 onPress={goToPrevious}
                 disabled={currentIndex === 0}
               >
-                <Text style={styles.arrowText}>←</Text>
+                <Ionicons name="chevron-back" size={28} color={colors.navbarText} />
               </TouchableOpacity>
               
               <TouchableOpacity
@@ -211,7 +212,7 @@ export default function NewsSlider() {
                 onPress={goToNext}
                 disabled={currentIndex === news.length - 1}
               >
-                <Text style={styles.arrowText}>→</Text>
+                <Ionicons name="chevron-forward" size={28} color={colors.navbarText} />
               </TouchableOpacity>
             </View>
           )}

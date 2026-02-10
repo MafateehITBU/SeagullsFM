@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Dimensions, ActivityIndicator, Animated, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { fonts } from '../theme/fonts';
@@ -16,6 +17,7 @@ function getProgramAccentColor(title) {
 }
 
 export default function ProgramsSlider() {
+  const navigation = useNavigation();
   const [programs, setPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -221,8 +223,8 @@ export default function ProgramsSlider() {
           const accentColor = getProgramAccentColor(program.title);
           return (
             <View key={program._id} style={styles.programCard}>
-              {/* Image at the top - fixed size */}
-              <View style={styles.imageWrapper}>
+              {/* Image at the top - fixed size with accent frame */}
+              <View style={[styles.imageWrapper, { borderWidth: 3, borderColor: accentColor }]}>
                 <Image
                   source={{ uri: program.image?.url }}
                   style={styles.programImage}
@@ -234,7 +236,10 @@ export default function ProgramsSlider() {
               <View style={styles.detailsContainer}>
                 <Text style={[styles.programTitle, { color: accentColor }]} numberOfLines={2}>{program.title}</Text>
                 <Text style={styles.programDescription} numberOfLines={3}>{program.description}</Text>
-                <TouchableOpacity style={[styles.viewDetailsButton, { backgroundColor: accentColor }]}>
+                <TouchableOpacity
+                  style={[styles.viewDetailsButton, { backgroundColor: accentColor }]}
+                  onPress={() => navigation.navigate('ProgramDetail', { programId: program._id, accentColor })}
+                >
                   <Text style={styles.viewDetailsButtonText}>View Details</Text>
                 </TouchableOpacity>
               </View>

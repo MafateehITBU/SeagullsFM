@@ -5,25 +5,28 @@ import { Platform } from 'react-native';
 // Backend port (must match your backend server)
 const API_PORT = 5001;
 
-// Your computer's IP address (for physical device / Expo Go)
+// --- Use production server (phone works anywhere, no same WiFi needed) ---
+const PRODUCTION_API_BASE = 'http://72.60.132.57/api'; // deployed backend
+const USE_PRODUCTION_API = true; // set to false to use local backend (same WiFi required)
+
+// Your computer's IP (only used when USE_PRODUCTION_API is false)
 // Find your IP: macOS: run `ipconfig getifaddr en0` or check System Settings > Network
-// Windows: run `ipconfig` and look for IPv4 under your Wi-Fi adapter
-// Phone and computer must be on the SAME Wi-Fi network
-const COMPUTER_IP = '192.168.1.12'; // ← UPDATE THIS if your IP changes (run: ipconfig getifaddr en0)
+const COMPUTER_IP = '192.168.1.12'; // ← UPDATE THIS if your IP changes
 
 // Helper function to get the correct base URL
 const getBaseURL = () => {
+  if (USE_PRODUCTION_API) {
+    return PRODUCTION_API_BASE;
+  }
   // For iOS Simulator - use localhost
   if (__DEV__ && Platform.OS === 'ios') {
-    // Uncomment next line when testing on iOS Simulator only:
-    // return `http://localhost:${API_PORT}/api`;
+    // return `http://localhost:${API_PORT}/api`; // uncomment for simulator only
   }
   // For Android Emulator - use 10.0.2.2
   if (__DEV__ && Platform.OS === 'android') {
-    // Uncomment next line when testing on Android Emulator only:
-    // return `http://10.0.2.2:${API_PORT}/api`;
+    // return `http://10.0.2.2:${API_PORT}/api`; // uncomment for emulator only
   }
-  // For physical devices (Expo Go) - use your computer's IP
+  // For physical devices (Expo Go) - use your computer's IP (same WiFi required)
   return `http://${COMPUTER_IP}:${API_PORT}/api`;
 };
 

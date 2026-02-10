@@ -5,11 +5,16 @@ import AboutScreen from '../screens/About';
 import NewsScreen from '../screens/News';
 import NewsDetailScreen from '../screens/News/NewsDetailScreen';
 import EventsScreen from '../screens/Events';
+import EventDetailScreen from '../screens/Events/EventDetailScreen';
 import PresentersScreen from '../screens/Presenters';
 import LoginScreen from '../screens/Login';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
 import SignUpScreen from '../screens/SignUp';
 import ProfileScreen from '../screens/Profile';
+import GetDiscoveredScreen from '../screens/GetDiscovered';
+import ShowYourTalentScreen from '../screens/ShowYourTalent';
+import AdWithUsScreen from '../screens/AdWithUs';
+import ProgramDetailScreen from '../screens/ProgramDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,11 +30,16 @@ export default function RootNavigator() {
       <Stack.Screen name="News" component={NewsScreen} />
       <Stack.Screen name="NewsDetail" component={NewsDetailScreen} />
       <Stack.Screen name="Events" component={EventsScreen} />
+      <Stack.Screen name="EventDetail" component={EventDetailScreen} />
       <Stack.Screen name="Presenters" component={PresentersScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="GetDiscovered" component={GetDiscoveredScreen} />
+      <Stack.Screen name="ShowYourTalent" component={ShowYourTalentScreen} />
+      <Stack.Screen name="AdWithUs" component={AdWithUsScreen} />
+      <Stack.Screen name="ProgramDetail" component={ProgramDetailScreen} />
     </Stack.Navigator>
   );
 }
