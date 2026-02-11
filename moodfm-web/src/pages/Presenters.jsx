@@ -56,7 +56,7 @@ const Presenters = () => {
         
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
-            if (char === '&' || char === '-') {
+            if (char === '&' || char === '-' || char === "'" || char === '’' || char === '‘' || char === '”' || char === '“' || char === '4') {
                 if (currentPart) {
                     parts.push(currentPart);
                     currentPart = '';
@@ -82,46 +82,29 @@ const Presenters = () => {
         <>
             <Header />
 
-            {/* Hero Section */}
-            <section className="events-hero-section">
-                <div className="events-hero-container flex-between">
-                    <div className="events-hero-left-side flex-column-start">
-                        <h1 className="events-hero-title mb-3">Presenters</h1>
-                        <p className="events-hero-description">
-                            Discover the hosts and DJs who bring music, stories, and energy to <br /> mood.fm every day.
-                        </p>
-
-                        <div className="about-hero-divider"></div>
-
-                        <div className="events-points mb-3 flex-column-start gap-3">
-                            <div className="event-point flex-start gap-2">
-                                <Icon icon="material-symbols:check-rounded" width="20" height="20" className='check-icon-presenters' />
-                                <span className="event-point-text">Daily live shows & curated playlists</span>
-                            </div>
-                            <div className="event-point d-flex justify-content-start align-items-start gap-2">
-                                <Icon icon="material-symbols:check-rounded" width="20" height="20" className='check-icon-presenters' />
-                                <span className="event-point-text">Local & international hosts</span>
-                            </div>
-                            <div className="event-point d-flex justify-content-start align-items-start gap-2">
-                                <Icon icon="material-symbols:check-rounded" width="20" height="20" className='check-icon-presenters' />
-                                <span className="event-point-text">Mood-based programs for every vibe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="presenters-hero-right-side">
-                        <img src={presentersHeroImg} alt="Presenters" className="presenters-hero-img" />
-                    </div>
+            {/* Hero Section - same structure and style as Events page */}
+            <div className="presenters-hero-section">
+                <div className="presenters-hero-left-side">
+                    <h1>Presenters</h1>
+                    <h4>Discover the hosts and DJs who bring music, stories,
+                    and energy to mood.fm every day.</h4>
+                    <h5 className="underline">Daily live shows <span className="ampersand-fallback">&</span> curated playlists</h5>
+                    <h5>Local and International Hosts</h5>
+                    <h5>Mood <span className="ampersand-fallback">-</span> based programs for every vibe</h5>
                 </div>
-            </section>
+                <div className="presenters-hero-right-side">
+                    <img src={presentersHeroImg} alt="Presenters" />
+                </div>
+            </div>
 
             {/* Presenters Section */}
-            <section className="presenters-section section-padding-left">
+            <section id="presenters-section" className="presenters-section section-padding-left">
                 <div className="presenters-container flex-between">
                     {/* Left Side - Content */}
                     <div className="left-side flex-column-start">
                         <h2 className="presenters-title">MEET OUR PRESENTERS</h2>
                         <p className="presenters-description">
-                            Get to know the hosts who bring music,<br />
+                            Get to know the hosts who bring music,
                             stories, <span className="ampersand-fallback">&</span> energy on air.
                         </p>
                         {currentPresenter ? (

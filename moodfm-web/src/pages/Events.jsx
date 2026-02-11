@@ -172,11 +172,8 @@ const Events = () => {
 
             {/* Events Cards Section */}
             <section className="events-cards-section" id="events-cards-section">
+            <h1 className="events-cards-title mb-3">Upcoming Events</h1>
                 <div className="events-cards-container container flex-column-center">
-                    <h3 className="events-cards-title mb-3">Upcoming Events</h3>
-                    <p className="events-cards-description text-center">
-                        Discover live concerts, DJ nights, and curated events powered by  mood.fm.
-                    </p>
                     <div className="events-cards-wrapper">
                         {loading ? (
                             <div className="d-flex align-items-center justify-content-center">
