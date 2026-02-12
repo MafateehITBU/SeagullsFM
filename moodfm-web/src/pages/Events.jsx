@@ -4,6 +4,8 @@ import { Icon } from '@iconify/react'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import NoData from '../components/UI/NoData'
+import { Link, useNavigate } from "react-router-dom";
+
 import eventsHeroImg from "../assets/imgs/Events/events-hero.png";
 
 const Events = () => {
@@ -44,8 +46,8 @@ const Events = () => {
         }
     }
 
-    const handleReadMoreNews = () => {
-        const eventsCardsContainer = document.querySelector('.events-cards-section');
+        const handleReadMoreEvents = () => {
+        const eventsCardsContainer = document.querySelector('#events-cards-section');
         if (eventsCardsContainer) {
             eventsCardsContainer.scrollIntoView({ behavior: 'smooth' });
         }
@@ -148,38 +150,30 @@ const Events = () => {
         <>
             <Header />
 
-            {/* Hero Section */}
-            <section className="events-hero-section mb-5">
-                <div className="events-hero-container flex-between">
-                    <div className="events-hero-left-side flex-column-start">
-                        <h1 className="events-hero-title mb-3">Events</h1>
-                        <p className="events-hero-description">
-                        Live music, DJ night, and unforgettable
-                        experiences by Mood fm.
-                        </p>
-
-                        <h3>Live Concerts and DJ Nights</h3>
-                        <h3>Local and International Artists</h3>
-<h3>Weekly and Special Events</h3> 
-
-                        <button className="events-hero-btn" onClick={handleReadMoreNews}>
-                            View Upcoming Events
-                        </button>
-                    </div>
-                    <div className="news-hero-right-side">
-                        <img src={eventsHeroImg} alt="Events Hero" />
-                    </div>
-                </div>
-            </section>
+ <div className="events-hero-section">
+    <div className="events-hero-left-side">
+        <h1>Events</h1>
+        <h4>Live music, DJ night, and unforgettable
+        experiences by Mood fm.</h4>
+        <h5 className="underline">Live Concerts and DJ Nights</h5>
+        <h5>Local and International Artists</h5>
+        <h5>Weekly and Special Events</h5>
+                            <button className="events-btn flex-row gap-3" onClick={handleReadMoreEvents}>
+                                <span>UPCOMING EVENTS</span>
+                                <Icon icon="material-symbols:play-arrow-outline" width="28" />
+                            </button>
+                        
+    </div>
+    <div className="events-hero-right-side">
+        <img src={eventsHeroImg} alt="Events Hero" />
+    </div>
+ </div>
 
 
             {/* Events Cards Section */}
-            <section className="events-cards-section">
+            <section className="events-cards-section" id="events-cards-section">
+            <h1 className="events-cards-title mb-3">Upcoming Events</h1>
                 <div className="events-cards-container container flex-column-center">
-                    <h3 className="events-cards-title mb-3">Upcoming Events</h3>
-                    <p className="events-cards-description text-center">
-                        Discover live concerts, DJ nights, and curated events powered by  mood.fm.
-                    </p>
                     <div className="events-cards-wrapper">
                         {loading ? (
                             <div className="d-flex align-items-center justify-content-center">

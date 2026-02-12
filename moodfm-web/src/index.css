@@ -186,8 +186,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Fractul', sans-serif;
   color: var(--text-primary);
+
 }
 
 h1 {
@@ -1327,7 +1328,15 @@ h3 {
   align-items: center;
   gap: 2rem;
 }
+.underline{
+  border-bottom: 2px solid var(--navbar-footer-color) !important;
+  width: fit-content;
+}
 
+/* Presenters hero: only the underline in green, text keeps default color */
+.presenters-hero-section .underline {
+  border-bottom-color: var(--color-green) !important;
+}
 .news-cards-wrapper {
   display: flex;
   gap: 3rem;
@@ -2970,28 +2979,52 @@ h3 {
   }
 }
 
-/* News Page css */
-.news-hero-section {
-  padding-right: 0 !important;
-  padding-left: 6rem;
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-}
 
-.news-hero-container {
-  padding-right: 0 !important;
-  padding-left: 0;
-}
 
-.news-hero-left-side {
-  flex: 1;
-}
-
-.news-hero-right-side {
-  flex: 1.2;
+.events-hero-section{
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.events-hero-left-side{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.events-hero-right-side{
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+}
+
+/* Presenters hero - same styles as events */
+.presenters-hero-section{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.presenters-hero-left-side{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.presenters-hero-right-side{
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+  padding-top: 6rem;
 }
 
 .news-hero-right-side img {
@@ -3036,6 +3069,18 @@ h3 {
   text-transform: uppercase;
   border: none;
   cursor: pointer;
+}
+
+.events-hero-right-side img {
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+}
+
+.presenters-hero-right-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .news-cards-section {
@@ -3269,17 +3314,41 @@ h3 {
     display: none !important;
   }
 
-  /* Hide hero image on Events page - responsive */
-  .events-hero-section .news-hero-right-side {
+  /* Hide hero image and button on Events page - responsive */
+  .events-hero-section .events-hero-right-side,
+  .events-hero-section .events-btn {
     display: none !important;
   }
 
-  /* Remove gap when hero image is hidden: shrink section and container */
+  /* Events hero responsive: full-width text, tighter padding when image hidden */
   .events-hero-section {
+    flex-direction: column !important;
+    align-items: flex-start !important;
     height: auto !important;
     min-height: auto !important;
-    padding-top: 1.5rem !important;
-    padding-bottom: 1.5rem !important;
+    padding: 1.5rem 1rem !important;
+    padding-left: 1rem !important;
+  }
+  .events-hero-left-side {
+    width: 100% !important;
+  }
+
+  /* Hide hero image on Presenters page - responsive */
+  .presenters-hero-section .presenters-hero-right-side {
+    display: none !important;
+  }
+
+  /* Presenters hero responsive: full-width text, tighter padding when image hidden */
+  .presenters-hero-section {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    height: auto !important;
+    min-height: auto !important;
+    padding: 1.5rem 1rem !important;
+    padding-left: 1rem !important;
+  }
+  .presenters-hero-left-side {
+    width: 100% !important;
   }
   .events-hero-container {
     margin-top: 0 !important;
@@ -3306,7 +3375,8 @@ h3 {
 
   .news-cards-section,
   .events-cards-section {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1rem;
+
   }
 
   .news-cards-title {
@@ -3721,6 +3791,14 @@ h3 {
   height: 90vh;
 }
 
+/* Presenters Page css - same as Events */
+.presenters-hero-section {
+  padding-right: 0 !important;
+  padding-left: 6rem;
+  padding-top: 1rem;
+  height: 90vh;
+}
+
 .events-hero-container {
   margin-top: 4vh;
 }
@@ -3780,6 +3858,7 @@ h3 {
 
 .events-cards-section {
   padding: 4rem 0;
+  padding-left: 6rem !important;
 }
 
 .events-cards-wrapper {
@@ -3918,16 +3997,15 @@ h3 {
 
 @media (max-width: 768px) {
   .events-cards-section {
-    padding: 2rem 0;
+    padding: 2rem 1rem;
+padding-left: 0 !important;
   }
 
   .events-cards-container {
     text-align: center;
   }
 
-  .events-cards-title {
-    text-align: center;
-  }
+
 
   .events-cards-description {
     text-align: center;
