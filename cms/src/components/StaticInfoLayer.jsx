@@ -16,6 +16,14 @@ const STATIC_FIELDS = [
   { key: "phoneNumber", label: "Phone", type: "text" },
   { key: "email", label: "Email", type: "email" },
   { key: "address", label: "Address", type: "textarea" },
+  // social media links object includes facebook, instagram, and twitter
+  { key: "socialMediaLinks", label: "Social Media Links", type: "object" },
+  { key: "facebook", label: "Facebook", type: "text" },
+  { key: "instagram", label: "Instagram", type: "text" },
+  { key: "twitter", label: "Twitter", type: "text" },
+  { key: "downloadApp", label: "Download App", type: "object" },
+  { key: "AppStore", label: "App Store", type: "text" },
+  { key: "GooglePlay", label: "Google Play", type: "text" },
 ];
 
 const StaticInfoLayer = () => {
@@ -26,6 +34,7 @@ const StaticInfoLayer = () => {
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedField, setSelectedField] = useState(null);
+  const [selectedParentField, setSelectedParentField] = useState(null);
   const [fieldValue, setFieldValue] = useState("");
   const [fileValue, setFileValue] = useState(null);
 
@@ -58,8 +67,20 @@ const StaticInfoLayer = () => {
 
   /*  EDIT  */
   const openEditModal = (fieldKey) => {
-    setSelectedField(fieldKey);
-    setFieldValue(staticInfo[fieldKey] || "");
+    // Determine if this field is part of a nested object
+    if (["facebook", "instagram", "twitter"].includes(fieldKey)) {
+      setSelectedParentField("socialMediaLinks");
+      setSelectedField(fieldKey);
+      setFieldValue(staticInfo?.socialMediaLinks?.[fieldKey] || "");
+    } else if (["AppStore", "GooglePlay"].includes(fieldKey)) {
+      setSelectedParentField("downloadApp");
+      setSelectedField(fieldKey);
+      setFieldValue(staticInfo?.downloadApp?.[fieldKey] || "");
+    } else {
+      setSelectedParentField(null);
+      setSelectedField(fieldKey);
+      setFieldValue(staticInfo[fieldKey] || "");
+    }
     setFileValue(null);
     setShowEditModal(true);
   };
@@ -69,8 +90,27 @@ const StaticInfoLayer = () => {
       const formData = new FormData();
 
       if (fileValue) {
+        // Image/file field – send as-is
         formData.append(selectedField, fileValue);
+      } else if (selectedParentField) {
+        // Nested object field (e.g. socialMediaLinks.facebook)
+        const currentParentValue =
+          staticInfo[selectedParentField] &&
+          typeof staticInfo[selectedParentField] === "object"
+            ? staticInfo[selectedParentField]
+            : {};
+
+        const updatedParentValue = {
+          ...currentParentValue,
+          [selectedField]: fieldValue,
+        };
+
+        formData.append(
+          selectedParentField,
+          JSON.stringify(updatedParentValue)
+        );
       } else {
+        // Simple scalar field
         formData.append(selectedField, fieldValue);
       }
 
@@ -78,6 +118,7 @@ const StaticInfoLayer = () => {
 
       toast.success("Updated successfully");
       setShowEditModal(false);
+      setSelectedParentField(null);
       fetchStaticInfo();
     } catch (err) {
       console.error(err);
@@ -105,7 +146,8 @@ const StaticInfoLayer = () => {
       </div>
 
       <div className="card-body">
-        {STATIC_FIELDS.map((field) => (
+        {STATIC_FIELDS.filter((field) => field.type !== "object").map(
+          (field) => (
           <div
             key={field.key}
             className="d-flex align-items-center border-bottom py-3"
@@ -129,7 +171,34 @@ const StaticInfoLayer = () => {
                   onClick={() => setPreviewImage(staticInfo[field.key].url)}
                 />
               ) : (
-                <span>{staticInfo[field.key] || "-"}</span>
+                <>
+                  {["facebook", "instagram", "twitter"].includes(
+                    field.key
+                  ) ? (
+                    <span>
+                      {staticInfo?.socialMediaLinks?.[field.key] || "-"}
+                    </span>
+                  ) : ["AppStore", "GooglePlay"].includes(field.key) ? (
+                    <span>
+                      {staticInfo?.downloadApp?.[field.key] || "-"}
+                    </span>
+                  ) : typeof staticInfo[field.key] === "object" &&
+                    staticInfo[field.key] !== null ? (
+                    // Safely render other object fields as JSON text
+                    <pre
+                      style={{
+                        margin: 0,
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                        fontSize: 12,
+                      }}
+                    >
+                      {JSON.stringify(staticInfo[field.key], null, 2)}
+                    </pre>
+                  ) : (
+                    <span>{staticInfo[field.key] || "-"}</span>
+                  )}
+                </>
               )}
             </div>
 
