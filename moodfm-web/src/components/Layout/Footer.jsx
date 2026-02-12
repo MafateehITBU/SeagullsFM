@@ -3,6 +3,10 @@ import { Icon } from '@iconify/react';
 import { useStaticInfo } from '../../context/StaticInfoContext';
 import { Link } from 'react-router-dom';
 
+// Match Header: set to true to show News and Events (pages exist at /news and /events)
+const SHOW_NEWS_IN_NAV = false;
+const SHOW_EVENTS_IN_NAV = false;
+
 const Footer = () => {
     const { staticInfo, loading } = useStaticInfo();
 
@@ -63,14 +67,18 @@ const Footer = () => {
                                     ABOUT US
                                     <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
                                 </Link>
+                                {SHOW_NEWS_IN_NAV && (
                                 <Link to="/news" className="footer-link">
                                     NEWS
                                     <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
                                 </Link>
+                                )}
+                                {SHOW_EVENTS_IN_NAV && (
                                 <Link to="/events" className="footer-link">
                                     EVENTS
                                     <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
                                 </Link>
+                                )}
                                 <Link to="/presenters" className="footer-link">
                                     PRESENTERS
                                     <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
