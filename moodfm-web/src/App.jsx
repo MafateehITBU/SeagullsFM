@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -19,6 +19,9 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import { useLiveStream } from "./context/LiveStreamContext";
 
+// Set to true to enable /news and /events routes (and show nav links in Header/Footer)
+const SHOW_NEWS_AND_EVENTS_ROUTES = false;
+
 const App = () => {
   const location = useLocation();
   const { isPlaying, togglePlay } = useLiveStream();
@@ -31,9 +34,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/program-details" element={<ProgramDetails />} />
         <Route path="/about" element={<About />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/news-details" element={<NewsDetails />} />
-        <Route path="/events" element={<Events />} />
+        <Route path="/news" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <News /> : <Navigate to="/" replace />} />
+        <Route path="/news-details" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <NewsDetails /> : <Navigate to="/" replace />} />
+        <Route path="/events" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <Events /> : <Navigate to="/" replace />} />
         <Route path="/presenters" element={<Presenters />} />
         <Route path="/ad-with-us" element={<AdWithUs />} />
         <Route path="/show-your-talent" element={<ShowYourTalent />} />

@@ -16,6 +16,9 @@ import eventsImg from "../assets/imgs/Home/events.png";
 import NewsCard from "../components/UI/NewsCard";
 import NoData from "../components/UI/NoData";
 
+// Set to true to show the News section on the home page
+const SHOW_NEWS_SECTION = false;
+
 const Home = () => {
     const { staticInfo } = useStaticInfo();
     const [programs, setPrograms] = useState([]);
@@ -438,7 +441,8 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* News Section */}
+            {/* News Section - hidden when SHOW_NEWS_SECTION is false */}
+            {SHOW_NEWS_SECTION && (
             <section className="news-section mt-3 pt-4 pb-4">
                 <div className="news-container flex-column-start">
                     <div className="news-title-container">
@@ -499,7 +503,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
+            )}
 
             {/* Events Section */}
             <section className="events-section mt-3 pt-4 pb-4">
