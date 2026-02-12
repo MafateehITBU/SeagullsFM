@@ -55,6 +55,9 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Unknown routes → redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       {/* Fixed live stream control - bottom right, only when not on home */}

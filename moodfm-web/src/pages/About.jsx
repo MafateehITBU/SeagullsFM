@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import aboutImg from '../assets/imgs/About/hero-img.png';
 import about2 from '../assets/imgs/About/about2.png';
 
+
 // CountUp component for animating numbers
 const CountUp = ({ end, suffix = '', duration = 3500, useKFormat = false }) => {
     const [count, setCount] = useState(0);
