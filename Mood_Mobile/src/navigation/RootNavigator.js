@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/Home';
 import AboutScreen from '../screens/About';
-import NewsScreen from '../screens/News';
-import NewsDetailScreen from '../screens/News/NewsDetailScreen';
-import EventsScreen from '../screens/Events';
-import EventDetailScreen from '../screens/Events/EventDetailScreen';
+// import NewsScreen from '../screens/News';
+// import NewsDetailScreen from '../screens/News/NewsDetailScreen';
+// import EventsScreen from '../screens/Events';
+// import EventDetailScreen from '../screens/Events/EventDetailScreen';
 import PresentersScreen from '../screens/Presenters';
 import LoginScreen from '../screens/Login';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
@@ -30,10 +30,11 @@ export default function RootNavigator({ currentRoute }) {
     >
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="About" component={AboutScreen} />
-      <Stack.Screen name="News" component={NewsScreen} />
-      <Stack.Screen name="NewsDetail" component={NewsDetailScreen} />
-      <Stack.Screen name="Events" component={EventsScreen} />
-      <Stack.Screen name="EventDetail" component={EventDetailScreen} />
+      {/* News & Events routes – uncomment imports above and these when re-enabling */}
+      {/* <Stack.Screen name="News" component={NewsScreen} /> */}
+      {/* <Stack.Screen name="NewsDetail" component={NewsDetailScreen} /> */}
+      {/* <Stack.Screen name="Events" component={EventsScreen} /> */}
+      {/* <Stack.Screen name="EventDetail" component={EventDetailScreen} /> */}
       <Stack.Screen name="Presenters" component={PresentersScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />

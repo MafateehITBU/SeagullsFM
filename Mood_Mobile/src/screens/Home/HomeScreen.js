@@ -9,6 +9,10 @@ import { useLiveStream } from '../../context/LiveStreamContext';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
+
+// Set to true to show the News section on the home screen
+const SHOW_NEWS_SECTION = false;
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
@@ -133,8 +137,8 @@ export default function HomeScreen() {
         {/* Programs Section */}
         <ProgramsSlider />
 
-        {/* News Section */}
-        <NewsSlider />
+        {/* News Section - hidden when SHOW_NEWS_SECTION is false */}
+        {SHOW_NEWS_SECTION && <NewsSlider />}
 
         {/* CTA Section */}
         <CTASection />
@@ -172,13 +176,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heroHeading: {
-    fontSize: 42,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.heroTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.lg,
-    lineHeight: 52,
+    lineHeight: fontSizes.heroTitle + 10,
     letterSpacing: 2,
   },
   singleButtonWrap: {
@@ -212,10 +216,10 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   liveButtonText: {
-    color: colors.navbarBg, // Yellow text
-    fontSize: 18,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    color: colors.navbarBg,
+    fontSize: fontSizes.body,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.secondaryBold,
   },
   imageContainer: {
     width: screenWidth,
@@ -242,8 +246,8 @@ const styles = StyleSheet.create({
     width: 220,
   },
   welcomeText: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: fontSizes.body,
+    fontWeight: fontWeights.medium,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.xl,

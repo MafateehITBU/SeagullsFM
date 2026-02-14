@@ -19,6 +19,7 @@ import { API_CONFIG } from '../../config/api';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -167,15 +168,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   title: {
-    fontSize: 28,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h2,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.xs,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     marginBottom: spacing.lg,
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 14,
     paddingHorizontal: spacing.md,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.text,
     marginBottom: spacing.md,
     borderWidth: 1,
@@ -197,12 +198,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   forgotLinkText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
   },
   errorText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.error,
     marginBottom: spacing.md,
     textAlign: 'center',
@@ -216,9 +217,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   signInButtonText: {
-    fontSize: 16,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarText,
   },
   buttonDisabled: {
@@ -231,14 +232,14 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   signUpPrompt: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
   signUpLink: {
-    fontSize: 14,
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodySm,
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarBg,
-    fontWeight: '700',
+    fontWeight: fontWeights.bold,
   },
 });

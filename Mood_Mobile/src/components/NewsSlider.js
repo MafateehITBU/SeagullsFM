@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { fonts } from '../theme/fonts';
+import { fontSizes, fontWeights } from '../theme/typography';
+import TextWithSymbolFallback from './TextWithSymbolFallback';
 import { API_CONFIG } from '../config/api';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -175,13 +177,13 @@ export default function NewsSlider() {
                 
                 {/* Title on white background */}
                 <View style={styles.titleContainer}>
-                  <Text style={styles.newsTitle} numberOfLines={2}>
+                  <TextWithSymbolFallback style={styles.newsTitle} numberOfLines={2}>
                     {item.title}
-                  </Text>
+                  </TextWithSymbolFallback>
                   {item.description && (
-                    <Text style={styles.newsDescription} numberOfLines={3}>
+                    <TextWithSymbolFallback style={styles.newsDescription} numberOfLines={3}>
                       {item.description}
-                    </Text>
+                    </TextWithSymbolFallback>
                   )}
                   
                   {/* Read More Button inside card - opens news detail */}
@@ -236,16 +238,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sectionTitle: {
-    fontSize: 32,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h1,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.sm,
     paddingHorizontal: spacing.lg,
   },
   sectionSubtitle: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     textAlign: 'center',
@@ -292,16 +294,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   newsTitle: {
-    fontSize: 18,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
-    color: colors.navbarText, // Dark text color
+    fontSize: fontSizes.body,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
+    color: colors.navbarText,
     marginBottom: spacing.sm,
   },
   newsDescription: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
-    color: colors.muted, // Muted color for description
+    color: colors.muted,
     marginBottom: spacing.md,
     lineHeight: 20,
   },
@@ -318,9 +320,9 @@ const styles = StyleSheet.create({
   },
   readMoreButtonText: {
     color: '#33CC66',
-    fontSize: 14,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.secondaryBold,
   },
   arrowsContainer: {
     flexDirection: 'row',
@@ -341,8 +343,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   arrowText: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: fontSizes.h3,
+    fontWeight: fontWeights.bold,
     color: colors.navbarText,
   },
   emptyStateContainer: {
@@ -352,15 +354,15 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
   emptyStateTitle: {
-    fontSize: 24,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h3,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.md,
     textAlign: 'center',
   },
   emptyStateText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.muted,
     textAlign: 'center',

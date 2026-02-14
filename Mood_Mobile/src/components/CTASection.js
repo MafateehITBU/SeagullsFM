@@ -4,8 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { fonts } from '../theme/fonts';
+import { fontSizes, fontWeights } from '../theme/typography';
 
 const { width: screenWidth } = Dimensions.get('window');
+
+// Set to true to show the "Discover More" (Events) button
+const SHOW_EVENTS_CTA = false;
 
 export default function CTASection() {
   const navigation = useNavigation();
@@ -71,15 +75,17 @@ export default function CTASection() {
       <Text style={styles.subtitle}>OUR SIGNATARE EVENTS</Text>
       
       <Text style={styles.description}>
-        Music. Energy. Real Moments experience mood fm Live from D] Sets and concertto special pop-up eventsthat connect the music with the crowd.
+        Music. Energy. Real Moments experience mood fm Live from DJ Sets and concertto special pop-up eventsthat connect the music with the crowd.
       </Text>
       
-      <TouchableOpacity
-        style={styles.discoverButton}
-        onPress={() => navigation.navigate('Events')}
-      >
-        <Text style={styles.discoverButtonText}>Discover More</Text>
-      </TouchableOpacity>
+      {SHOW_EVENTS_CTA && (
+        <TouchableOpacity
+          style={styles.discoverButton}
+          onPress={() => navigation.navigate('Events')}
+        >
+          <Text style={styles.discoverButtonText}>Discover More</Text>
+        </TouchableOpacity>
+      )}
     </Animated.View>
   );
 }
@@ -95,28 +101,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainTitle: {
-    fontSize: 32,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h1,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.sm,
     letterSpacing: 1,
   },
   specialChar: {
-    fontFamily: 'System', // Use system font for special characters that Fractul might not support
+    fontFamily: fonts.systemFont,
   },
   subtitle: {
-    fontSize: 18,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.body,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.md,
     letterSpacing: 0.5,
   },
   description: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     textAlign: 'center',
@@ -125,9 +131,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   discoverButton: {
-    backgroundColor: colors.background, // Dark background
+    backgroundColor: colors.background,
     borderWidth: 2,
-    borderColor: colors.navbarBg, // Yellow border
+    borderColor: colors.navbarBg,
     paddingVertical: 14,
     paddingHorizontal: 40,
     borderRadius: 8,
@@ -137,10 +143,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   discoverButtonText: {
-    color: colors.navbarBg, // Yellow text
-    fontSize: 18,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    color: colors.navbarBg,
+    fontSize: fontSizes.body,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.secondaryBold,
   },
   imageContainer: {
     width: screenWidth,

@@ -4,7 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { fonts } from '../theme/fonts';
+import { fontSizes, fontWeights } from '../theme/typography';
 import { API_CONFIG } from '../config/api';
+import TextWithSymbolFallback from './TextWithSymbolFallback';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -234,8 +236,8 @@ export default function ProgramsSlider() {
 
               {/* Details below image */}
               <View style={styles.detailsContainer}>
-                <Text style={[styles.programTitle, { color: accentColor }]} numberOfLines={2}>{program.title}</Text>
-                <Text style={styles.programDescription} numberOfLines={3}>{program.description}</Text>
+                <TextWithSymbolFallback style={[styles.programTitle, { color: accentColor }]} numberOfLines={2}>{program.title}</TextWithSymbolFallback>
+                <TextWithSymbolFallback style={styles.programDescription} numberOfLines={3}>{program.description}</TextWithSymbolFallback>
                 <TouchableOpacity
                   style={[styles.viewDetailsButton, { backgroundColor: accentColor }]}
                   onPress={() => navigation.navigate('ProgramDetail', { programId: program._id, accentColor })}
@@ -282,16 +284,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sectionTitle: {
-    fontSize: 32,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h1,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.sm,
     paddingHorizontal: spacing.lg,
   },
   sectionSubtitle: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     textAlign: 'center',
@@ -327,14 +329,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   programTitle: {
-    fontSize: 26,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.sectionTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     marginBottom: spacing.md,
     lineHeight: 32,
   },
   programDescription: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     marginBottom: spacing.md,
@@ -351,9 +353,9 @@ const styles = StyleSheet.create({
   },
   viewDetailsButtonText: {
     color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.secondaryBold,
     letterSpacing: 0.5,
   },
   dotsContainer: {
@@ -382,15 +384,15 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
   emptyStateTitle: {
-    fontSize: 24,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h3,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.md,
     textAlign: 'center',
   },
   emptyStateText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.muted,
     textAlign: 'center',

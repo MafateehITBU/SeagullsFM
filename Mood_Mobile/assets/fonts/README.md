@@ -1,33 +1,34 @@
-# Fonts Directory
+# Fonts (same as website – moodfm-web)
 
-Place your custom font files here:
+Fonts here match the website so the app and site look consistent.
 
-## Required Fonts:
+## Loaded in the app (see `src/App.js`)
 
-### Fractul (Primary - for titles)
-- `Fractul-Regular.ttf`
-- `Fractul-Bold.ttf`
-- (Optional: Fractul-Medium.ttf, Fractul-SemiBold.ttf, etc.)
+- **Fractul** – `fractual/fonnts.com-fractul-regular.otf` (titles/headings)
+- **Fractul-Bold** – `fractual/fonnts.com-fractul-bold.otf` (bold headings)
+- **Gobold** – `gobold/Gobold-Regular.otf` (body text)
+- **Gobold-Bold** – `gobold/Gobold-Bold.otf` (bold body)
+- **GoboldThinLight** – `gobold/Gobold Thin.otf` (optional)
+- **GoboldLowplus** – `gobold/Gobold Lowplus.otf` (optional)
 
-### Gobold (Secondary - for body text)
-- `Gobold-Regular.ttf`
-- `Gobold-Bold.ttf`
-- (Optional: Gobold-Medium.ttf, Gobold-SemiBold.ttf, etc.)
+## Copying from the website project
 
-## How to Add Fonts:
+To sync with the web app fonts:
 
-1. Download the font files (.ttf or .otf format)
-2. Place them in this `assets/fonts/` directory
-3. Update `app.json` if you add additional font weights
-4. The fonts will be automatically loaded when the app starts
+1. From `moodfm-web/src/assets/fonts/` copy:
+   - `fonnts.com-fractul-regular.otf` and `fonnts.com-fractul-bold.otf` → `Mood_Mobile/assets/fonts/fractual/`
+2. Gobold files are already in `Mood_Mobile/assets/fonts/gobold/` (e.g. `Gobold-Regular.otf`, `Gobold-Bold.otf`, `Gobold Thin.otf`, `Gobold Lowplus.otf`).
 
-## Font Usage:
+## Usage in code
 
-Import fonts in your components:
 ```javascript
 import { fonts } from '../theme/fonts';
 
-// Use in styles:
-fontFamily: fonts.primary, // For titles
-fontFamily: fonts.secondary, // For body text
+// Titles / headings
+fontFamily: fonts.primary,      // Fractul
+fontFamily: fonts.primaryBold,  // Fractul-Bold
+
+// Body
+fontFamily: fonts.secondary,     // Gobold
+fontFamily: fonts.secondaryBold, // Gobold-Bold
 ```

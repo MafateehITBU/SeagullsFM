@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 import { useStaticInfo } from '../../context/StaticInfoContext';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -211,9 +212,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heroHeading: {
-    fontSize: 42,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.heroTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     letterSpacing: 2,
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sectionGap,
   },
   aboutText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,
@@ -257,19 +258,19 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   statNumber: {
-    fontSize: 36,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.heroTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.statsOrange,
   },
   statNumberSuffix: {
-    fontSize: 36,
-    fontWeight: '900',
+    fontSize: fontSizes.heroTitle,
+    fontWeight: fontWeights.black,
     color: colors.statsOrange,
-    fontFamily: 'System',
+    fontFamily: fonts.systemFont,
   },
   statLabel: {
-    fontSize: 13,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     textAlign: 'center',
@@ -286,14 +287,14 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sectionGap,
   },
   whoWeAreTitle: {
-    fontSize: 28,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h2,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.lg,
   },
   whoWeAreParagraph: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,
@@ -317,9 +318,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   learnMoreButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.bold,
+    fontFamily: fonts.secondaryBold,
     color: '#FFFFFF',
   },
   mediaKitButton: {
@@ -335,9 +336,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mediaKitButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.bold,
+    fontFamily: fonts.secondaryBold,
     color: colors.statsOrange,
   },
 });

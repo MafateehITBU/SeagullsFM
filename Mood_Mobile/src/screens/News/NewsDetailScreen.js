@@ -14,7 +14,9 @@ import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 import { API_CONFIG } from '../../config/api';
+import TextWithSymbolFallback from '../../components/TextWithSymbolFallback';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -116,15 +118,15 @@ export default function NewsDetailScreen() {
           </View>
         )}
         <View style={styles.body}>
-          <Text style={styles.title}>{news.title}</Text>
+          <TextWithSymbolFallback style={styles.title}>{news.title}</TextWithSymbolFallback>
           {publishedDate ? (
             <Text style={styles.date}>{publishedDate}</Text>
           ) : null}
           {news.description ? (
-            <Text style={styles.description}>{news.description}</Text>
+            <TextWithSymbolFallback style={styles.description}>{news.description}</TextWithSymbolFallback>
           ) : null}
           {news.content ? (
-            <Text style={styles.content}>{news.content}</Text>
+            <TextWithSymbolFallback style={styles.content}>{news.content}</TextWithSymbolFallback>
           ) : null}
         </View>
       </ScrollView>
@@ -180,28 +182,28 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   title: {
-    fontSize: 26,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.sectionTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.sm,
     lineHeight: 34,
   },
   date: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     marginBottom: spacing.lg,
   },
   description: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,
     marginBottom: spacing.lg,
   },
   content: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,

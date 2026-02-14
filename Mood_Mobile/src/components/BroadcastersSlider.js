@@ -15,10 +15,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { fonts } from '../theme/fonts';
+import { fontSizes, fontWeights } from '../theme/typography';
 import { API_CONFIG } from '../config/api';
+import TextWithSymbolFallback from './TextWithSymbolFallback';
 
 const { width: screenWidth } = Dimensions.get('window');
 
+// Slider accent: Zaid = cyan, others = yellow (green is only in Presenters hero section)
 const COLOR_ZAID = '#02D1C2';
 const COLOR_OTHER = '#EBCD03';
 
@@ -171,13 +174,13 @@ export default function BroadcastersSlider() {
                 <View style={[styles.accentBar, { backgroundColor: accentColor }]} />
               </View>
               <View style={styles.body}>
-                <Text style={[styles.name, { color: accentColor }]}>
+                <TextWithSymbolFallback style={[styles.name, { color: accentColor }]}>
                   {broadcaster.name}
-                </Text>
+                </TextWithSymbolFallback>
                 {broadcaster.description ? (
-                  <Text style={styles.description} numberOfLines={4}>
+                  <TextWithSymbolFallback style={styles.description} numberOfLines={4}>
                     {broadcaster.description}
-                  </Text>
+                  </TextWithSymbolFallback>
                 ) : null}
                 <SocialIcons socialLinks={broadcaster.socialLinks} accentColor={accentColor} />
               </View>
@@ -228,14 +231,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   emptyTitle: {
-    fontSize: 20,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.cardTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.sm,
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
@@ -273,14 +276,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    fontSize: 24,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h3,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     marginBottom: spacing.md,
     textAlign: 'center',
   },
   description: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 22,

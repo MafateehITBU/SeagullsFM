@@ -15,6 +15,7 @@ import CustomDrawerModal from './CustomDrawerModal';
 import { useAuth } from '../context/AuthContext';
 import { colors } from '../theme/colors';
 import { fonts } from '../theme/fonts';
+import { fontSizes, fontWeights } from '../theme/typography';
 
 export default function Navbar() {
   const navigation = useNavigation();
@@ -174,8 +175,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatarInitial: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.bold,
     fontFamily: fonts.secondary,
     color: colors.text,
   },
@@ -186,8 +187,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.navbarText,
   },
   loginButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.semibold,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
   },
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   dropdownItemText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
   },

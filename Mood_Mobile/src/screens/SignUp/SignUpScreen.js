@@ -17,6 +17,7 @@ import { API_CONFIG, MOOD_FM_CHANNEL_ID } from '../../config/api';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 
 /**
  * Normalize API error response into an array of user-facing messages.
@@ -283,15 +284,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   title: {
-    fontSize: 28,
+    fontSize: fontSizes.h2,
     fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.xs,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     marginBottom: spacing.lg,
@@ -302,7 +303,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 14,
     paddingHorizontal: spacing.md,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.text,
     marginBottom: spacing.md,
     borderWidth: 1,
@@ -317,7 +318,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(229, 57, 53, 0.4)',
   },
   errorText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.error,
     marginBottom: 4,
   },
@@ -330,9 +331,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   signUpButtonText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarText,
   },
   buttonDisabled: {
@@ -345,13 +346,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   signInPrompt: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
   signInLink: {
-    fontSize: 14,
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.bodySm,
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarBg,
     fontWeight: '700',
   },

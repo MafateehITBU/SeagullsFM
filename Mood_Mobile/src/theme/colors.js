@@ -16,5 +16,7 @@ export const colors = {
   buttonText: '#2d2d2d  ',
   // About / stats accent
   statsOrange: '#FF6600',
+  // Presenters / web accent (matches moodfm-web --color-green)
+  accentGreen: '#33CC66',
 };
 

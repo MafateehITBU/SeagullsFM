@@ -21,7 +21,9 @@ import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 import { API_CONFIG } from '../../config/api';
+import TextWithSymbolFallback from '../../components/TextWithSymbolFallback';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const IMAGE_HEIGHT = Math.round(screenHeight * 0.45);
@@ -216,25 +218,25 @@ export default function ProgramDetailScreen() {
         ) : null}
 
         <View style={styles.body}>
-          <Text style={styles.title}>{program.title}</Text>
+          <TextWithSymbolFallback style={styles.title}>{program.title}</TextWithSymbolFallback>
           {program.description ? (
-            <Text style={styles.description}>{program.description}</Text>
+            <TextWithSymbolFallback style={styles.description}>{program.description}</TextWithSymbolFallback>
           ) : null}
 
           <View style={styles.card}>
             <Text style={[styles.cardLabel, { color: accentColor }]}>Days</Text>
-            <Text style={styles.cardText}>{daysStr || '—'}</Text>
+            <TextWithSymbolFallback style={styles.cardText}>{daysStr || '—'}</TextWithSymbolFallback>
           </View>
           <View style={styles.card}>
             <Text style={[styles.cardLabel, { color: accentColor }]}>Time</Text>
-            <Text style={styles.cardText}>
+            <TextWithSymbolFallback style={styles.cardText}>
               {formatTime(program.startTime)} – {formatTime(program.endTime)}
-            </Text>
+            </TextWithSymbolFallback>
           </View>
           {daysStr ? (
             <View style={styles.card}>
               <Text style={[styles.cardLabel, { color: accentColor }]}>Frequency</Text>
-              <Text style={styles.cardText}>Every {daysStr}</Text>
+              <TextWithSymbolFallback style={styles.cardText}>Every {daysStr}</TextWithSymbolFallback>
             </View>
           ) : null}
         </View>
@@ -339,11 +341,11 @@ export default function ProgramDetailScreen() {
             filteredInterviews.map((interview) => (
               <View key={interview._id} style={styles.interviewCard}>
                 <View style={styles.interviewCardContent}>
-                  <Text style={styles.interviewTitle}>{interview.title}</Text>
+                  <TextWithSymbolFallback style={styles.interviewTitle}>{interview.title}</TextWithSymbolFallback>
                   {interview.description ? (
-                    <Text style={styles.interviewDescription} numberOfLines={3}>
+                    <TextWithSymbolFallback style={styles.interviewDescription} numberOfLines={3}>
                       {interview.description}
-                    </Text>
+                    </TextWithSymbolFallback>
                   ) : null}
                   <Text style={[styles.interviewDate, { color: accentColor }]}>
                     {formatDate(interview.date || interview.createdAt)}
@@ -379,7 +381,7 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
   },
   errorText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.text,
     marginBottom: spacing.lg,
     textAlign: 'center',
@@ -391,8 +393,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   backButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.bold,
     color: colors.navbarText,
   },
   keyboardAvoid: {
@@ -418,15 +420,15 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   title: {
-    fontSize: 26,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.sectionTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.md,
     lineHeight: 34,
   },
   description: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,
@@ -441,15 +443,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.08)',
   },
   cardLabel: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: fontSizes.caption,
+    fontWeight: fontWeights.bold,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
     letterSpacing: 0.5,
     marginBottom: spacing.xs,
   },
   cardText: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 22,
@@ -460,14 +462,14 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xl,
   },
   sectionTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h4,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.xs,
   },
   sectionSubtitle: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     marginBottom: spacing.md,
@@ -489,7 +491,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     paddingVertical: 12,
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     paddingRight: 8,
@@ -515,8 +517,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   calendarButtonText: {
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.bold,
     fontFamily: fonts.secondary,
     color: colors.navbarText,
   },
@@ -528,8 +530,8 @@ const styles = StyleSheet.create({
     borderColor: colors.muted,
   },
   clearDateButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.semibold,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
@@ -544,8 +546,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.12)',
   },
   selectedDateLabel: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.semibold,
     fontFamily: fonts.secondary,
     color: colors.text,
   },
@@ -568,19 +570,19 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   datePickerCancel: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.muted,
   },
   datePickerDone: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.semibold,
     color: colors.navbarBg,
   },
   loader: {
     marginVertical: spacing.lg,
   },
   noInterviews: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     textAlign: 'center',
@@ -596,21 +598,21 @@ const styles = StyleSheet.create({
   },
   interviewCardContent: {},
   interviewTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.body,
+    fontWeight: fontWeights.bold,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.xs,
   },
   interviewDescription: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     lineHeight: 20,
     marginBottom: spacing.xs,
   },
   interviewDate: {
-    fontSize: 13,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
     marginBottom: spacing.sm,
@@ -623,8 +625,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   watchButtonText: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.bold,
     color: colors.navbarText,
   },
 });

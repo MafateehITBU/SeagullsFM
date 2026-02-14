@@ -16,6 +16,7 @@ import { API_CONFIG, MOOD_FM_CHANNEL_ID } from '../../config/api';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 
 function validateEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -272,15 +273,15 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   title: {
-    fontSize: 26,
+    fontSize: fontSizes.sectionTitle,
     fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.sm,
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     textAlign: 'center',
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   label: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     marginBottom: spacing.xs,
@@ -300,7 +301,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.text,
     marginBottom: spacing.sm,
   },
@@ -309,12 +310,12 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   errorText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.error,
     marginBottom: spacing.sm,
   },
   successText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.success,
     marginBottom: spacing.sm,
   },
@@ -329,7 +330,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   submitButtonText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontWeight: '700',
     color: colors.navbarText,
   },

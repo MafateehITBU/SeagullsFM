@@ -16,7 +16,9 @@ import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 import { API_CONFIG } from '../../config/api';
+import TextWithSymbolFallback from '../../components/TextWithSymbolFallback';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const HERO_HEIGHT = Math.min(screenHeight * 0.5, 380);
@@ -77,13 +79,13 @@ function NewsCard({ item, onPress, cardWidth, index = 0 }) {
           )}
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.cardTitle} numberOfLines={2}>
+          <TextWithSymbolFallback style={styles.cardTitle} numberOfLines={2}>
             {item.title}
-          </Text>
+          </TextWithSymbolFallback>
           {item.description ? (
-            <Text style={styles.cardDescription} numberOfLines={2}>
+            <TextWithSymbolFallback style={styles.cardDescription} numberOfLines={2}>
               {item.description}
-            </Text>
+            </TextWithSymbolFallback>
           ) : null}
           <TouchableOpacity
             style={styles.readMoreButton}
@@ -262,19 +264,19 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xxl,
   },
   heroTitle: {
-    fontSize: 42,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.heroTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     letterSpacing: 2,
     marginBottom: spacing.md,
   },
   heroTitleChar: {
-    fontFamily: 'System',
+    fontFamily: fonts.systemFont,
   },
   heroSubtitle: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     textAlign: 'center',
@@ -296,14 +298,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   emptyTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h4,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.sm,
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
@@ -344,15 +346,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardTitle: {
-    fontSize: 15,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.bodySm,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.navbarText,
     marginBottom: spacing.xs,
     textAlign: 'center',
   },
   cardDescription: {
-    fontSize: 12,
+    fontSize: fontSizes.caption,
     fontFamily: fonts.secondary,
     color: colors.muted,
     lineHeight: 18,
@@ -370,9 +372,9 @@ const styles = StyleSheet.create({
   },
   readMoreButtonText: {
     color: '#33CC66',
-    fontSize: 12,
-    fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontSize: fontSizes.caption,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.secondaryBold,
   },
   cardSpacer: {
     backgroundColor: 'transparent',

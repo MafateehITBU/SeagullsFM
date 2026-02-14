@@ -14,13 +14,15 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = useState('Home');
   const navigationRef = useRef(null);
   
-  // Load fonts using useFonts hook
-  // Paths are relative to src/App.js: ../ goes to project root, then assets/fonts/
+  // Load fonts to match website (Fractul = titles, Gobold = body)
   const [fontsLoaded, fontError] = useFonts({
     'Fractul': require('../assets/fonts/fractual/fonnts.com-fractul-regular.otf'),
-    'Fractul-Bold': require('../assets/fonts/fractual/fonnts.com-fractul-regular.otf'),
+    'Fractul-Bold': require('../assets/fonts/fractual/fonnts.com-fractul-bold.otf'),
     'Gobold': require('../assets/fonts/gobold/Gobold-Regular.otf'),
     'Gobold-Bold': require('../assets/fonts/gobold/Gobold-Bold.otf'),
+    // Optional (uncomment when files are in gobold folder):
+    // 'GoboldThinLight': require('../assets/fonts/gobold/Gobold Thin.otf'),
+    // 'GoboldLowplus': require('../assets/fonts/gobold/Gobold Lowplus.otf'),
   });
 
   useEffect(() => {

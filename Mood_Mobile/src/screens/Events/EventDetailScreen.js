@@ -16,7 +16,9 @@ import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 import { API_CONFIG } from '../../config/api';
+import TextWithSymbolFallback from '../../components/TextWithSymbolFallback';
 
 const { width: screenWidth } = Dimensions.get('window');
 const SLIDER_HEIGHT = 280;
@@ -167,13 +169,13 @@ export default function EventDetailScreen() {
         )}
 
         <View style={styles.body}>
-          <Text style={styles.title}>{event.title}</Text>
+          <TextWithSymbolFallback style={styles.title}>{event.title}</TextWithSymbolFallback>
 
           {(startStr || endStr) ? (
             <View style={styles.card}>
               <Text style={styles.cardLabel}>When</Text>
-              {startStr ? <Text style={styles.cardText}>{startStr}</Text> : null}
-              {endStr ? <Text style={[styles.cardText, styles.cardTextSecondary]}>{endStr}</Text> : null}
+              {startStr ? <TextWithSymbolFallback style={styles.cardText}>{startStr}</TextWithSymbolFallback> : null}
+              {endStr ? <TextWithSymbolFallback style={[styles.cardText, styles.cardTextSecondary]}>{endStr}</TextWithSymbolFallback> : null}
             </View>
           ) : null}
 
@@ -182,7 +184,7 @@ export default function EventDetailScreen() {
               <Text style={styles.cardLabel}>Where</Text>
               <View style={styles.cardTextRow}>
                 <Ionicons name="location-outline" size={18} color={colors.muted} style={styles.cardIcon} />
-                <Text style={styles.cardText}>{event.address}</Text>
+                <TextWithSymbolFallback style={styles.cardText}>{event.address}</TextWithSymbolFallback>
               </View>
             </View>
           ) : null}
@@ -190,7 +192,7 @@ export default function EventDetailScreen() {
           {event.description ? (
             <View style={styles.card}>
               <Text style={styles.cardLabel}>About</Text>
-              <Text style={styles.description}>{event.description}</Text>
+              <TextWithSymbolFallback style={styles.description}>{event.description}</TextWithSymbolFallback>
             </View>
           ) : null}
         </View>
@@ -282,9 +284,9 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   title: {
-    fontSize: 26,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.sectionTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.lg,
     lineHeight: 34,
@@ -298,8 +300,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.08)',
   },
   cardLabel: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: fontSizes.caption,
+    fontWeight: fontWeights.bold,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
     letterSpacing: 0.5,
@@ -314,7 +316,7 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   cardText: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 22,
@@ -325,7 +327,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   description: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,

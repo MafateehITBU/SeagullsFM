@@ -17,6 +17,7 @@ import { API_CONFIG } from '../../config/api';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 
 const PHASE_EMAIL = 1;
 const PHASE_OTP = 2;
@@ -430,15 +431,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   title: {
-    fontSize: 28,
+    fontSize: fontSizes.h2,
     fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.xs,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     marginBottom: spacing.md,
@@ -446,7 +447,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   otpLabel: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.muted,
     marginBottom: spacing.sm,
@@ -495,9 +496,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 222, 0, 0.2)',
   },
   otpBoxText: {
-    fontSize: 24,
+    fontSize: fontSizes.h3,
     fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontFamily: fonts.primaryBold,
     color: colors.text,
   },
   input: {
@@ -505,7 +506,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 14,
     paddingHorizontal: spacing.md,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.text,
     marginBottom: spacing.md,
     borderWidth: 1,
@@ -520,7 +521,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(229, 57, 53, 0.4)',
   },
   errorText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.error,
     marginBottom: 4,
   },
@@ -533,9 +534,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   submitButtonText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarText,
   },
   buttonDisabled: {
@@ -547,7 +548,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   secondaryButtonText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
   },
@@ -556,7 +557,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   backLinkText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
   },

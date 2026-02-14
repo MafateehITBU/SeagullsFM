@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { fonts } from '../theme/fonts';
+import { fontSizes, fontWeights } from '../theme/typography';
 import { useStaticInfo } from '../context/StaticInfoContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -17,11 +18,12 @@ export default function CustomDrawerModal({ visible, onClose }) {
   const [getInvolvedExpanded, setGetInvolvedExpanded] = useState(false);
   const dropdownAnim = useRef(new Animated.Value(0)).current;
 
+  // Set to true to show News and Events in the menu (screens must be enabled in RootNavigator)
+  const SHOW_NEWS_AND_EVENTS_IN_NAV = false;
   const menuItems = [
     { name: 'Home', screen: 'Home' },
     { name: 'About us', screen: 'About' },
-    { name: 'News', screen: 'News' },
-    { name: 'Events', screen: 'Events' },
+    ...(SHOW_NEWS_AND_EVENTS_IN_NAV ? [{ name: 'News', screen: 'News' }, { name: 'Events', screen: 'Events' }] : []),
     { name: 'Presenters', screen: 'Presenters' },
   ];
   // When not logged in, show Login in drawer; when logged in, Profile/Sign Out are in navbar dropdown
@@ -252,8 +254,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   drawerHeaderText: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: fontSizes.h3,
+    fontWeight: fontWeights.bold,
     fontFamily: fonts.primary,
     color: colors.text,
   },
@@ -261,7 +263,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   closeButtonText: {
-    fontSize: 24,
+    fontSize: fontSizes.h3,
     color: colors.text,
   },
   menuItem: {
@@ -270,7 +272,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#404040',
   },
   menuItemText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
   },
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#404040',
   },
   subMenuItemText: {
-    fontSize: 15,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.text,
     opacity: 0.9,
@@ -307,8 +309,8 @@ const styles = StyleSheet.create({
   },
   adButtonText: {
     color: colors.buttonText,
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: fontSizes.bodyMd,
+    fontWeight: fontWeights.bold,
     fontFamily: fonts.secondary,
   },
   socialContainer: {

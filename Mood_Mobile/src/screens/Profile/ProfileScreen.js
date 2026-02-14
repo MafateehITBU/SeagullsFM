@@ -19,6 +19,7 @@ import { API_CONFIG } from '../../config/api';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 
 const DEFAULT_AVATAR = require('../../../assets/img/Logo.png');
 
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: spacing.md,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
@@ -381,9 +382,9 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   title: {
-    fontSize: 28,
+    fontSize: fontSizes.h2,
     fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.lg,
     textAlign: 'center',
@@ -399,16 +400,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.muted,
   },
   changePhotoText: {
-    fontSize: 13,
+    fontSize: fontSizes.bodySm,
     fontFamily: fonts.secondary,
     color: colors.navbarBg,
     textAlign: 'center',
     marginTop: spacing.xs,
   },
   sectionLabel: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontWeight: '700',
-    fontFamily: 'Gobold-Bold',
+    fontFamily: fonts.secondaryBold,
     color: colors.text,
     marginBottom: spacing.md,
   },
@@ -420,20 +421,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 14,
     paddingHorizontal: spacing.md,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     color: colors.text,
     marginBottom: spacing.md,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   errorText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.error,
     marginBottom: spacing.sm,
     textAlign: 'center',
   },
   successText: {
-    fontSize: 14,
+    fontSize: fontSizes.bodySm,
     color: colors.success,
     marginBottom: spacing.sm,
     textAlign: 'center',
@@ -447,9 +448,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   primaryButtonText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontWeight: '900',
-    fontFamily: 'Gobold-Bold',
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarText,
   },
   secondaryButton: {
@@ -462,9 +463,9 @@ const styles = StyleSheet.create({
     borderColor: colors.navbarBg,
   },
   secondaryButtonText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontWeight: '700',
-    fontFamily: 'Gobold-Bold',
+    fontFamily: fonts.secondaryBold,
     color: colors.navbarBg,
   },
   buttonDisabled: {

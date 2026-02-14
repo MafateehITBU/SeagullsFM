@@ -1,18 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import Navbar from '../../components/Navbar';
 import BroadcastersSlider from '../../components/BroadcastersSlider';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 
-const TICK_COLOR = '#00DCCC';
-
-const LIST_ITEMS = [
-  { text: 'Daily live shows ', char: '&', rest: ' curated playlists' },
-  { text: 'Local ', char: '&', rest: ' international hosts' },
-  { text: 'Mood-based programs for every vibe', char: null, rest: null },
+// Same copy as web; first line has green underline
+const BULLET_LINES = [
+  { text: 'Daily live shows ', char: '&', rest: ' curated playlists', underlined: true },
+  { text: 'Local and International Hosts', underlined: false },
+  { text: 'Mood ', char: '-', rest: ' based programs for every vibe', underlined: false },
 ];
 
 export default function PresentersScreen() {
@@ -32,15 +31,12 @@ export default function PresentersScreen() {
         <View style={styles.divider} />
 
         <View style={styles.list}>
-          {LIST_ITEMS.map((item, index) => (
-            <View key={index} style={styles.listRow}>
-              <Ionicons
-                name="checkmark-circle"
-                size={24}
-                color={TICK_COLOR}
-                style={styles.tick}
-              />
-              <Text style={styles.listText}>
+          {BULLET_LINES.map((item, index) => (
+            <View
+              key={index}
+              style={[styles.listRow, item.underlined && styles.listRowUnderline]}
+            >
+              <Text style={[styles.listText, item.underlined && styles.listTextGreen]}>
                 {item.rest != null ? (
                   <>
                     {item.text}
@@ -55,11 +51,11 @@ export default function PresentersScreen() {
           ))}
         </View>
 
-        {/* Meet Our Presenter section */}
+        {/* Meet Our Presenters - same as web */}
         <View style={styles.meetSection}>
-          <Text style={styles.meetTitle}>MEET OUR PRESENTER</Text>
+          <Text style={styles.meetTitle}>MEET OUR PRESENTERS</Text>
           <Text style={styles.meetSubtitle}>
-            Get to know the hosts who bring music,{'\n'}stories, and energy on air.
+            Get to know the hosts who bring music, stories, <Text style={[styles.meetSubtitle, { fontFamily: fonts.systemFont }]}>&</Text> energy on air.
           </Text>
           <BroadcastersSlider />
         </View>
@@ -81,16 +77,16 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.sectionGap,
   },
   title: {
-    fontSize: 32,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h1,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginTop: spacing.lg,
     marginBottom: spacing.sm,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     textAlign: 'center',
@@ -108,37 +104,40 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   listRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: spacing.lg,
   },
-  tick: {
-    marginRight: spacing.md,
+  listRowUnderline: {
+    borderBottomWidth: 2,
+    borderBottomColor: colors.accentGreen,
+    paddingBottom: spacing.xs,
+    alignSelf: 'flex-start',
   },
   listText: {
-    flex: 1,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 24,
   },
+  listTextGreen: {
+    color: colors.accentGreen,
+  },
   listChar: {
-    fontFamily: 'System',
+    fontFamily: fonts.systemFont,
   },
   meetSection: {
     marginTop: spacing.xxl,
   },
   meetTitle: {
-    fontSize: 28,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h2,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     marginBottom: spacing.sm,
     letterSpacing: 1,
   },
   meetSubtitle: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     textAlign: 'center',

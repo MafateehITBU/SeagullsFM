@@ -17,7 +17,9 @@ import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { fonts } from '../../theme/fonts';
+import { fontSizes, fontWeights } from '../../theme/typography';
 import { API_CONFIG } from '../../config/api';
+import TextWithSymbolFallback from '../../components/TextWithSymbolFallback';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const HERO_HEIGHT = Math.min(screenHeight * 0.5, 420);
@@ -190,10 +192,10 @@ export default function EventsScreen() {
               Live music, DJ nights, and unforgettable experiences by Mood FM.
             </Text>
             <View style={styles.bulletList}>
-              {BULLET_ITEMS.map((item, index) => (
+              {BULLET_ITEMS.map((bulletItem, index) => (
                 <View key={index} style={styles.bulletRow}>
                   <Ionicons name="checkmark-circle" size={20} color={colors.navbarBg} style={styles.bulletIcon} />
-                  <Text style={styles.bulletText}>{item}</Text>
+                  <TextWithSymbolFallback style={styles.bulletText}>{bulletItem}</TextWithSymbolFallback>
                 </View>
               ))}
             </View>
@@ -271,16 +273,16 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xxl,
   },
   heroTitle: {
-    fontSize: 42,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.heroTitle,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     textAlign: 'center',
     letterSpacing: 2,
     marginBottom: spacing.md,
   },
   heroSubtitle: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     textAlign: 'center',
@@ -301,7 +303,7 @@ const styles = StyleSheet.create({
   },
   bulletText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.text,
     lineHeight: 22,
@@ -338,14 +340,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   emptyTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    fontFamily: 'Fractul-Bold',
+    fontSize: fontSizes.h4,
+    fontWeight: fontWeights.black,
+    fontFamily: fonts.primaryBold,
     color: colors.text,
     marginBottom: spacing.sm,
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: fontSizes.bodyMd,
     fontFamily: fonts.secondary,
     color: colors.muted,
   },
