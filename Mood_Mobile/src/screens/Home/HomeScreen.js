@@ -13,6 +13,8 @@ import { fontSizes, fontWeights } from '../../theme/typography';
 
 // Set to true to show the News section on the home screen
 const SHOW_NEWS_SECTION = false;
+// Set to true to show the Events section (CTA "ON-AIR & ON GROUND") on the home screen
+const SHOW_EVENTS_SECTION = false;
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
@@ -140,8 +142,8 @@ export default function HomeScreen() {
         {/* News Section - hidden when SHOW_NEWS_SECTION is false */}
         {SHOW_NEWS_SECTION && <NewsSlider />}
 
-        {/* CTA Section */}
-        <CTASection />
+        {/* Events Section (CTA) - hidden when SHOW_EVENTS_SECTION is false */}
+        {SHOW_EVENTS_SECTION && <CTASection />}
 
       </ScrollView>
     </View>

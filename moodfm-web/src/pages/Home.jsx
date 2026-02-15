@@ -18,6 +18,8 @@ import NoData from "../components/UI/NoData";
 
 // Set to true to show the News section on the home page
 const SHOW_NEWS_SECTION = false;
+// Set to true to show the Events section on the home page
+const SHOW_EVENTS_SECTION = false;
 
 const Home = () => {
     const { staticInfo } = useStaticInfo();
@@ -505,7 +507,8 @@ const Home = () => {
             </section>
             )}
 
-            {/* Events Section */}
+            {/* Events Section - hidden when SHOW_EVENTS_SECTION is false */}
+            {SHOW_EVENTS_SECTION && (
             <section className="events-section mt-3 pt-4 pb-4">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
@@ -532,6 +535,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+            )}
 
             <Footer />
         </>
