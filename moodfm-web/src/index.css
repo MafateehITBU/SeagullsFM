@@ -996,7 +996,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 3rem;
+  /* padding-bottom: 3rem; */
 }
 
 .presenters-section.container {

@@ -396,7 +396,7 @@ const Home = () => {
             </section>
 
             {/* App Section */}
-            <section className="app-section mt-3 pt-4 pb-4">
+            <section className="app-section mt-3 pt-4 pb-5">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
                         <h1 className="app-title">TAKE YOUR MOOD <br />

@@ -21,7 +21,9 @@ rm -rf Mood_Mobile
 
 ## 2. DNS (do this first)
 
-At the place where you manage **mood.fm** and **watar.fm**:
+**mood.fm** is the main domain (e.g. www.mood.fm). DNS for mood.fm is managed at **[dot.fm](https://dot.fm/)** (the .FM registry): log in at [dot.fm/manager](https://dot.fm/manager) to edit records.
+
+At the place where you manage **mood.fm** (dot.fm) and **watar.fm**:
 
 | Type  | Name | Value       | TTL |
 |-------|------|-------------|-----|
@@ -160,6 +162,38 @@ If you also want **https://mood.fm/cms** to open the CMS (in addition to cms.wat
 ```
 
 Then run `sed` again to replace `PROJECT_PATH` and `nginx -t && systemctl reload nginx`.
+
+---
+
+## DNS troubleshooting (mood.fm still shows old IP)
+
+**Main domain:** www.mood.fm. **DNS is managed at [dot.fm](https://dot.fm/)** (the .FM registry) — use [Manage Domains / Log In](https://dot.fm/manager) to edit records.
+
+If you pointed **mood.fm** to this server but you still see the old site or DNS checkers show the **old IP**:
+
+1. **Change DNS at dot.fm**  
+   In [dot.fm Manager](https://dot.fm/manager), edit DNS for **mood.fm**. You need **A records**:
+   - **Name:** `@` (root → mood.fm) → **Value:** your server IP (e.g. `72.60.132.57`)
+   - **Name:** `www` (→ www.mood.fm) → **Value:** same server IP  
+   Remove or overwrite any old A records that point to the previous IP. Save changes.
+
+2. **Propagation delay**  
+   DNS can take **5 minutes to 48 hours** to update everywhere. If the old records had a high TTL (e.g. 86400), caches may keep the old IP for hours. Set TTL to **300** (5 min) when you change records so future changes propagate faster.
+
+3. **Check what DNS returns**  
+   From your laptop:
+   ```bash
+   dig mood.fm +short
+   dig www.mood.fm +short
+   ```
+   If these still show the old IP, the change either hasn’t been saved at dot.fm or hasn’t propagated yet.
+
+4. **Bypass your local cache**  
+   - Flush DNS: macOS `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`
+   - Or test from another network (e.g. mobile data) or from [whatsmydns.net](https://www.whatsmydns.net).
+
+5. **Nginx**  
+   Your Nginx config already serves mood.fm and www.mood.fm. After DNS points to this server, run Certbot so you get HTTPS for mood.fm.
 
 ---
 
