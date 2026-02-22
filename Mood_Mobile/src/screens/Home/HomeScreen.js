@@ -12,7 +12,7 @@ import { fonts } from '../../theme/fonts';
 import { fontSizes, fontWeights } from '../../theme/typography';
 
 // Set to true to show the News section on the home screen
-const SHOW_NEWS_SECTION = false;
+const SHOW_NEWS_SECTION = true;
 // Set to true to show the Events section (CTA "ON-AIR & ON GROUND") on the home screen
 const SHOW_EVENTS_SECTION = false;
 

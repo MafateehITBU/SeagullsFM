@@ -17,7 +17,7 @@ import NewsCard from "../components/UI/NewsCard";
 import NoData from "../components/UI/NoData";
 
 // Set to true to show the News section on the home page
-const SHOW_NEWS_SECTION = false;
+const SHOW_NEWS_SECTION = true;
 // Set to true to show the Events section on the home page
 const SHOW_EVENTS_SECTION = false;
 

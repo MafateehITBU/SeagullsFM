@@ -18,12 +18,14 @@ export default function CustomDrawerModal({ visible, onClose }) {
   const [getInvolvedExpanded, setGetInvolvedExpanded] = useState(false);
   const dropdownAnim = useRef(new Animated.Value(0)).current;
 
-  // Set to true to show News and Events in the menu (screens must be enabled in RootNavigator)
-  const SHOW_NEWS_AND_EVENTS_IN_NAV = false;
+  // Set to true to show News/Events in the menu (screens must be enabled in RootNavigator)
+  const SHOW_NEWS_IN_NAV = true;
+  const SHOW_EVENTS_IN_NAV = false;
   const menuItems = [
     { name: 'Home', screen: 'Home' },
     { name: 'About us', screen: 'About' },
-    ...(SHOW_NEWS_AND_EVENTS_IN_NAV ? [{ name: 'News', screen: 'News' }, { name: 'Events', screen: 'Events' }] : []),
+    ...(SHOW_NEWS_IN_NAV ? [{ name: 'News', screen: 'News' }] : []),
+    ...(SHOW_EVENTS_IN_NAV ? [{ name: 'Events', screen: 'Events' }] : []),
     { name: 'Presenters', screen: 'Presenters' },
   ];
   // When not logged in, show Login in drawer; when logged in, Profile/Sign Out are in navbar dropdown

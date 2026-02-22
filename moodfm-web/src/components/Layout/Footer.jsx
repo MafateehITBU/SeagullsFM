@@ -4,7 +4,7 @@ import { useStaticInfo } from '../../context/StaticInfoContext';
 import { Link } from 'react-router-dom';
 
 // Match Header: set to true to show News and Events (pages exist at /news and /events)
-const SHOW_NEWS_IN_NAV = false;
+const SHOW_NEWS_IN_NAV = true;
 const SHOW_EVENTS_IN_NAV = false;
 
 const Footer = () => {

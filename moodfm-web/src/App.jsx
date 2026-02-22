@@ -20,7 +20,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { useLiveStream } from "./context/LiveStreamContext";
 
 // Set to true to enable /news and /events routes (and show nav links in Header/Footer)
-const SHOW_NEWS_AND_EVENTS_ROUTES = false;
+const SHOW_NEWS_AND_EVENTS_ROUTES = true;
 
 const App = () => {
   const location = useLocation();

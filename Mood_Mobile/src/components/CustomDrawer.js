@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
 
-// Set to true to show News and Events in the drawer (screens must be enabled in RootNavigator)
-const SHOW_NEWS_AND_EVENTS_IN_NAV = false;
+// Set to true to show News/Events in the drawer (screens must be enabled in RootNavigator)
+const SHOW_NEWS_IN_NAV = true;
+const SHOW_EVENTS_IN_NAV = false;
 
 export default function CustomDrawer(props) {
   const navigation = useNavigation();
@@ -12,7 +13,8 @@ export default function CustomDrawer(props) {
   const allMenuItems = [
     { name: 'Home', screen: 'Home' },
     { name: 'About us', screen: 'About' },
-    ...(SHOW_NEWS_AND_EVENTS_IN_NAV ? [{ name: 'News', screen: 'News' }, { name: 'Events', screen: 'Events' }] : []),
+    ...(SHOW_NEWS_IN_NAV ? [{ name: 'News', screen: 'News' }] : []),
+    ...(SHOW_EVENTS_IN_NAV ? [{ name: 'Events', screen: 'Events' }] : []),
     { name: 'Presenters', screen: 'Presenters' },
     { name: 'Login', screen: 'Login' },
   ];

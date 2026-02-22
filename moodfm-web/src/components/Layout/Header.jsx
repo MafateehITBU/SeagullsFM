@@ -8,7 +8,7 @@ import { useStaticInfo } from '../../context/StaticInfoContext';
 import logoDark from '../../assets/imgs/logo-dark.png';
 
 // Set to true to show News and Events in the nav (pages still exist at /news and /events)
-const SHOW_NEWS_IN_NAV = false;
+const SHOW_NEWS_IN_NAV = true;
 const SHOW_EVENTS_IN_NAV = false;
 
 const Header = () => {
