@@ -471,8 +471,7 @@ h3 {
 .floating-whatsapp-box {
   position: fixed;
   right: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 5.5rem;
   z-index: 9999;
   width: 52px;
   height: 52px;
@@ -491,7 +490,7 @@ h3 {
 
 .floating-whatsapp-box:hover {
   color: #fff;
-  transform: translateY(-50%) scale(1.08);
+  transform: scale(1.08);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
@@ -3550,13 +3549,6 @@ h3 {
   }
 }
 
-/* News Details Page css */
-.news-details-section .hero-img-container {
-  width: 100%;
-  height: 500px;
-  overflow: hidden;
-  position: relative;
-}
 
 /* Image carousel – full screen width, auto-swipe, no arrows */
 .news-details-section {

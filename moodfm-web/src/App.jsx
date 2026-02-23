@@ -65,7 +65,6 @@ const App = () => {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {/* WhatsApp: fixed right, vertically centered, round icon only */}
       <a
           href={WHATSAPP_URL}
           target="_blank"
