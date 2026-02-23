@@ -503,7 +503,8 @@ const Home = () => {
             </section>
 
 
-            {/* Events Section */}
+            {/* Events Section - hidden (Events page disabled) */}
+            {false && (
             <section className="events-section mt-3 pt-4 pb-4">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
@@ -530,6 +531,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+            )}
 
             <Footer />
         </>

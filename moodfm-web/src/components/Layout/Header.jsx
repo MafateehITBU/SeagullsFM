@@ -7,6 +7,10 @@ import { useAuth } from '../../context/AuthContext';
 import { useStaticInfo } from '../../context/StaticInfoContext';
 import logoDark from '../../assets/imgs/logo-dark.png';
 
+// Set to true to show News and Events in the nav
+const SHOW_NEWS_IN_NAV = true;
+const SHOW_EVENTS_IN_NAV = false; // Events page hidden
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -164,6 +168,7 @@ const Header = () => {
             >
               News
             </Nav.Link>
+            {SHOW_EVENTS_IN_NAV && (
             <Nav.Link 
               as={Link} 
               to="/events" 
@@ -172,6 +177,7 @@ const Header = () => {
             >
               Events
             </Nav.Link>
+            )}
             <Nav.Link 
               as={Link} 
               to="/presenters" 

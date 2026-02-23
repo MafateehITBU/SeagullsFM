@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import News from "./pages/News";
 import NewsDetails from "./pages/NewsDetails";
-import Events from "./pages/Events";
+// import Events from "./pages/Events"; // Events page hidden
 import Presenters from "./pages/Presenters";
 import AdWithUs from "./pages/AdWithUs";
 import ShowYourTalent from "./pages/ShowYourTalent";
@@ -41,7 +41,9 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/news" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <News /> : <Navigate to="/" replace />} />
         <Route path="/news-details" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <NewsDetails /> : <Navigate to="/" replace />} />
-        <Route path="/events" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <Events /> : <Navigate to="/" replace />} />
+        {/* Events page hidden - redirect to home */}
+        {/* <Route path="/events" element={SHOW_NEWS_AND_EVENTS_ROUTES ? <Events /> : <Navigate to="/" replace />} /> */}
+        <Route path="/events" element={<Navigate to="/" replace />} />
         <Route path="/presenters" element={<Presenters />} />
         <Route path="/ad-with-us" element={<AdWithUs />} />
         <Route path="/show-your-talent" element={<ShowYourTalent />} />
