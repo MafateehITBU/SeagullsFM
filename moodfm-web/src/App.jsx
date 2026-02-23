@@ -17,6 +17,7 @@ import ProgramDetails from "./pages/ProgramDetails";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
+import StaticInfoHead from "./components/StaticInfoHead";
 import { useLiveStream } from "./context/LiveStreamContext";
 
 // Set to true to enable /news and /events routes (and show nav links in Header/Footer)
@@ -32,6 +33,7 @@ const App = () => {
 
   return (
     <>
+      <StaticInfoHead />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />

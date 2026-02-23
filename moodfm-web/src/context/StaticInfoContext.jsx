@@ -3,6 +3,33 @@ import axiosInstance from "../axiosConfig";
 
 const StaticInfoContext = createContext(null);
 
+/** Channel name we use for this app – only MoodFM static info is used */
+const MOOD_FM_CHANNEL = "MoodFM";
+
+/**
+ * Maps raw static info API item (one channel) to app shape.
+ * API returns: frequencyimg { url }, downloadApp { AppStore, GooglePlay }, favIcon { url, width?, height? }, etc.
+ */
+function mapStaticInfoFromApi(item) {
+  if (!item) return null;
+  return {
+    channelId: item.channelId?._id ?? null,
+    channelName: item.channelId?.name ?? null,
+    aboutUs: item.aboutUS ?? item.aboutUs ?? null,
+    frequency: item.frequency ?? null,
+    frequencyimg: item.frequencyimg?.url ?? null,
+    address: item.address ?? null,
+    appStore: item.downloadApp?.AppStore ?? null,
+    googlePlay: item.downloadApp?.GooglePlay ?? null,
+    email: item.email ?? null,
+    phoneNumber: item.phoneNumber ?? null,
+    favIcon: item.favIcon?.url ?? null,
+    socialMediaLinks: item.socialMediaLinks ?? null,
+    metaDescription: item.metaDescription ?? null,
+    metaTags: item.metaTags ?? null,
+  };
+}
+
 export const StaticInfoProvider = ({ children }) => {
   const [staticInfo, setStaticInfo] = useState({
     channelId: null,
@@ -29,35 +56,14 @@ export const StaticInfoProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         const response = await axiosInstance.get("/staticinfo");
-        
-        // Filter to only get data where channelId.name === "MoodFM"
-        const moodFMInfo = response.data.data?.find(
-          (info) => info.channelId?.name === "MoodFM"
-        );
-
-        if (moodFMInfo) {
-          setStaticInfo({
-            channelId: moodFMInfo.channelId?._id,
-            channelName: moodFMInfo.channelId?.name,
-            aboutUs: moodFMInfo.aboutUS || moodFMInfo.aboutUs,
-            frequency: moodFMInfo.frequency,
-            frequencyimg: moodFMInfo.frequencyimg?.url,
-            address: moodFMInfo.address,
-            appStore: moodFMInfo.downloadApp?.AppStore,
-            googlePlay: moodFMInfo.downloadApp?.GooglePlay,
-            email: moodFMInfo.email,
-            favIcon: moodFMInfo.favIcon?.url,
-            metaDescription: moodFMInfo.metaDescription,
-            metaTags: moodFMInfo.metaTags,
-            phoneNumber: moodFMInfo.phoneNumber,
-            socialMediaLinks: moodFMInfo.socialMediaLinks,
-          });
-        } else {
-          setStaticInfo(null);
-        }
-      } catch (error) {
-        console.error("Error fetching static info:", error);
-        setError(error);
+        const list = response.data.data;
+        const moodFMInfo = Array.isArray(list)
+          ? list.find((info) => info.channelId?.name === MOOD_FM_CHANNEL)
+          : null;
+        setStaticInfo(mapStaticInfoFromApi(moodFMInfo) ?? null);
+      } catch (err) {
+        console.error("Error fetching static info:", err);
+        setError(err);
         setStaticInfo(null);
       } finally {
         setLoading(false);
@@ -76,34 +82,14 @@ export const StaticInfoProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         const response = await axiosInstance.get("/staticinfo");
-        
-        const moodFMInfo = response.data.data?.find(
-          (info) => info.channelId?.name === "MoodFM"
-        );
-
-        if (moodFMInfo) {
-          setStaticInfo({
-            channelId: moodFMInfo.channelId?._id,
-            channelName: moodFMInfo.channelId?.name,
-            aboutUs: moodFMInfo.aboutUS || moodFMInfo.aboutUs,
-            frequency: moodFMInfo.frequency,
-            frequencyimg: moodFMInfo.frequencyimg?.url,
-            address: moodFMInfo.address,
-            appStore: moodFMInfo.downloadApp?.AppStore,
-            googlePlay: moodFMInfo.downloadApp?.GooglePlay,
-            email: moodFMInfo.email,
-            favIcon: moodFMInfo.favIcon?.url,
-            metaDescription: moodFMInfo.metaDescription,
-            metaTags: moodFMInfo.metaTags,
-            phoneNumber: moodFMInfo.phoneNumber,
-            socialMediaLinks: moodFMInfo.socialMediaLinks,
-          });
-        } else {
-          setStaticInfo(null);
-        }
-      } catch (error) {
-        console.error("Error refetching static info:", error);
-        setError(error);
+        const list = response.data.data;
+        const moodFMInfo = Array.isArray(list)
+          ? list.find((info) => info.channelId?.name === MOOD_FM_CHANNEL)
+          : null;
+        setStaticInfo(mapStaticInfoFromApi(moodFMInfo) ?? null);
+      } catch (err) {
+        console.error("Error refetching static info:", err);
+        setError(err);
         setStaticInfo(null);
       } finally {
         setLoading(false);
