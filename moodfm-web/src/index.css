@@ -1016,7 +1016,6 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 3rem;
 }
 
 .presenters-section.container {
@@ -1376,15 +1375,17 @@ h3 {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* One card: centered, slightly larger so it doesn't look lost */
+/* One card: centered */
 .news-cards-wrapper.news-cards-count-1 {
   justify-content: center;
+  align-items: center;
 }
 
 .news-cards-wrapper.news-cards-count-1 .news-card {
   flex: 0 0 auto;
   max-width: 480px;
   width: 100%;
+  margin: 0 auto;
   transform: scale(1);
   opacity: 1;
 }
@@ -3176,6 +3177,36 @@ h3 {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Home: single news card centered (override grid) */
+.news-cards-wrapper.news-cards-count-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: unset;
+}
+
+.news-cards-wrapper.news-cards-count-1 .news-card {
+  flex: 0 0 auto;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Home: two cards centered in row (override grid) */
+.news-cards-wrapper.news-cards-count-2 {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2rem;
+  grid-template-columns: unset;
+}
+
+.news-cards-wrapper.news-cards-count-2 .news-card {
+  flex: 0 1 320px;
+  max-width: 380px;
+}
+
+/* Home: 3 cards use grid = 3 in a row (no override) */
 
 /* News Card News Page css */
 .news-card-page {
