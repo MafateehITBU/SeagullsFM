@@ -55,33 +55,40 @@ export const createNews = async (req, res) => {
       content,
     });
 
-    // Handle image upload if provided
-    if (req.file) {
+    // Handle multiple images upload if provided
+    if (req.files && req.files.images && req.files.images.length > 0) {
       try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-          folder: "seagulls/news",
-          width: 800,
-          height: 600,
-          crop: "limit",
+        const imageUploadPromises = req.files.images.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "seagulls/news",
+          });
+          fs.unlinkSync(file.path);
+          return {
+            public_id: result.public_id,
+            url: result.secure_url,
+          };
         });
-        news.image = {
-          public_id: result.public_id,
-          url: result.secure_url,
-        };
-        await news.save();
-
-        // Remove file from server after upload
-        fs.unlinkSync(path.resolve(req.file.path));
-      } catch (error) {
-        // Remove file from server if upload fails
-        fs.unlinkSync(path.resolve(req.file.path));
-        throw error;
+        news.images = await Promise.all(imageUploadPromises);
+      } catch (uploadError) {
+        // Clean up uploaded files on error
+        if (req.files?.images) {
+          req.files.images.forEach((file) => {
+            if (file.path) fs.unlinkSync(file.path);
+          });
+        }
+        return res.status(500).json({
+          success: false,
+          message: "Images upload failed",
+          error: uploadError.message,
+        });
       }
     } else {
       return res
         .status(400)
-        .json({ success: false, message: "Image is required" });
+        .json({ success: false, message: "Images are required" });
     }
+
+    await news.save();
 
     res.status(201).json({
       success: true,
@@ -146,7 +153,7 @@ export const getNewsById = async (req, res) => {
 export const updateNews = async (req, res) => {
   try {
     const newsId = req.params.id;
-    const { title, description, content } = req.body;
+    const { title, description, content, deletedImages } = req.body;
     const updateData = {};
 
     if (title) {
@@ -190,32 +197,59 @@ export const updateNews = async (req, res) => {
         .json({ success: false, message: "News article not found" });
     }
 
-    // Handle image update if provided
-    if (req.file) {
-      // Delete old image from Cloudinary
-      if (news.image && news.image.public_id) {
-        await cloudinary.uploader.destroy(news.image.public_id);
-      }
+    // Parse deletedImages (JSON string or array)
+    let toDelete = [];
+    if (deletedImages) {
       try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-          folder: "seagulls/news",
-          width: 800,
-          height: 600,
-          crop: "limit",
-        });
-        news.image = {
-          public_id: result.public_id,
-          url: result.secure_url,
-        };
-        await news.save();
-        // Remove file from server after upload
-        fs.unlinkSync(path.resolve(req.file.path));
-      } catch (error) {
-        // Remove file from server if upload fails
-        fs.unlinkSync(path.resolve(req.file.path));
-        throw error;
+        toDelete = typeof deletedImages === "string" ? JSON.parse(deletedImages) : deletedImages;
+        if (!Array.isArray(toDelete)) toDelete = [];
+      } catch {
+        toDelete = [];
       }
     }
+
+    // Delete removed images from Cloudinary and from news.images
+    if (toDelete.length > 0 && news.images && news.images.length > 0) {
+      for (const publicId of toDelete) {
+        try {
+          if (publicId) await cloudinary.uploader.destroy(publicId);
+        } catch (err) {
+          console.error("Cloudinary destroy error:", err.message);
+        }
+      }
+      news.images = news.images.filter((img) => !toDelete.includes(img.public_id));
+    }
+
+    // Upload new images and append to existing
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      try {
+        const imageUploadPromises = req.files.images.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "seagulls/news",
+          });
+          fs.unlinkSync(file.path);
+          return {
+            public_id: result.public_id,
+            url: result.secure_url,
+          };
+        });
+        const newUploads = await Promise.all(imageUploadPromises);
+        news.images = (news.images || []).concat(newUploads);
+      } catch (uploadError) {
+        if (req.files?.images) {
+          req.files.images.forEach((file) => {
+            if (file.path) fs.unlinkSync(file.path);
+          });
+        }
+        return res.status(500).json({
+          success: false,
+          message: "Images upload failed",
+          error: uploadError.message,
+        });
+      }
+    }
+
+    await news.save();
 
     res.status(200).json({
       success: true,
@@ -244,8 +278,12 @@ export const deleteNews = async (req, res) => {
     }
 
     // Delete image from Cloudinary if it exists
-    if (news.image && news.image.public_id) {
-      await cloudinary.uploader.destroy(news.image.public_id);
+    if (news.images && news.images.length > 0) {
+      news.images.forEach(async (image) => {
+        if (image.public_id) {
+          await cloudinary.uploader.destroy(image.public_id);
+        }
+      });
     }
 
     await News.findByIdAndDelete(newsId);

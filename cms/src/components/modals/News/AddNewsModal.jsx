@@ -7,7 +7,7 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,6 +17,7 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
     if (!title.trim()) newErrors.title = "Title is required";
     if (!description.trim()) newErrors.description = "Description is required";
     if (!content.trim()) newErrors.content = "Content is required";
+    if (!images.length) newErrors.images = "At least one image is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -25,7 +26,7 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
     setTitle("");
     setDescription("");
     setContent("");
-    setImage(null);
+    setImages([]);
     setErrors({});
   };
 
@@ -41,7 +42,10 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
       formData.append("description", description);
       formData.append("content", content);
       formData.append("channelId", channelId);
-      if (image) formData.append("image", image);
+      
+      images.forEach((imageFile) => {
+        formData.append("images", imageFile);
+      });
 
       await axiosInstance.post("/news", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -104,12 +108,55 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Image (optional)</Form.Label>
+            <Form.Label>Images (multiple)</Form.Label>
             <Form.Control
               type="file"
               accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
+              multiple
+              onChange={(e) => {
+                const files = Array.from(e.target.files || []);
+                setImages(files);
+              }}
+              isInvalid={!!errors.images}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.images}
+            </Form.Control.Feedback>
+            {images.length > 0 && (
+              <div className="mt-2 d-flex flex-wrap gap-2">
+                {images.map((file, i) => (
+                  <div key={i} className="position-relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Preview ${i + 1}`}
+                      style={{
+                        width: 64,
+                        height: 64,
+                        objectFit: "cover",
+                        borderRadius: 6,
+                        border: "1px solid #dee2e6",
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="danger"
+                      size="sm"
+                      className="position-absolute top-0 end-0 translate-middle"
+                      style={{ padding: "0 4px", fontSize: 10 }}
+                      onClick={() =>
+                        setImages((prev) => prev.filter((_, idx) => idx !== i))
+                      }
+                      aria-label="Remove image"
+                    >
+                      ×
+                    </Button>
+                  </div>
+                ))}
+                <small className="text-muted align-self-center">
+                  {images.length} image{images.length !== 1 ? "s" : ""} selected
+                </small>
+              </div>
+            )}
           </Form.Group>
 
           <div className="text-center">

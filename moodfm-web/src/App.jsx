@@ -22,6 +22,9 @@ import { useLiveStream } from "./context/LiveStreamContext";
 // Set to true to enable /news and /events routes (and show nav links in Header/Footer)
 const SHOW_NEWS_AND_EVENTS_ROUTES = true;
 
+const WHATSAPP_NUMBER = "962789292002"; // +962 789 292 002
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+
 const App = () => {
   const location = useLocation();
   const { isPlaying, togglePlay } = useLiveStream();
@@ -60,7 +63,18 @@ const App = () => {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {/* Fixed live stream control - bottom right, only when not on home */}
+      {/* WhatsApp: fixed right, vertically centered, round icon only */}
+      <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="floating-whatsapp-box"
+          title="Chat on WhatsApp"
+          aria-label="Chat on WhatsApp"
+        >
+          <Icon icon="logos:whatsapp-icon" width="28" height="28" />
+        </a>
+      {/* Listen Live: bottom right (when not on home) */}
       {showFloatingLive && (
         <button
           type="button"

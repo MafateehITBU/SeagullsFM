@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
+import { Icon } from '@iconify/react'
 
 import Input from '../../components/UI/Input'
-import image from "../../assets/imgs/login.png"
 
 const Login = () => {
     const { login } = useAuth();
@@ -40,18 +40,15 @@ const Login = () => {
         <>
             <ToastContainer />
             <section className="login-section">
-                <div className="login-container flex-between">
-                    {/* Left Side - Image */}
-                    <div className="login-left">
-                        <img src={image} alt="Login" className="login-image" />
-                    </div>
+                <div className="login-container login-container-centered">
+                    <Link to="/" className="login-back-home">
+                        <Icon icon="mdi:arrow-left" width={20} height={20} />
+                        Back Home
+                    </Link>
+                    <div className="login-form-wrapper">
+                        <h2 className="login-title">Sign In</h2>
 
-                    {/* Right Side - Form */}
-                    <div className="login-right">
-                        <div className="login-form-wrapper">
-                            <h2 className="login-title">Sign In</h2>
-                            
-                            <form className="login-form" onSubmit={handleLogin}>
+                        <form className="login-form" onSubmit={handleLogin}>
                                 {/* Email Field */}
                                 <Input
                                     variant="login"
@@ -108,7 +105,6 @@ const Login = () => {
                                     <Link to="/signup" className="login-signup-bold">SIGN UP</Link>
                                 </div>
                             </form>
-                        </div>
                     </div>
                 </div>
             </section>

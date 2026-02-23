@@ -6,63 +6,54 @@
   font-weight: 100;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-thin.otf') format('opentype');
   font-weight: 200;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-semibold.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-extrabold.otf') format('opentype');
   font-weight: 800;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Fractul';
   src: url('./assets/fonts/fonnts.com-fractul-black.otf') format('opentype');
   font-weight: 900;
   font-style: normal;
 }
-
 /* Italics */
 @font-face {
   font-family: 'Fractul';
@@ -197,6 +188,7 @@ h5,
 h6 {
   font-family: 'Fractul', sans-serif;
   color: var(--text-primary);
+
 }
 
 h1 {
@@ -475,6 +467,35 @@ h3 {
   letter-spacing: -0.5px;
 }
 
+/* WhatsApp: right side, vertically centered, round icon only */
+.floating-whatsapp-box {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9999;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: #25d366;
+  border: 2px solid #128c7e;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.floating-whatsapp-box:hover {
+  color: #fff;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Listen Live: bottom right */
 .floating-live-box {
   position: fixed;
   bottom: 1.5rem;
@@ -495,8 +516,8 @@ h3 {
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
 }
-
 
 .floating-live-box:hover {
   transform: scale(1.03);
@@ -996,7 +1017,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding-bottom: 3rem; */
+  padding-bottom: 3rem;
 }
 
 .presenters-section.container {
@@ -1356,6 +1377,41 @@ h3 {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* One card: centered, slightly larger so it doesn't look lost */
+.news-cards-wrapper.news-cards-count-1 {
+  justify-content: center;
+}
+
+.news-cards-wrapper.news-cards-count-1 .news-card {
+  flex: 0 0 auto;
+  max-width: 480px;
+  width: 100%;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.news-cards-wrapper.news-cards-count-1 .news-card::after {
+  display: none;
+}
+
+/* Two cards: side by side, equal prominence */
+.news-cards-wrapper.news-cards-count-2 {
+  gap: 2rem;
+  justify-content: center;
+}
+
+.news-cards-wrapper.news-cards-count-2 .news-card {
+  flex: 1 1 calc(50% - 1rem);
+  max-width: calc(50% - 1rem);
+  min-width: 280px;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.news-cards-wrapper.news-cards-count-2 .news-card::after {
+  display: none;
+}
+
 .news-card {
   flex: 0 0 calc(33.333% - 1.5rem);
   max-width: 420px;
@@ -1556,6 +1612,16 @@ h3 {
   .news-cards-wrapper {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .news-cards-wrapper.news-cards-count-1 .news-card {
+    flex: 0 0 auto;
+    max-width: 480px;
+  }
+
+  .news-cards-wrapper.news-cards-count-2 .news-card {
+    flex: 0 0 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
   }
 
   .news-card {
@@ -3492,13 +3558,82 @@ h3 {
   position: relative;
 }
 
-/* .news-details-section .hero-img-container img now uses .img-cover utility class */
+/* Image carousel – full screen width, auto-swipe, no arrows */
+.news-details-section {
+  padding-left: 0;
+  padding-right: 0;
+  overflow-x: hidden;
+}
+
+.news-details-carousel {
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.news-details-carousel-inner {
+  width: 100%;
+  height: 70vh; 
+  display: block;
+  overflow: hidden;
+}
+
+.news-details-carousel-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.news-details-carousel-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.news-details-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.news-details-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.news-details-carousel-dot.active {
+  background: #fff;
+}
+
 .news-details-content {
   padding: 2rem 0;
   font-family: 'Gobold Thin Light', sans-serif;
   font-weight: 200;
   line-height: 150%;
   text-transform: uppercase;
+}
+
+.news-details-body {
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-transform: inherit;
 }
 
 @media (max-width: 768px) {
@@ -4660,6 +4795,30 @@ padding-left: 0 !important;
   align-items: stretch;
   margin: 0;
   padding: 0;
+}
+
+.login-container-centered {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: 'Gobold Thin Light', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.login-back-home:hover {
+  color: var(--color-green);
 }
 
 .login-left {

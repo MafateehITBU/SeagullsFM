@@ -16,11 +16,6 @@ import eventsImg from "../assets/imgs/Home/events.png";
 import NewsCard from "../components/UI/NewsCard";
 import NoData from "../components/UI/NoData";
 
-// Set to true to show the News section on the home page
-const SHOW_NEWS_SECTION = true;
-// Set to true to show the Events section on the home page
-const SHOW_EVENTS_SECTION = false;
-
 const Home = () => {
     const { staticInfo } = useStaticInfo();
     const [programs, setPrograms] = useState([]);
@@ -396,7 +391,7 @@ const Home = () => {
             </section>
 
             {/* App Section */}
-            <section className="app-section mt-3 pt-4 pb-5">
+            <section className="app-section mt-3 pt-4 pb-4">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
                         <h1 className="app-title">TAKE YOUR MOOD <br />
@@ -443,8 +438,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* News Section - hidden when SHOW_NEWS_SECTION is false */}
-            {SHOW_NEWS_SECTION && (
+            {/* News Section */}
             <section className="news-section mt-3 pt-4 pb-4">
                 <div className="news-container flex-column-start">
                     <div className="news-title-container">
@@ -460,10 +454,12 @@ const Home = () => {
                             <NoData message="No news available at the moment" icon="material-symbols:newspaper-outline" />
                         ) : (
                             <>
-                                <div className="news-cards-wrapper">
+                                <div className={`news-cards-wrapper news-cards-count-${visibleNews.length}`}>
                                     {visibleNews.map((newsItem, index) => {
                                         let cardClass = '';
-                                        if (slidesToShow === 3 && visibleNews.length === 3) {
+                                        if (visibleNews.length === 1 || visibleNews.length === 2) {
+                                            cardClass = 'news-card-active';
+                                        } else if (slidesToShow === 3 && visibleNews.length === 3) {
                                             if (index === 0) cardClass = 'news-card-left';
                                             else if (index === 1) cardClass = 'news-card-active';
                                             else if (index === 2) cardClass = 'news-card-right';
@@ -505,10 +501,9 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            )}
 
-            {/* Events Section - hidden when SHOW_EVENTS_SECTION is false */}
-            {SHOW_EVENTS_SECTION && (
+
+            {/* Events Section */}
             <section className="events-section mt-3 pt-4 pb-4">
                 <div className="app-container flex-between">
                     <div className="left-side flex-column-start">
@@ -535,7 +530,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            )}
 
             <Footer />
         </>

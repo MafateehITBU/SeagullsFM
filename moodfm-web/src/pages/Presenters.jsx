@@ -121,7 +121,7 @@ const Presenters = () => {
                                     {formatTextWithSpecialChars(currentPresenter.name)}
                                 </h3>
                                 <p 
-                                    className="presenter-description pb-3"
+                                    className="presenter-description"
                                     style={{
                                         color: isMoe ? 'var(--color-yellow)' : 'var(--color-cyan)'
                                     }}
@@ -175,4 +175,5 @@ const Presenters = () => {
         </>
     )
 }
+// test
 export default Presenters

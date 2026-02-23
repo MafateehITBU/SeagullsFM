@@ -19,8 +19,8 @@ router.get('/:id', getNewsById);
 router.use(protect);
 router.use(authorize('admin', 'superadmin'));
 
-router.post('/', upload.single('image'), createNews);
-router.put('/:id', upload.single('image'), updateNews);
+router.post('/', upload.fields([{ name: 'images', maxCount: 10 }]), createNews);
+router.put('/:id', upload.fields([{ name: 'images', maxCount: 10 }]), updateNews);
 router.delete('/:id', deleteNews);
 
 export default router;

@@ -9,11 +9,13 @@ const NewsCard = ({ news, cardClass = '' }) => {
         ? news.description.substring(0, 15) + (news.description.length > 15 ? '...' : '')
         : '';
 
+    const imageUrl = news.images?.[0]?.url ?? news.image?.url;
+
     return (
         <div className={`news-card ${cardClass}`}>
             <div className="news-card-image-container">
                 <img
-                    src={news.image?.url}
+                    src={imageUrl}
                     alt={news.title}
                     className="news-card-image"
                 />

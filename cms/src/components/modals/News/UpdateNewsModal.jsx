@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, Row, Col, Image } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
 
@@ -7,18 +7,26 @@ const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [newImages, setNewImages] = useState([]);
+  const [deletedPublicIds, setDeletedPublicIds] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const existingImages = news?.images || [];
+  const keptImages = existingImages.filter((img) => !deletedPublicIds.includes(img.public_id));
 
   useEffect(() => {
     if (news) {
       setTitle(news.title || "");
       setDescription(news.description || "");
       setContent(news.content || "");
-      setPreview(news.image?.url || null);
+      setNewImages([]);
+      setDeletedPublicIds([]);
     }
   }, [news]);
+
+  const handleRemoveExisting = (publicId) => {
+    setDeletedPublicIds((prev) => (prev.includes(publicId) ? prev : [...prev, publicId]));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,17 +34,19 @@ const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
 
     try {
       const formData = new FormData();
-      if (title !== news.title) formData.append("title", title);
-      if (description !== news.description)
-        formData.append("description", description);
-        if (content !== news.content) formData.append("content", content);
-      if (image) formData.append("image", image);
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("content", content);
+      if (deletedPublicIds.length > 0) {
+        formData.append("deletedImages", JSON.stringify(deletedPublicIds));
+      }
+      newImages.forEach((file) => formData.append("images", file));
 
       await axiosInstance.put(`/news/${news._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success("news updated successfully");
+      toast.success("News updated successfully");
       fetchNews?.();
       handleClose();
     } catch (err) {
@@ -82,25 +92,76 @@ const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
             />
           </Form.Group>
 
-          {preview && (
-            <div className="mb-2 text-center">
-              <Image
-                src={preview}
-                rounded
-                style={{ width: "100px", height: "100px", objectFit: "cover" }}
-              />
-            </div>
-          )}
           <Form.Group className="mb-3">
-            <Form.Label>Image (optional)</Form.Label>
+            <Form.Label>Images</Form.Label>
+            <div className="d-flex flex-wrap gap-2 mb-2">
+              {keptImages.map((img, i) => (
+                <div key={img.public_id || i} className="position-relative">
+                  <img
+                    src={img.url}
+                    alt={`Existing ${i + 1}`}
+                    style={{
+                      width: 64,
+                      height: 64,
+                      objectFit: "cover",
+                      borderRadius: 6,
+                      border: "1px solid #dee2e6",
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="danger"
+                    size="sm"
+                    className="position-absolute top-0 end-0 translate-middle"
+                    style={{ padding: "0 4px", fontSize: 10 }}
+                    onClick={() => handleRemoveExisting(img.public_id)}
+                    aria-label="Remove image"
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
+              {newImages.map((file, i) => (
+                <div key={`new-${i}`} className="position-relative">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`New ${i + 1}`}
+                    style={{
+                      width: 64,
+                      height: 64,
+                      objectFit: "cover",
+                      borderRadius: 6,
+                      border: "1px solid #0d6efd",
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="danger"
+                    size="sm"
+                    className="position-absolute top-0 end-0 translate-middle"
+                    style={{ padding: "0 4px", fontSize: 10 }}
+                    onClick={() =>
+                      setNewImages((prev) => prev.filter((_, idx) => idx !== i))
+                    }
+                    aria-label="Remove new image"
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
+            </div>
             <Form.Control
               type="file"
               accept="image/*"
+              multiple
               onChange={(e) => {
-                setImage(e.target.files[0]);
-                setPreview(URL.createObjectURL(e.target.files[0]));
+                const files = Array.from(e.target.files || []);
+                setNewImages((prev) => [...prev, ...files]);
               }}
             />
+            <Form.Text className="text-muted">
+              Remove existing with ×. New files are added to the current images.
+            </Form.Text>
           </Form.Group>
 
           <div className="text-center">

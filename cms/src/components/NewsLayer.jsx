@@ -66,21 +66,65 @@ const NewsLayer = () => {
         Cell: ({ row }) => (page - 1) * pageSize + row.index + 1,
       },
       {
-        Header: "Photo",
-        accessor: "image",
-        Cell: ({ value }) => (
-          <img
-            src={value?.url}
-            alt="Profile"
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
-            onClick={() => setPreviewImage(value?.url)}
-          />
-        ),
+        Header: "Photos",
+        accessor: "images",
+        Cell: ({ row }) => {
+          const images = row?.original?.images || [];
+          const randomId = `carousel-${row.id}`;
+
+          if (images.length === 0) {
+            return (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <img
+                  src='/placeholder.jpg'
+                  alt='No Image'
+                  style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                />
+              </div>
+            );
+          }
+
+          return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div id={randomId} className="carousel slide" data-bs-ride="carousel" style={{ width: '60px' }}>
+                <div className="carousel-inner">
+                  {images.map((img, index) => (
+                    <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                      <img
+                        src={img?.url}
+                        alt={`Slide ${index}`}
+                        className="d-block w-100"
+                        style={{ height: '60px', objectFit: 'cover', borderRadius: '50%' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {images.length > 1 && (
+                  <>
+                    <button
+                      className="carousel-control-prev"
+                      type="button"
+                      data-bs-target={`#${randomId}`}
+                      data-bs-slide="prev"
+                      style={{ width: '15%' }}
+                    >
+                      <span className="carousel-control-prev-icon" style={{ filter: 'invert(1)' }}></span>
+                    </button>
+                    <button
+                      className="carousel-control-next"
+                      type="button"
+                      data-bs-target={`#${randomId}`}
+                      data-bs-slide="next"
+                      style={{ width: '15%' }}
+                    >
+                      <span className="carousel-control-next-icon" style={{ filter: 'invert(1)' }}></span>
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          );
+        },
       },
       { Header: "Title", accessor: "title" },
       {
@@ -278,9 +322,8 @@ const NewsLayer = () => {
                   </li>
                 ))}
                 <li
-                  className={`page-item ${
-                    page === totalPages ? "disabled" : ""
-                  }`}
+                  className={`page-item ${page === totalPages ? "disabled" : ""
+                    }`}
                 >
                   <button
                     className="page-link"
