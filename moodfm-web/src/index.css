@@ -1153,7 +1153,14 @@ h3 {
   overflow: hidden;
 }
 
-/* .program-img now uses .img-contain utility class with size overrides */
+/* Program image: fit fully inside wrapper (no clipping) */
+.program-card-wrapper .program-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 10px;
+}
 
 .program-details {
   position: absolute;
