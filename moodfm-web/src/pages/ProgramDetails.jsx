@@ -6,6 +6,46 @@ import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import NoData from '../components/UI/NoData'
 
+// Function to format days
+const formatDays = (days) => {
+    if (!days || !Array.isArray(days) || days.length === 0) {
+        return "-";
+    }
+
+    // Day order mapping
+    const dayOrder = {
+        Sunday: 0,
+        Monday: 1,
+        Tuesday: 2,
+        Wednesday: 3,
+        Thursday: 4,
+        Friday: 5,
+        Saturday: 6,
+    };
+
+    // Sort days by their order
+    const sortedDays = [...days].sort((a, b) => dayOrder[a] - dayOrder[b]);
+
+    // Check if days are consecutive (including wrap-around)
+    const isConsecutive = sortedDays.every((day, index) => {
+        if (index === 0) return true;
+        const prevDayIndex = dayOrder[sortedDays[index - 1]];
+        const currentDayIndex = dayOrder[day];
+        // Check if consecutive (including wrap-around: Saturday to Sunday)
+        const isNextDay = currentDayIndex === prevDayIndex + 1;
+        const isWrapAround = prevDayIndex === 6 && currentDayIndex === 0;
+        return isNextDay || isWrapAround;
+    });
+
+    if (isConsecutive && sortedDays.length > 1) {
+        // Format as range: "Sunday - Tuesday"
+        return `${sortedDays[0]} - ${sortedDays[sortedDays.length - 1]}`;
+    } else {
+        // Format as comma-separated: "Sunday, Monday, Friday"
+        return sortedDays.join(", ");
+    }
+};
+
 const ProgramDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -86,7 +126,7 @@ const ProgramDetails = () => {
 
         // Filter by search query
         if (searchQuery.trim()) {
-            filtered = filtered.filter(interview => 
+            filtered = filtered.filter(interview =>
                 interview.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 interview.description.toLowerCase().includes(searchQuery.toLowerCase())
             )
@@ -179,9 +219,8 @@ const ProgramDetails = () => {
                                 <p>{program?.description}</p>
                             </div>
                             <div className="bottom-content">
-                                <p className='d-flex align-items-center gap-2'><Icon icon="material-symbols:calendar-today-outline-rounded" />Days: {program?.day}</p>
+                                <p className='d-flex align-items-center gap-2'><Icon icon="material-symbols:calendar-today-outline-rounded" />Days: {formatDays(program?.days)}</p>
                                 <p className='d-flex align-items-center gap-2'><Icon icon="material-symbols:nest-clock-farsight-analog-outline-rounded" />Time: {formatTime(program?.startTime)} - {formatTime(program?.endTime)}</p>
-                                <p className='d-flex align-items-center gap-2'><Icon icon="material-symbols:repeat-rounded" /> Frequency: Every {program?.day}</p>
                                 <p className='d-flex align-items-center gap-2'><Icon icon="material-symbols:headset-mic-outline-rounded" /> Mood: Retro • Nostalgic • Feel Good</p>
                             </div>
 
@@ -251,9 +290,9 @@ const ProgramDetails = () => {
                             </div>
                         </div>
                     ) : filteredInterviews.length === 0 ? (
-                        <NoData 
-                            message={searchQuery || selectedDate ? "No interviews found matching your search criteria" : "No interviews available for this program"} 
-                            icon="material-symbols:video-library-outline" 
+                        <NoData
+                            message={searchQuery || selectedDate ? "No interviews found matching your search criteria" : "No interviews available for this program"}
+                            icon="material-symbols:video-library-outline"
                         />
                     ) : (
                         <>
@@ -311,7 +350,7 @@ const ProgramDetails = () => {
             </section >
             <Footer />
         </>
-        
+
     )
 }
 

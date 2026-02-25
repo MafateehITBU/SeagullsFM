@@ -254,7 +254,7 @@ const Header = () => {
             to="/ad-with-us"
             onClick={handleCloseMenu}
           >
-            Ad With Us
+            Advertise with us
           </Button>
         </Navbar.Collapse>
       </Container>
