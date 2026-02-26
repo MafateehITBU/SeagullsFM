@@ -10,8 +10,9 @@ import TextWithSymbolFallback from './TextWithSymbolFallback';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const COLOR_MOE = '#FF0000';
-const COLOR_DEFAULT = '#00DCCC';
+// Programs section border/btn: Moe = cyan, Zaid (others) = red (swapped)
+const COLOR_MOE = '#00DCCC';
+const COLOR_DEFAULT = '#FF0000';
 
 function getProgramAccentColor(title) {
   if (!title || typeof title !== 'string') return COLOR_DEFAULT;

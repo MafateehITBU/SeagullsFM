@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -27,6 +27,8 @@ export default function NewsDetailScreen() {
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const imageSliderRef = useRef(null);
+  const [imageIndex, setImageIndex] = useState(0);
 
   useEffect(() => {
     if (!newsId) {
@@ -100,6 +102,17 @@ export default function NewsDetailScreen() {
       })
     : '';
 
+  // All image URLs: prefer images[] array, fallback to single image
+  const imageUrls = (news.images && news.images.length > 0)
+    ? news.images.map((img) => img.url).filter(Boolean)
+    : (news.image?.url ? [news.image.url] : []);
+
+  const onImageScroll = (e) => {
+    const offset = e.nativeEvent.contentOffset.x;
+    const index = Math.round(offset / screenWidth);
+    setImageIndex(index);
+  };
+
   return (
     <View style={styles.container}>
       <Navbar />
@@ -108,13 +121,40 @@ export default function NewsDetailScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {news.image?.url && (
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: news.image.url }}
-              style={styles.image}
-              resizeMode="cover"
-            />
+        {imageUrls.length > 0 && (
+          <View style={styles.imageSliderWrap}>
+            <ScrollView
+              ref={imageSliderRef}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onMomentumScrollEnd={onImageScroll}
+              style={styles.imageSlider}
+              contentContainerStyle={styles.imageSliderContent}
+            >
+              {imageUrls.map((uri, index) => (
+                <View key={index} style={styles.imageSlide}>
+                  <Image
+                    source={{ uri }}
+                    style={styles.image}
+                    resizeMode="cover"
+                  />
+                </View>
+              ))}
+            </ScrollView>
+            {imageUrls.length > 1 && (
+              <View style={styles.paginationDots}>
+                {imageUrls.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.dot,
+                      index === imageIndex && styles.dotActive,
+                    ]}
+                  />
+                ))}
+              </View>
+            )}
           </View>
         )}
         <View style={styles.body}>
@@ -168,15 +208,47 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: spacing.sectionGap,
   },
-  imageContainer: {
+  imageSliderWrap: {
     width: screenWidth,
     height: 260,
     backgroundColor: colors.muted,
     overflow: 'hidden',
   },
+  imageSlider: {
+    flex: 1,
+  },
+  imageSliderContent: {
+    flexGrow: 1,
+  },
+  imageSlide: {
+    width: screenWidth,
+    height: 260,
+  },
   image: {
     width: '100%',
     height: '100%',
+  },
+  paginationDots: {
+    position: 'absolute',
+    bottom: 12,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+  },
+  dotActive: {
+    backgroundColor: '#fff',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
   body: {
     padding: spacing.lg,

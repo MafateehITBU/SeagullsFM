@@ -1,0 +1,8 @@
+# Reduce upload size; EAS runs npm install on the server
+.git/
+.expo/
+.expo-shared/
+node_modules/.cache/
+*.log
+*.md
+!README.md

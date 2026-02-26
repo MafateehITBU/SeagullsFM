@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 import { Icon } from "@iconify/react";
@@ -94,7 +94,7 @@ const Home = () => {
                 prevIndex === programs.length - 1 ? 0 : prevIndex + 1
             );
             setActiveArrow("right");
-        }, 20000); // 20 seconds
+        }, 5000); // 20 seconds
 
         return () => clearInterval(interval);
     }, [programs.length]);
@@ -154,21 +154,28 @@ const Home = () => {
         setTimeout(() => setActiveNewsArrow(null), 300);
     };
 
-    // Auto-advance news carousel every 20 seconds
+    // Auto-advance news carousel on desktop (every 5s when 3 cards visible so it’s noticeable)
+    const newsLengthRef = useRef(news.length);
+    const slidesToShowRef = useRef(slidesToShow);
+    newsLengthRef.current = news.length;
+    slidesToShowRef.current = slidesToShow;
+
     useEffect(() => {
-        if (!news.length) return;
+        const length = newsLengthRef.current;
+        const slides = slidesToShowRef.current;
+        if (!length || length < slides) return;
 
         const interval = setInterval(() => {
+            const n = newsLengthRef.current;
+            const s = slidesToShowRef.current;
             setNewsCurrentIndex((prevIndex) => {
-                if (news.length === slidesToShow) {
-                    // Cycle when news.length equals slidesToShow
-                    return prevIndex === news.length - 1 ? 0 : prevIndex + 1;
-                } else {
-                    const maxIndex = Math.max(0, news.length - slidesToShow);
-                    return prevIndex >= maxIndex ? 0 : Math.min(maxIndex, prevIndex + 1);
+                if (n === s) {
+                    return prevIndex === n - 1 ? 0 : prevIndex + 1;
                 }
+                const maxIndex = Math.max(0, n - s);
+                return prevIndex >= maxIndex ? 0 : Math.min(maxIndex, prevIndex + 1);
             });
-        }, 20000); // 20 seconds
+        }, 5000); // 5 seconds so 3-card carousel clearly auto-moves on desktop
 
         return () => clearInterval(interval);
     }, [news.length, slidesToShow]);

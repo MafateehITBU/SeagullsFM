@@ -68,9 +68,9 @@ function NewsCard({ item, onPress, cardWidth, index = 0 }) {
         activeOpacity={0.9}
       >
         <View style={styles.imageContainer}>
-          {item.image?.url ? (
+          {(item.images?.[0]?.url ?? item.image?.url) ? (
             <Image
-              source={{ uri: item.image.url }}
+              source={{ uri: item.images?.[0]?.url ?? item.image?.url }}
               style={styles.image}
               resizeMode="cover"
             />

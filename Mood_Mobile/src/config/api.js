@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 const API_PORT = 5001;
 
 // --- Use production server (phone works anywhere, no same WiFi needed) ---
-const PRODUCTION_API_BASE = 'http://72.60.132.57/api'; // deployed backend
+const PRODUCTION_API_BASE = 'https://mood.fm/api'; // deployed backend
 const USE_PRODUCTION_API = true; // set to false to use local backend (same WiFi required)
 
 // Your computer's IP (only used when USE_PRODUCTION_API is false)

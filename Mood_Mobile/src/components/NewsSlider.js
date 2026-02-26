@@ -164,9 +164,9 @@ export default function NewsSlider() {
               <View key={item._id} style={styles.newsCard}>
                 {/* Image at the top - fixed height so card size is consistent */}
                 <View style={styles.newsImageContainer}>
-                  {item.image?.url ? (
+                  {(item.images?.[0]?.url ?? item.image?.url) ? (
                     <Image
-                      source={{ uri: item.image.url }}
+                      source={{ uri: item.images?.[0]?.url ?? item.image?.url }}
                       style={styles.newsImage}
                       resizeMode="cover"
                     />

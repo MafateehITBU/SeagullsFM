@@ -6,7 +6,9 @@ const NewsCard = ({ news, cardClass = '' }) => {
     const navigate = useNavigate();
 
     const truncatedDescription = news.description
-        ? news.description.substring(0, 15) + (news.description.length > 15 ? '...' : '')
+        ? news.description.length > 120
+            ? news.description.substring(0, 120).trim() + '...'
+            : news.description
         : '';
 
     const imageUrl = news.images?.[0]?.url ?? news.image?.url;
@@ -22,15 +24,13 @@ const NewsCard = ({ news, cardClass = '' }) => {
             </div>
             <div className="news-card-content">
                 <span className="news-card-title">{news.title}</span>
-                <div className="flex-between">
-                    <p className="news-card-description">{truncatedDescription}</p>
-                    <button
-                        className="news-card-read-more-btn"
-                        onClick={() => navigate('/news-details', { state: { news } })}
-                    >
-                        READ MORE
-                    </button>
-                </div>
+                <p className="news-card-description">{truncatedDescription}</p>
+                <button
+                    className="news-card-read-more-btn"
+                    onClick={() => navigate('/news-details', { state: { news } })}
+                >
+                    READ MORE
+                </button>
             </div>
         </div>
     );

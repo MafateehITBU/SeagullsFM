@@ -21,7 +21,7 @@ import TextWithSymbolFallback from './TextWithSymbolFallback';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-// Slider accent: Zaid = cyan, others = yellow (green is only in Presenters hero section)
+// Presenters page: Zaid = cyan, others (e.g. Moe) = yellow. (Programs home colors are in ProgramsSlider.)
 const COLOR_ZAID = '#02D1C2';
 const COLOR_OTHER = '#EBCD03';
 

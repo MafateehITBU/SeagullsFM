@@ -26,7 +26,7 @@ const NewsCardNewsPage = ({ news }) => {
     return (
         <div className="news-card-page">
             <div className="news-card-page-image-container">
-                <img src={news.images[0]?.url} alt={news.title} />
+                <img src={news.images?.[0]?.url ?? news.image?.url} alt={news.title} />
             </div>
 
             <div className="news-card-page-content flex-column-start">

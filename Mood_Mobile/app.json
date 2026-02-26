@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "SeagullsFM",
+    "name": "Mood FM",
     "slug": "seagullsfm-mobile",
-    "version": "1.0.0",
+    "owner": "saeedfwaz",
+    "version": "7.6.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/apple-touch-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -17,14 +18,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.seagullsfm.mobile"
+      "bundleIdentifier": "com.MOOdFM92.www.MoodFM92",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/apple-touch-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.seagullsfm.mobile"
+      "package": "ac.radio.moodfm",
+      "versionCode": 10
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +38,11 @@
       "expo-asset",
       "@react-native-community/datetimepicker"
     ],
-    "scheme": "seagullsfm"
+    "scheme": "seagullsfm",
+    "extra": {
+      "eas": {
+        "projectId": "43975344-bd8b-4885-a5d7-cc0882dd672b"
+      }
+    }
   }
 }
