@@ -136,7 +136,7 @@ const About = () => {
                                 </div>
 
                                 <div className="d-flex flex-column justify-content-center align-items-center">
-                                    <CountUp end={5000} suffix="+" useKFormat={true} />
+                                    <CountUp end={250} suffix="k+" />
                                     <p className="about-hero-number-description">Monthly <br /> listeners</p>
                                 </div>
 

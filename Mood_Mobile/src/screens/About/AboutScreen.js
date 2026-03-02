@@ -12,7 +12,7 @@ const { width: screenWidth } = Dimensions.get('window');
 // value = number to count to, suffix = e.g. '+' or 'k+' (rendered in System font so + displays)
 const STATS = [
   { value: 20, suffix: '+', label: 'years of music and culture' },
-  { value: 5, suffix: 'k+', label: 'Monthly listeners' },
+  { value: 250, suffix: 'k+', label: 'Monthly listeners' },
   { value: 100, suffix: '+', label: 'Shows and DJs' },
 ];
 
