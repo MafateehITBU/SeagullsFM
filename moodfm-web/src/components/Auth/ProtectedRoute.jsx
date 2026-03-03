@@ -1,15 +1,18 @@
 import { Navigate } from "react-router-dom";
-import Cookie from "js-cookie";
+import { useAuth } from "../../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const token = Cookie.get("token");
+  const { isAuthenticated, loading } = useAuth();
 
-  if (!token) {
-    // If no token → redirect to login
+  if (loading) {
+    // While auth state is being resolved, don't redirect or render protected content yet
+    return null;
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // If token exists → allow access
   return children;
 };
 
