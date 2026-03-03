@@ -15,7 +15,10 @@ const axiosInstance = axios.create({
 // Add a request interceptor to include the JWT from cookies
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = Cookies.get("token"); // Get the JWT from cookies
+    // Use the token cookie (set by the frontend after login) for Authorization.
+    // This works in both dev and production, independently of any HttpOnly cookie
+    // the backend may choose to set.
+    const token = Cookies.get("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

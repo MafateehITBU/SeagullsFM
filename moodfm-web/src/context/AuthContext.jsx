@@ -30,8 +30,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      // Let the backend authenticate using either the token header (when available)
-      // or its own HttpOnly cookie. No need to read the cookie from JS here.
+      // Let the backend authenticate using the Authorization header (when available).
+      // The header is attached globally in axiosConfig based on the token cookie.
       const response = await axiosInstance.get("/user/me");
 
       const userData = response.data.data;
@@ -69,6 +69,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initializeUser = async () => {
       try {
+        const token = Cookie.get("token");
+
+        // If there's no readable token cookie (e.g. user not logged in yet),
+        // skip calling /user/me to avoid unnecessary 401s.
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+
         await fetchUserData();
       } catch (error) {
         console.error("Error initializing user:", error);
