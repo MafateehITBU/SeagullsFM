@@ -28,18 +28,11 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener("click", handleInteraction);
   }, []);
 
-  const fetchUserData = async (userId) => {
+  const fetchUserData = async () => {
     try {
-      const token = Cookie.get("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const response = await axiosInstance.get("/user/me", config);
+      // Let the backend authenticate using either the token header (when available)
+      // or its own HttpOnly cookie. No need to read the cookie from JS here.
+      const response = await axiosInstance.get("/user/me");
 
       const userData = response.data.data;
 
@@ -51,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       setUser({
-        id: userData._id || userId,
+        id: userData._id,
         name: userData.name || "",
         email: userData.email || "",
         phoneNumber: userData.phoneNumber || "",
@@ -60,27 +53,25 @@ export const AuthProvider = ({ children }) => {
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
-      logout();
+      // If /user/me fails we keep the user logged out but don't hard-crash the app
+      Cookie.remove("token");
+      setUser({
+        id: null,
+        name: null,
+        email: null,
+        phoneNumber: null,
+        image: null,
+        isActive: null,
+      });
     }
   };
 
   useEffect(() => {
     const initializeUser = async () => {
-      const token = Cookie.get("token");
-
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
       try {
-        const decoded = jwtDecode(token);
-        const { id } = decoded;
-
-        await fetchUserData(id);
+        await fetchUserData();
       } catch (error) {
         console.error("Error initializing user:", error);
-        Cookie.remove("token");
       } finally {
         setLoading(false);
       }
@@ -102,12 +93,11 @@ export const AuthProvider = ({ children }) => {
         throw new Error("Invalid token received");
       }
 
+      // Store token for environments that rely on Authorization header;
+      // in production the backend can also rely on its own HttpOnly cookie.
       Cookie.set("token", token, { expires: 1 });
 
-      const decoded = jwtDecode(token);
-      const { id } = decoded;
-
-      await fetchUserData(id);
+      await fetchUserData();
 
       return response.data;
     } catch (error) {
@@ -146,10 +136,7 @@ export const AuthProvider = ({ children }) => {
 
       Cookie.set("token", token, { expires: 1 });
 
-      const decoded = jwtDecode(token);
-      const { id } = decoded;
-
-      await fetchUserData(id);
+      await fetchUserData();
 
       return response.data;
     } catch (error) {
