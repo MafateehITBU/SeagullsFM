@@ -24,11 +24,8 @@ const Header = () => {
 
   const isActive = (path) => location.pathname === path;
   
-  // Check if user is logged in
-  const isLoggedIn = () => {
-    const token = Cookie.get('token');
-    return token && user?.id;
-  };
+  // Check if user is logged in based on auth context
+  const isLoggedIn = () => !!user?.id;
 
   // Handle logout
   const handleLogout = () => {
