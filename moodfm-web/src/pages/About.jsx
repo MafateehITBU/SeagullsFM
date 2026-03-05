@@ -38,7 +38,7 @@ const CountUp = ({ end, suffix = '', duration = 3500, useKFormat = false }) => {
             }
         };
     }, [hasAnimated]);
-
+// test
     const animateCount = () => {
         const startTime = Date.now();
         const startValue = 0;
