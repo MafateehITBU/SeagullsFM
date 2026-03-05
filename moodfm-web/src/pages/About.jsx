@@ -163,16 +163,12 @@ const About = () => {
                     {formatTextWithSpecialChars(staticInfo.aboutUs)}
                 </p>
 
-                {/* Download Media Kit (static PDF from public/MediaKit.pdf) */}
-                <a
-                    href="/MediaKit.pdf"
-                    download
-                    className="events-btn-link"
-                >
-                    <button type="button" className="events-btn">
+                {/* Download link button */}
+                <Link to="/download-media-kit" className="events-btn-link">
+                    <button className="events-btn">
                         <span>Download Media Kit</span>
                     </button>
-                </a>
+                </Link>
 
             </section>
 

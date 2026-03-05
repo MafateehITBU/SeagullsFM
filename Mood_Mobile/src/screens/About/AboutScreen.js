@@ -167,7 +167,7 @@ export default function AboutScreen() {
               style={styles.mediaKitButton}
               onPress={() => {}}
             >
-              <Text style={styles.mediaKitButtonText}>Download Media Kit</Text>
+              <Text style={styles.mediaKitButtonText}>Download Mood Profile</Text>
             </TouchableOpacity>
           </View>
         </View>
