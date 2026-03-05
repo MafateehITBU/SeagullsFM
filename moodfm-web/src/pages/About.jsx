@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import { useStaticInfo } from '../context/StaticInfoContext';
@@ -164,12 +163,16 @@ const About = () => {
                     {formatTextWithSpecialChars(staticInfo.aboutUs)}
                 </p>
 
-                {/* Download link button */}
-                <Link to="/download-media-kit" className="events-btn-link">
-                    <button className="events-btn">
+                {/* Download Media Kit (static PDF from public/MediaKit.pdf) */}
+                <a
+                    href="/MediaKit.pdf"
+                    download
+                    className="events-btn-link"
+                >
+                    <button type="button" className="events-btn">
                         <span>Download Media Kit</span>
                     </button>
-                </Link>
+                </a>
 
             </section>
 
