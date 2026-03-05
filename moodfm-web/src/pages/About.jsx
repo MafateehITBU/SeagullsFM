@@ -167,7 +167,7 @@ const About = () => {
                 {/* Download link button */}
                 <Link to="/download-media-kit" className="events-btn-link">
                     <button className="events-btn">
-                        <span>Download Media Kit</span>
+                        <span>Download Mood Profile</span>
                     </button>
                 </Link>
 
