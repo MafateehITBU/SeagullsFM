@@ -908,7 +908,7 @@ h3 {
 
 .listen-live-button {
   color: var(--text-primary) !important;
-  border-color: #C3B02F !important;
+  border-color: #FF1E00 !important;
   font-family: 'Gobold Bold', sans-serif !important;
   text-transform: uppercase;
   position: relative;
@@ -918,19 +918,21 @@ h3 {
 }
 
 .listen-live-button .listen {
-  background-color: var(--navbar-footer-color);
-  color: var(--navbar-text) !important;
+  background-color: var(--color-red);
+  color: white;
   padding: 0.5rem 1.5rem;
   letter-spacing: -0.7px;
   width: 150px;
+  font-weight: 600;
 }
 
 .listen-live-button .live {
   background-color: var(--navbar-text);
-  color: #C3B02F;
+  color: var(--navbar-footer-color);
   padding: 0.5rem 1.5rem;
   letter-spacing: -0.7px;
   width: 150px;
+  font-weight: 600;
 }
 
 .circle-top-right {
