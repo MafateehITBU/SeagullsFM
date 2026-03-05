@@ -3,6 +3,7 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import { useStaticInfo } from '../context/StaticInfoContext';
 import { Icon } from '@iconify/react';
+import { Link } from 'react-router-dom';
 
 import aboutImg from '../assets/imgs/About/hero-img.png';
 import about2 from '../assets/imgs/About/about2.png';
