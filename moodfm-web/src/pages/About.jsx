@@ -3,8 +3,6 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import { useStaticInfo } from '../context/StaticInfoContext';
 import { Icon } from '@iconify/react';
-import { Link } from 'react-router-dom';
-
 import aboutImg from '../assets/imgs/About/hero-img.png';
 import about2 from '../assets/imgs/About/about2.png';
 
@@ -164,12 +162,18 @@ const About = () => {
                     {formatTextWithSpecialChars(staticInfo.aboutUs)}
                 </p>
 
-                {/* Download link button */}
-                <Link to="/download-media-kit" className="events-btn-link">
-                    <button className="events-btn">
-                        <span>Download Mood Profile</span>
+                {/* Download Media Kit – direct link to static PDF*/}
+                <a
+                    href={`${process.env.PUBLIC_URL || ''}/MediaKit.pdf`}
+                    download="MediaKit.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="events-btn-link about-media-kit-btn-link"
+                >
+                    <button type="button" className="events-btn about-media-kit-btn">
+                        <span>Download Media Kit</span>
                     </button>
-                </Link>
+                </a>
 
             </section>
 

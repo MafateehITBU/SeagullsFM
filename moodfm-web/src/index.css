@@ -1336,6 +1336,27 @@ h3 {
   gap: 1rem;
 }
 
+/* About page – Download Media Kit button responsive text */
+@media (max-width: 768px) {
+  .about-media-kit-btn {
+    font-size: 14px !important;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.3;
+  }
+  .about-media-kit-btn span {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-media-kit-btn {
+    font-size: 12px !important;
+    padding: 0.45rem 0.75rem;
+  }
+}
+
 /* News Section */
 .news-title-container {
   padding-left: 6rem;
