@@ -162,16 +162,15 @@ const About = () => {
                     {formatTextWithSpecialChars(staticInfo.aboutUs)}
                 </p>
 
-                {/* Download Media Kit – direct link to static PDF*/}
+                {/* Mood Profile – opens PDF in new tab for viewing */}
                 <a
                     href={`${process.env.PUBLIC_URL || ''}/MediaKit.pdf`}
-                    download="MediaKit.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="events-btn-link about-media-kit-btn-link"
                 >
                     <button type="button" className="events-btn about-media-kit-btn">
-                        <span>Download Media Kit</span>
+                        <span>View Mood Profile</span>
                     </button>
                 </a>
 
