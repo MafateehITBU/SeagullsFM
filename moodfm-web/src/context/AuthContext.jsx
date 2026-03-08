@@ -96,6 +96,9 @@ export const AuthProvider = ({ children }) => {
       if (typeof window !== "undefined" && window.location.hostname.endsWith("mood.fm")) {
         cookieOpts.domain = ".mood.fm";
       }
+      if (typeof window !== "undefined" && window.location.protocol === "https:") {
+        cookieOpts.secure = true;
+      }
       Cookie.set("token", token, cookieOpts);
 
       await fetchUserData();
@@ -107,16 +110,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     if (typeof window !== "undefined") {
-      const path = { path: "/" };
+      const isHttps = window.location.protocol === "https:";
+      const baseOpts = { path: "/" };
+      if (isHttps) baseOpts.secure = true;
       if (window.location.hostname.endsWith("mood.fm")) {
-        Cookie.remove("token", { ...path, domain: ".mood.fm" });
-        Cookie.remove("token", { ...path, domain: "www.mood.fm" });
+        Cookie.remove("token", { ...baseOpts, domain: ".mood.fm" });
+        Cookie.remove("token", { ...baseOpts, domain: "www.mood.fm" });
       }
-      Cookie.remove("token", path);
+      Cookie.remove("token", baseOpts);
     } else {
       Cookie.remove("token", { path: "/" });
+    }
+    try {
+      await axiosInstance.post("/user/logout", {}, { withCredentials: true });
+    } catch (e) {
+      // Ignore; server may be unreachable or cookie already cleared
     }
     setUser({
       id: null,
