@@ -92,7 +92,11 @@ export const AuthProvider = ({ children }) => {
 
       // Store token for environments that rely on Authorization header;
       // in production the backend can also rely on its own HttpOnly cookie.
-      Cookie.set("token", token, { expires: 1 });
+      const cookieOpts = { path: "/", expires: 1 };
+      if (typeof window !== "undefined" && window.location.hostname.endsWith("mood.fm")) {
+        cookieOpts.domain = ".mood.fm";
+      }
+      Cookie.set("token", token, cookieOpts);
 
       await fetchUserData();
 
@@ -104,7 +108,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    Cookie.remove("token");
+    if (typeof window !== "undefined") {
+      const path = { path: "/" };
+      if (window.location.hostname.endsWith("mood.fm")) {
+        Cookie.remove("token", { ...path, domain: ".mood.fm" });
+        Cookie.remove("token", { ...path, domain: "www.mood.fm" });
+      }
+      Cookie.remove("token", path);
+    } else {
+      Cookie.remove("token", { path: "/" });
+    }
     setUser({
       id: null,
       name: null,
@@ -131,7 +144,11 @@ export const AuthProvider = ({ children }) => {
         throw new Error("Invalid token received");
       }
 
-      Cookie.set("token", token, { expires: 1 });
+      const cookieOpts = { path: "/", expires: 1 };
+      if (typeof window !== "undefined" && window.location.hostname.endsWith("mood.fm")) {
+        cookieOpts.domain = ".mood.fm";
+      }
+      Cookie.set("token", token, cookieOpts);
 
       await fetchUserData();
 
