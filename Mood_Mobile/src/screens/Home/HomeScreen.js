@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import Navbar from '../../components/Navbar';
 import ProgramsSlider from '../../components/ProgramsSlider';
 import NewsSlider from '../../components/NewsSlider';
@@ -100,14 +99,11 @@ export default function HomeScreen() {
                   disabled={isLoading}
                   activeOpacity={0.8}
                 >
-                  <View style={styles.liveButtonContent}>
-                    <Ionicons
-                      name={isPlaying ? 'pause' : 'play'}
-                      size={20}
-                      color={colors.navbarBg}
-                      style={styles.liveIcon}
-                    />
-                    <Text style={styles.liveButtonText}>{isPlaying ? 'Pause' : 'Live'}</Text>
+                  <View style={styles.liveButtonLeft}>
+                    <Text style={styles.liveButtonLeftText}>{isPlaying ? 'Pause' : 'Listen'}</Text>
+                  </View>
+                  <View style={styles.liveButtonRight}>
+                    <Text style={styles.liveButtonRightText}>Live</Text>
                   </View>
                   {!isPlaying && (
                     <Image 
@@ -192,36 +188,52 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   liveButton: {
-    backgroundColor: colors.background,
-    borderWidth: 2,
-    borderColor: colors.navbarBg,
-    borderRadius: 24,
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    flexDirection: 'row',
+    borderWidth: 3,
+    borderColor: '#FF1E00',
+    borderRadius: 0,
     overflow: 'visible',
+    position: 'relative',
+    minWidth: 200,
+  },
+  liveButtonLeft: {
+    backgroundColor: '#FF1E00',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    minWidth: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  liveButtonLeftText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: fontWeights.bold,
+    fontFamily: fonts.secondaryBold,
+    textTransform: 'uppercase',
+    letterSpacing: -0.5,
+  },
+  liveButtonRight: {
+    backgroundColor: colors.navbarText,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    minWidth: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  liveButtonRightText: {
+    color: colors.navbarBg,
+    fontSize: 18,
+    fontWeight: fontWeights.bold,
+    fontFamily: fonts.secondaryBold,
+    textTransform: 'uppercase',
+    letterSpacing: -0.5,
   },
   dotImage: {
     position: 'absolute',
-    top: -5,
-    right: -5,
-    width: 20,
-    height: 20,
-  },
-  liveButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  liveIcon: {
-    marginRight: 6,
-  },
-  liveButtonText: {
-    color: colors.navbarBg,
-    fontSize: fontSizes.body,
-    fontWeight: fontWeights.black,
-    fontFamily: fonts.secondaryBold,
+    top: -12,
+    right: -12,
+    width: 28,
+    height: 28,
   },
   imageContainer: {
     width: screenWidth,
