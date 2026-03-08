@@ -20,7 +20,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.MOOdFM92.www.MoodFM92",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "Mood FM uses your photo library so you can choose a profile picture for your account. For example, we use the selected image only as your avatar in the app and do not share it elsewhere."
       }
     },
     "android": {

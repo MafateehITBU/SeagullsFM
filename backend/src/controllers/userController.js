@@ -17,11 +17,11 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password, phoneNumber, channelId } = req.body;
 
-    // Validation
-    if (!name || !email || !password || !phoneNumber || !channelId) {
+    // Validation (phoneNumber is optional per App Store guideline 5.1.1(v))
+    if (!name || !email || !password || !channelId) {
       return res.status(400).json({
         success: false,
-        message: "Please provide all required fields: name, email, password, phoneNumber, and channelId",
+        message: "Please provide all required fields: name, email, password, and channelId",
       });
     }
 
@@ -56,29 +56,26 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // Phone validation using libphonenumber-js
-    const parsedPhone = parsePhoneNumberFromString(phoneNumber);
-    if (!parsedPhone || !parsedPhone.isValid()) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Please enter a valid international phone number (include country code, e.g. +1, +44, +962)",
-      });
+    // Phone validation (optional): if provided, validate and normalize
+    let normalizedPhone = null;
+    if (phoneNumber && String(phoneNumber).trim()) {
+      const parsedPhone = parsePhoneNumberFromString(phoneNumber.trim());
+      if (!parsedPhone || !parsedPhone.isValid()) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Please enter a valid international phone number (include country code, e.g. +1, +44, +962)",
+        });
+      }
+      normalizedPhone = parsedPhone.number;
     }
 
-    // Normalize before saving
-    const normalizedPhone = parsedPhone.number;
-
-    // Check for existing email or phoneNumber across all user types
-    const existingUser = await User.findOne({
-      $or: [{ email }, { phoneNumber: normalizedPhone }],
-    });
-    const existingAdmin = await Admin.findOne({
-      $or: [{ email }, { phoneNumber: normalizedPhone }],
-    });
-    const existingSuperAdmin = await SuperAdmin.findOne({
-      $or: [{ email }, { phoneNumber: normalizedPhone }],
-    });
+    // Check for existing email (and phone if provided) across all user types
+    const orConditions = [{ email }];
+    if (normalizedPhone) orConditions.push({ phoneNumber: normalizedPhone });
+    const existingUser = await User.findOne({ $or: orConditions });
+    const existingAdmin = await Admin.findOne({ $or: orConditions });
+    const existingSuperAdmin = await SuperAdmin.findOne({ $or: orConditions });
 
     if (existingUser || existingAdmin || existingSuperAdmin) {
       return res.status(400).json({
@@ -92,7 +89,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password,
-      phoneNumber: normalizedPhone,
+      phoneNumber: normalizedPhone || undefined,
       image: getAvatarUrl({ name }),
       channelId,
     });
@@ -701,6 +698,39 @@ export const toggleActive = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error toggling User Active Status",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Delete own account (user-initiated, for App Store guideline 5.1.1(v))
+// @route   DELETE /api/user/delete-account
+// @access  Private (User)
+export const deleteMyAccount = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    if (user.image && user.image.public_id) {
+      try {
+        await cloudinary.uploader.destroy(user.image.public_id);
+      } catch (cloudinaryError) {
+        console.error("Error deleting image from cloudinary:", cloudinaryError);
+      }
+    }
+    await User.findByIdAndDelete(req.user.id);
+    res.status(200).json({
+      success: true,
+      message: "Account deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting account",
       error: error.message,
     });
   }

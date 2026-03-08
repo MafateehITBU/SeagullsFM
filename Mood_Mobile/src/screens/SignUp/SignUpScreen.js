@@ -83,10 +83,6 @@ export default function SignUpScreen() {
       setError('Password and Confirm Password do not match.');
       return;
     }
-    if (!trimmedPhone) {
-      setError('Please enter your phone number.');
-      return;
-    }
 
     setLoading(true);
     try {
@@ -95,9 +91,11 @@ export default function SignUpScreen() {
         name: trimmedName,
         email: trimmedEmail,
         password,
-        phoneNumber: trimmedPhone,
         channelId: MOOD_FM_CHANNEL_ID,
       };
+      if (trimmedPhone) {
+        body.phoneNumber = trimmedPhone;
+      }
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -185,7 +183,7 @@ export default function SignUpScreen() {
               />
               <TextInput
                 style={styles.input}
-                placeholder="Phone Number"
+                placeholder="Phone number (optional)"
                 placeholderTextColor={colors.muted}
                 value={phoneNumber}
                 onChangeText={(t) => {

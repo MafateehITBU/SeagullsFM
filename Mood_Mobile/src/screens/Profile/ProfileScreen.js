@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -37,7 +38,9 @@ function getErrorMessages(data) {
 }
 
 export default function ProfileScreen() {
-  const { user, token, updateUser } = useAuth();
+  const navigation = useNavigation();
+  const { user, token, updateUser, logout } = useAuth();
+  const [deleteAccountLoading, setDeleteAccountLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -223,6 +226,44 @@ export default function ProfileScreen() {
     }
   };
 
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete account',
+      'Your account and all associated data will be permanently deleted. This cannot be undone. Are you sure?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            setDeleteAccountLoading(true);
+            try {
+              const url = `${API_CONFIG.baseURL}/user/delete-account`;
+              const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              const data = await response.json();
+              if (response.ok && data.success) {
+                logout();
+                navigation.replace('Login');
+              } else {
+                Alert.alert('Error', data?.message || 'Could not delete account. Please try again.');
+              }
+            } catch (err) {
+              Alert.alert('Error', err?.message === 'Network request failed' ? 'Network error.' : (err?.message || 'Could not delete account.'));
+            } finally {
+              setDeleteAccountLoading(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Navbar />
@@ -334,6 +375,23 @@ export default function ProfileScreen() {
                 <ActivityIndicator color={colors.text} size="small" />
               ) : (
                 <Text style={styles.secondaryButtonText}>Change password</Text>
+              )}
+            </TouchableOpacity>
+
+            {/* Delete account - required for App Store guideline 5.1.1(v) */}
+            <Text style={[styles.sectionLabel, styles.sectionLabelTop]}>Delete account</Text>
+            <Text style={[styles.mutedText, { marginBottom: 8 }]}>
+              Permanently delete your account and all associated data. This cannot be undone.
+            </Text>
+            <TouchableOpacity
+              style={[styles.deleteAccountButton, deleteAccountLoading && styles.buttonDisabled]}
+              onPress={handleDeleteAccount}
+              disabled={deleteAccountLoading}
+            >
+              {deleteAccountLoading ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <Text style={styles.deleteAccountButtonText}>Delete my account</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -470,5 +528,24 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     opacity: 0.7,
+  },
+  mutedText: {
+    fontSize: fontSizes.bodySm,
+    fontFamily: fonts.secondary,
+    color: colors.muted,
+  },
+  deleteAccountButton: {
+    backgroundColor: '#c0392b',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.sm,
+  },
+  deleteAccountButtonText: {
+    fontSize: fontSizes.bodyMd,
+    fontWeight: '700',
+    fontFamily: fonts.secondaryBold,
+    color: '#fff',
   },
 });

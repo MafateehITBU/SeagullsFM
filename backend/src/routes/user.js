@@ -13,7 +13,8 @@ import {
   deleteImage,
   logoutUser,
   toggleActive,
-  deleteUser
+  deleteUser,
+  deleteMyAccount
 } from '../controllers/userController.js';
 import { protect, authorize, permissions } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
@@ -41,8 +42,8 @@ const registerValidation = [
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters'),
   body('phoneNumber')
-    .notEmpty()
-    .withMessage('Phone number is required')
+    .optional()
+    .trim()
 ];
 
 const loginValidation = [
@@ -99,6 +100,7 @@ router.get('/me', authorize('user'), getCurrentUser);
 router.put('/profile', authorize('user'), updateProfileValidation, validate, upload.single('image'), updateProfile);
 router.put('/change-password', authorize('user'), changePasswordValidation, validate, changePassword);
 router.delete('/delete-image', authorize('user'), deleteImage);
+router.delete('/delete-account', authorize('user'), deleteMyAccount);
 
 // Admin routes (require admin or superadmin role) - MUST be after all user routes
 router.use(authorize('admin', 'superadmin'));
