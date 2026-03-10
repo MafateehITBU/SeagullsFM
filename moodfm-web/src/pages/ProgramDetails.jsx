@@ -314,7 +314,7 @@ const ProgramDetails = () => {
                                                 />
                                             </div>
                                             <div className="interview-card-content d-flex flex-column gap-3">
-                                                {/* Show the special characters in the title */}
+                                                {/* Show the special characters in the title  ,,,*/}
                                                 <h4 className="interview-card-title">{formatTextWithSpecialChars(interview.title)}</h4>
                                                 {interview.description && (
                                                     <p>{interview.description}</p>
