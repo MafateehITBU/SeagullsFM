@@ -71,8 +71,7 @@ const interviewValidation = [
       return value;
     })
     .trim()
-    .notEmpty()
-    .withMessage('Description is required')
+    .optional()
 ];
 
 const updateInterviewValidation = [

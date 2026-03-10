@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
@@ -18,10 +18,13 @@ const AddInterviewModal = ({
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // make the description optional
+  const [isDescriptionOptional, setIsDescriptionOptional] = useState(true);
+
   const validateForm = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
-    if (!description.trim()) newErrors.description = "Description is required";
+    if (!isDescriptionOptional && !description.trim()) newErrors.description = "Description is required";
     if (!date.trim()) newErrors.date = "Date is required";
     if (!content) newErrors.content = "Video is required";
     else if (!content.type.startsWith("video/"))
@@ -36,6 +39,7 @@ const AddInterviewModal = ({
     setDescription("");
     setDate("");
     setContent(null);
+    setIsDescriptionOptional(true);
     setErrors({});
   };
 
@@ -48,7 +52,9 @@ const AddInterviewModal = ({
     try {
       const formData = new FormData();
       formData.append("title", title);
-      formData.append("description", description);
+      if (isDescriptionOptional) {
+        if (description.trim()) formData.append("description", description);
+      }
       formData.append("date", date);
       formData.append("channelId", channelId);
       formData.append("programId", programId);
@@ -93,13 +99,14 @@ const AddInterviewModal = ({
 
           {/* Description */}
           <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Description <span className="text-muted small">(Optional)</span></Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               isInvalid={!!errors.description}
+              placeholder="Enter description (optional)"
             />
             <Form.Control.Feedback type="invalid">
               {errors.description}

@@ -30,10 +30,10 @@ export const createInterview = async (req, res) => {
     }
 
     // Validation
-    if (!channelId || !programId || !title || !date || !description) {
+    if (!channelId || !programId || !title || !date ) {
       return res.status(400).json({
         success: false,
-        message: "Please provide channelId, programId, title, date, and description",
+        message: "Please provide channelId, programId, title, and date",
       });
     }
 

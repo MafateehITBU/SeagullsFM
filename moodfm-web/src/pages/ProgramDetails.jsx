@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import NoData from '../components/UI/NoData'
+import { formatTextWithSpecialChars } from '../utils/formatTextWithSpecialChars'
 
 // Function to format days
 const formatDays = (days) => {
@@ -174,12 +175,12 @@ const ProgramDetails = () => {
     }
 
     const formatDate = (dateString) => {
+        // Show only the month and year
         const date = new Date(dateString)
-        const day = date.getDate().toString().padStart(2, '0')
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         const month = monthNames[date.getMonth()]
         const year = date.getFullYear()
-        return `${day} ${month}, ${year}`
+        return `${month}, ${year}`
     }
 
     const formatTime = (timeString) => {
@@ -313,11 +314,14 @@ const ProgramDetails = () => {
                                                 />
                                             </div>
                                             <div className="interview-card-content d-flex flex-column gap-3">
-                                                <h4 className="interview-card-title">{interview.title}</h4>
-                                                <p>{interview.description}</p>
+                                                {/* Show the special characters in the title */}
+                                                <h4 className="interview-card-title">{formatTextWithSpecialChars(interview.title)}</h4>
+                                                {interview.description && (
+                                                    <p>{interview.description}</p>
+                                                )}
                                                 <p className='d-flex align-items-center gap-2'>
                                                     <Icon icon="material-symbols:calendar-today-outline-rounded" />
-                                                    {formatDate(interview.createdAt)}
+                                                    {formatDate(interview.date)}
                                                 </p>
                                             </div>
                                         </div>
