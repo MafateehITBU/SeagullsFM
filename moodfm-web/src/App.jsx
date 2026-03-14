@@ -14,6 +14,7 @@ import Login from "./pages/Auth/Login";
 import ForgotPassword from "./context/ForgotPassword";
 import Profile from "./pages/Profile";
 import ProgramDetails from "./pages/ProgramDetails";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
@@ -51,7 +52,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
         {/* Protected Profile Route */}
         <Route

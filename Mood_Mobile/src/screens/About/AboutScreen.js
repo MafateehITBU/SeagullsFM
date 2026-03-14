@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Dimensions, Animated, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Dimensions, Animated, TouchableOpacity, Linking } from 'react-native';
 import Navbar from '../../components/Navbar';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
@@ -158,16 +158,10 @@ export default function AboutScreen() {
           </Text>
           <View style={styles.whoWeAreButtons}>
             <TouchableOpacity
-              style={styles.learnMoreButton}
-              onPress={() => {}}
-            >
-              <Text style={styles.learnMoreButtonText}>Learn More</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               style={styles.mediaKitButton}
-              onPress={() => {}}
+              onPress={() => Linking.openURL('https://mood.fm/MediaKit.pdf')}
             >
-              <Text style={styles.mediaKitButtonText}>Download Mood Profile</Text>
+              <Text style={styles.mediaKitButtonText}>View Mood Profile</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -302,36 +296,14 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   whoWeAreButtons: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.md,
     marginTop: spacing.lg,
-  },
-  learnMoreButton: {
-    flex: 1,
-    minWidth: 140,
-    backgroundColor: colors.statsOrange,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  learnMoreButtonText: {
-    fontSize: fontSizes.bodyMd,
-    fontWeight: fontWeights.bold,
-    fontFamily: fonts.secondaryBold,
-    color: '#FFFFFF',
+    alignItems: 'flex-start',
   },
   mediaKitButton: {
-    flex: 1,
-    minWidth: 140,
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: colors.statsOrange,
+    backgroundColor: colors.navbarBg,
     paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingHorizontal: 24,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -339,6 +311,6 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.bold,
     fontFamily: fonts.secondaryBold,
-    color: colors.statsOrange,
+    color: colors.navbarText,
   },
 });

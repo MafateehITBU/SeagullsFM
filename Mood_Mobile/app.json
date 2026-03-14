@@ -3,7 +3,7 @@
     "name": "Mood FM",
     "slug": "seagullsfm-mobile",
     "owner": "saeedfwaz",
-    "version": "7.6.2",
+    "version": "7.6.4",
     "orientation": "portrait",
     "icon": "./assets/apple-touch-icon.png",
     "userInterfaceStyle": "light",
@@ -12,6 +12,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#fdde00"
     },
+    "plugins": [
+      "expo-asset",
+      "@react-native-community/datetimepicker"
+    ],
     "assetBundlePatterns": [
       "**/*",
       "assets/fonts/**/*"
@@ -19,6 +23,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.MOOdFM92.www.MoodFM92",
+      "buildNumber": "3",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSPhotoLibraryUsageDescription": "Mood FM uses your photo library so you can choose a profile picture for your account. For example, we use the selected image only as your avatar in the app and do not share it elsewhere."
@@ -35,10 +40,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-asset",
-      "@react-native-community/datetimepicker"
-    ],
     "scheme": "seagullsfm",
     "extra": {
       "eas": {

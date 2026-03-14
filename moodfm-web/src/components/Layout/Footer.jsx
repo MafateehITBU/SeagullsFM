@@ -83,6 +83,10 @@ const Footer = () => {
                                     PRESENTERS
                                     <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
                                 </Link>
+                                <Link to="/privacy-policy" className="footer-link">
+                                    PRIVACY POLICY
+                                    <Icon icon="material-symbols:music-note-rounded" className="footer-link-icon" />
+                                </Link>
                             </div>
                             <div className="footer-subsection">
                                 <h4 className="footer-title">Get Involved</h4>
