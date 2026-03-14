@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 
-const DEVELOPER_NAME = 'Seagulls Media Services Ltd'; // Update to match your Google Play store listing if different
+const DEVELOPER_NAME = 'Abdullah Al-sbateen';
 
 const PrivacyPolicy = () => {
   return (
