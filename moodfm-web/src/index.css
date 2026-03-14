@@ -2800,6 +2800,22 @@ h3 {
   margin-top: 15vh;
 }
 
+/* Privacy Policy: compact hero, no large gap */
+.privacy-hero-section {
+  height: auto;
+  min-height: auto;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.privacy-hero-container {
+  margin-top: 0;
+}
+
+.privacy-content-section {
+  padding-top: 0.5rem;
+}
+
 .about-hero-left-side{
   width: 70%;
 }
