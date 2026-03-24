@@ -269,8 +269,8 @@ const Home = () => {
                                     style={{
                                         backgroundColor:
                                             currentProgram.title.includes("Moe")
-                                                ? "var(--color-red)"
-                                                : "var(--color-cyan)",
+                                                ? "var(--color-cyan)"
+                                                : "var(--color-red)",
                                     }}
                                     onClick={() => navigate('/program-details', { state: { programId: currentProgram._id } })}
                                 >
