@@ -1,0 +1,315 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/Gotham-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/GothamBook.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/GothamMedium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/Gotham-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/Gotham-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Museo';
+  src: url('./assets/fonts/MUSEO300-REGULAR.OTF') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Museo';
+  src: url('./assets/fonts/MUSEO700-REGULAR (1).OTF') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Gotham', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --text: #f8f8f8;
+  --text-h: #f8f8f8;
+  --bg: #0c0c0c;
+  --border: rgba(248, 248, 248, 0.12);
+  --code-bg: #1a1a1a;
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+  --social-bg: rgba(255, 255, 255, 0.06);
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+
+  --sans: 'Gotham', ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Gotham', ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+html {
+  background: #0c0c0c;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: #0c0c0c;
+}
+
+#root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+/* h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+} */
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+/* Home — hero + listen live */
+.home-hero-top {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #0c0c0c;
+}
+
+.home-hero-bg-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.home-hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  padding: clamp(0.35rem, 1vw, 0.65rem) clamp(1rem, 4vw, 3rem);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.home-hero-text,
+.home-hero-frequency {
+  pointer-events: auto;
+}
+
+.home-hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.home-hero-copy {
+  margin: 0;
+  max-width: min(100vw, 33rem);
+  font-family: var(--heading);
+  font-size: clamp(2rem, 8vw, 8rem);
+  font-weight: 900;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: #f8f8f8;
+  text-align: left;
+  text-transform: lowercase;
+}
+
+.home-hero-beat {
+  color: #ff3fff;
+}
+
+.home-hero-frequency {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-width: 0;
+  line-height: 0;
+}
+
+.home-hero-frequency img {
+  display: block;
+  width: auto;
+  max-width: min(57vw, 27rem);
+  height: auto;
+  max-height: min(38%, 12rem);
+  object-fit: contain;
+}
+
+.home-hero-listen-wrap {
+  display: flex;
+  justify-content: flex-start;
+  padding: clamp(1rem, 5vw, 5rem) 0;
+  background: #0c0c0c;
+}
+/* Download App — 50vh gradient band; phone image overflows vertically */
+.home-download-app {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 15vh;
+  height: 20vh;
+  background: linear-gradient(
+    90deg,
+    #22d8b9,
+    #43c1c4,
+    #58b3ca,
+    #6aa6d0,
+    #779ed4,
+    #9588de,
+    #f049fa
+  );
+}
+
+.home-download-app-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  max-width: min(72rem, 100%);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  padding: 0 clamp(1rem, 4vw, 2rem);
+  overflow: visible;
+  transform: translateX(clamp(1.5rem, 5vw, 4.25rem));
+}
+
+.home-download-app-copy {
+  flex: 0 1 auto;
+  text-align: center;
+  color: #0c0c0c;
+}
+
+.home-download-app-title {
+  margin: 0 0 0.2em;
+  padding-inline-start: clamp(0.5rem, 1.8vw, 1rem);
+  font-family: var(--heading);
+  font-size: clamp(1.75rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+
+.home-download-app-sub {
+  margin: 0;
+  font-family: var(--heading);
+  font-size: clamp(1.1rem, 2.8vw, 1.65rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+.home-download-app-phone {
+  flex-shrink: 0;
+  display: block;
+  width: auto;
+  height: min(34vh, 13rem);
+  max-width: min(38vw, 10.5rem);
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (min-width: 768px) {
+  .home-download-app-phone {
+    height: min(80vh, 44rem);
+    max-width: min(60vw, 32rem);
+  }
+}
+
