@@ -111,9 +111,9 @@ export default function Header() {
   const closeMenu = () => setMenuOpen(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0c0c0c] px-4 py-4 md:px-10">
+    <header className="sticky top-0 z-50 w-full bg-[#0c0c0c] px-4 py-4 md:px-6 lg:px-10">
       <div className="mx-auto flex w-full max-w-none items-center justify-between gap-3 md:gap-4">
-        <div className="flex min-w-0 flex-1 items-center gap-6 md:gap-10">
+        <div className="flex min-w-0 flex-1 items-center gap-5 md:gap-7 lg:gap-10">
           <Link
             to="/"
             className="shrink-0 outline-none ring-[#f8f8f8]/30 focus-visible:ring-2"
@@ -122,12 +122,12 @@ export default function Header() {
             <img
               src={logo}
               alt="Beat"
-              className="h-9 w-auto object-contain md:h-20"
+              className="h-9 w-auto object-contain md:h-14 lg:h-20"
             />
           </Link>
 
           <nav
-            className="hidden min-w-0 flex-nowrap items-center gap-x-4 md:flex md:gap-x-7"
+            className="hidden min-w-0 flex-nowrap items-center gap-x-3 lg:flex lg:gap-x-7"
             aria-label="Main"
           >
             <NavLink to="/" end className={navActive}>
@@ -148,7 +148,7 @@ export default function Header() {
           </nav>
         </div>
 
-        <div className="hidden shrink-0 items-center gap-3 md:flex md:gap-2">
+        <div className="hidden shrink-0 items-center gap-3 lg:flex lg:gap-2">
           <label className="relative max-w-[30vw] sm:max-w-none">
             <span className="sr-only">Search</span>
             <input
@@ -186,7 +186,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/5 text-[#f8f8f8] transition-colors hover:bg-white/10 md:hidden"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/5 text-[#f8f8f8] transition-colors hover:bg-white/10 lg:hidden"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav-drawer"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -201,7 +201,7 @@ export default function Header() {
         type="button"
         tabIndex={menuOpen ? 0 : -1}
         aria-hidden={!menuOpen}
-        className={`fixed inset-0 z-[60] bg-black/60 backdrop-blur-[2px] transition-opacity duration-300 ease-out md:hidden ${
+        className={`fixed inset-0 z-[60] bg-black/60 backdrop-blur-[2px] transition-opacity duration-300 ease-out lg:hidden ${
           menuOpen
             ? 'opacity-100'
             : 'pointer-events-none opacity-0'
@@ -212,7 +212,7 @@ export default function Header() {
       {/* Mobile drawer — slides in from the right */}
       <div
         id="mobile-nav-drawer"
-        className={`fixed top-0 right-0 z-[70] flex h-full w-[min(100%,20rem)] max-w-[100vw] flex-col border-l border-white/10 bg-[#0c0c0c] shadow-[-8px_0_32px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed top-0 right-0 z-[70] flex h-full w-[min(100%,20rem)] max-w-[100vw] flex-col border-l border-white/10 bg-[#0c0c0c] shadow-[-8px_0_32px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out lg:hidden ${
           menuOpen ? 'translate-x-0' : 'pointer-events-none translate-x-full'
         }`}
         role="dialog"

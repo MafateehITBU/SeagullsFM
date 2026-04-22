@@ -178,23 +178,23 @@ export default function Home() {
                 <div className="home-hero-listen-wrap">
                     <button
                         type="button"
-                        className="flex w-[70vw] md:w-[53vw] max-w-full cursor-pointer items-stretch gap-[10px] border-0 bg-transparent p-0 font-sans font-black text-2xl md:text-6xl leading-none text-black outline-none focus-visible:ring-2 focus-visible:ring-[#ff4b7d] focus-visible:ring-offset-2 focus-visible:ring-offset-white [&_span]:flex [&_span]:items-center"
+                        className="flex w-[82vw] md:w-[68vw] lg:w-[53vw] max-w-full cursor-pointer items-stretch gap-[10px] border-0 bg-transparent p-0 font-sans font-black text-2xl md:text-4xl lg:text-6xl leading-none text-black outline-none focus-visible:ring-2 focus-visible:ring-[#ff4b7d] focus-visible:ring-offset-2 focus-visible:ring-offset-white [&_span]:flex [&_span]:items-center"
                         onClick={handleListenLive}
                         aria-pressed={playing}
                         aria-label={playing ? 'Pause live stream' : 'Listen live'}
                     >
-                        <span className="flex w-[65%] shrink-0 items-center justify-end bg-[#ff4b7d] md:px-[10px] md:py-[5px] px-2 py-1 uppercase tracking-[-0.05em]">
+                        <span className="flex w-[62%] shrink-0 items-center justify-end bg-[#ff4b7d] px-2 py-1 md:px-3 md:py-1.5 lg:px-[10px] lg:py-[5px] uppercase tracking-[-0.05em]">
                             {playing ? 'PAUSE' : 'LISTEN'}
                         </span>
 
-                        <span className="flex w-[40vw] md:w-[35%] shrink-0 items-center justify-between gap-[15px] bg-[#2d7be5] md:px-[10px] md:py-[5px] px-2 py-1 uppercase text-white">
+                        <span className="flex w-[38%] shrink-0 items-center justify-between gap-[10px] bg-[#2d7be5] px-2 py-1 md:gap-3 md:px-3 md:py-1.5 lg:gap-[15px] lg:px-[10px] lg:py-[5px] uppercase text-white">
                             <span className="flex items-center text-white tracking-[-0.05em]">LIVE</span>
                             <img
                                 src={playWhite}
                                 alt="Play"
                                 width="60"
                                 height="60"
-                                className="pointer-events-none md:h-[60px] md:w-[60px] h-8 w-8 shrink-0 object-contain"
+                                className="pointer-events-none h-8 w-8 shrink-0 object-contain md:h-10 md:w-10 lg:h-[60px] lg:w-[60px]"
                             />
                             <audio
                                 ref={audioRef}
@@ -210,7 +210,7 @@ export default function Home() {
             </section>
 
             {/* Programs Section */}
-            <section className="relative mb-14 mt-5 w-full overflow-hidden px-4 md:px-6 md:mb-40">
+            <section className="relative mb-14 mt-5 w-full overflow-hidden px-4 md:px-6 md:mb-24 lg:mb-40">
                 <img
                     src={bottomImg}
                     alt=""
@@ -227,7 +227,7 @@ export default function Home() {
 
                 {/* Mobile Layout - card: image top, data + button bottom */}
                 {programs.length > 0 ? (
-                    <div className="md:hidden">
+                    <div className="lg:hidden">
                         <div className="relative overflow-hidden rounded-3xl">
                             <div
                                 className="flex transition-transform duration-700 ease-in-out"
@@ -358,7 +358,7 @@ export default function Home() {
                     </div>
                 ) : null}
 
-                <div className="hidden flex-col gap-8 md:flex md:gap-3">
+                <div className="hidden flex-col gap-8 lg:flex lg:gap-3">
                     {programs.map((program, index) => {
                         const isSwapped = index % 2 === 1
                         const displayDays = formatProgramDays(program?.days)
@@ -368,20 +368,20 @@ export default function Home() {
                         return (
                             <article
                                 key={program?._id ?? `${program?.title ?? 'program'}-${index}`}
-                                className={`grid grid-cols-1 items-start gap-6 rounded-3xl p-4 md:grid-cols-2 md:items-start md:gap-12 md:p-6 ${
+                                className={`grid grid-cols-1 items-start gap-6 rounded-3xl p-4 lg:grid-cols-2 lg:items-start lg:gap-12 lg:p-6 ${
                                     index === 1 ? 'relative md:-mt-10' : ''
                                 }`}
                             >
                                 <div
                                     className={`${
-                                        isSwapped ? 'order-2 md:order-2' : 'order-2 md:order-1'
+                                        isSwapped ? 'order-2 lg:order-2' : 'order-2 lg:order-1'
                                     } self-start text-center md:text-left ${
-                                        index === 1 ? 'md:pl-10 lg:pl-14' : ''
+                                        index === 1 ? 'lg:pl-14' : ''
                                     }`}
                                 >
                                     {index === 0 ? (
                                         <h1
-                                            className="mb-10 font-sans text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em] md:text-7xl"
+                                            className="mb-10 font-sans text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em] lg:text-7xl"
                                             style={{
                                                 fontFamily: 'Gotham',
                                                 fontWeight: 900,
@@ -398,21 +398,21 @@ export default function Home() {
                                         </h1>
                                     ) : null}
 
-                                    <h3 className="font-['Museo'] font-light text-3xl leading-tight text-white md:text-6xl tracking-[-0.03em]">
+                                    <h3 className="font-['Museo'] font-light text-3xl leading-tight text-white lg:text-6xl tracking-[-0.03em]">
                                         {renderProgramTitle(program?.title)}
                                     </h3>
-                                    <p className="mt-6 font-sans text-base font-bold tracking-[-0.03em] text-white md:text-4xl">
+                                    <p className="mt-6 font-sans text-base font-bold tracking-[-0.03em] text-white lg:text-4xl">
                                         {displayDays}
                                     </p>
-                                    <p className=" font-sans text-lg font-black text-white/90 md:text-4xl">
+                                    <p className=" font-sans text-lg font-black text-white/90 lg:text-4xl">
                                         {displayTime}
                                     </p>
                                 </div>
 
-                                <div className={isSwapped ? 'order-1 self-start md:order-1' : 'order-1 self-start md:order-2'}>
+                                <div className={isSwapped ? 'order-1 self-start lg:order-1' : 'order-1 self-start lg:order-2'}>
                                     <div
-                                        className={`relative mx-auto w-full max-w-[860px] md:max-w-[1040px] ${
-                                            index === 1 ? 'md:-mt-50 lg:-mt-70 md:z-20' : ''
+                                        className={`relative mx-auto w-full max-w-[860px] lg:max-w-[1040px] ${
+                                            index === 1 ? 'lg:-mt-70 lg:z-20' : ''
                                         }`}
                                     >
                                         <img

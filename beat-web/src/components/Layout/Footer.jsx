@@ -12,13 +12,13 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-[#ffffff] text-[#0c0c0c]">
-      <div className="mx-auto flex max-w-8xl flex-col gap-12 px-4 py-5 md:flex-row md:items-start md:justify-between md:gap-20 lg:gap-28 lg:px-10">
+      <div className="mx-auto flex max-w-8xl flex-col gap-10 px-4 py-5 md:flex-row md:items-start md:justify-between md:gap-10 md:px-6 lg:gap-28 lg:px-10">
         {/* Left: frequency asset + copyright */}
-        <div className="flex max-w-lg shrink-0 flex-col items-center md:items-start gap-2">
+        <div className="flex w-full max-w-lg shrink-0 flex-col items-center gap-2 md:w-auto md:max-w-[250px] md:items-start lg:max-w-lg">
           <img
             src={frequencyImg}
             alt=""
-            className="h-auto w-72 max-w-full object-contain sm:w-80 md:w-64"
+            className="h-auto w-72 max-w-full object-contain sm:w-80 md:w-48 lg:w-64"
             width={300}
             height={80}
           />
@@ -28,7 +28,7 @@ export default function Footer() {
         </div>
 
         {/* Right: 3 columns — compact row, hug content, aligned end on md+ */}
-        <div className="flex w-full flex-wrap items-start justify-start gap-x-8 gap-y-6 md:w-auto md:flex-nowrap md:justify-end md:gap-15">
+        <div className="flex w-full flex-wrap items-start justify-start gap-x-6 gap-y-6 md:w-auto md:flex-wrap md:justify-end md:gap-x-8 md:gap-y-5 lg:flex-nowrap lg:gap-15">
           <nav className="flex min-w-[140px] flex-col gap-1" aria-label="Footer">
             <Link className={linkClass} to="/">
               Home
@@ -53,7 +53,7 @@ export default function Footer() {
             </Link>
           </nav>
 
-          <div className="hidden md:flex min-w-[140px] flex-col gap-2">
+          <div className="hidden lg:flex min-w-[140px] flex-col gap-2">
             <p className={colTitleClass}>Get involved</p>
             <Link className={linkClass} to="/get-discovered">
               Get Discovered
