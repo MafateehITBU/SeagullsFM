@@ -240,7 +240,7 @@ export default function Home() {
 
                                     return (
                                         <article key={program?._id ?? `mobile-slide-${idx}`} className="w-full shrink-0 rounded-3xl px-4 py-3">
-                                            <div className="relative mx-auto mb-5 w-full max-w-[620px]">
+                                            <div className="relative mx-auto mb-5 w-[70%] max-w-[500px]">
                                                 <img
                                                     src={bColor}
                                                     alt=""
@@ -251,7 +251,7 @@ export default function Home() {
                                                     <img
                                                         src={imageUrl}
                                                         alt={program?.title || 'Program artwork'}
-                                                        className="absolute -inset-[4%] h-[108%] w-[108%] object-contain"
+                                                        className="absolute -inset-[1.5%] h-[103%] w-[103%] object-contain"
                                                         loading="lazy"
                                                     />
                                                 ) : null}
@@ -260,7 +260,7 @@ export default function Home() {
                                             <div className="mb-2 self-start text-center">
                                                 {idx === 0 ? (
                                                     <h1
-                                                        className="mb-6 font-sans text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em]"
+                                                        className="mb-6 font-sans text-2xl font-black uppercase leading-[0.92] tracking-[-0.03em]"
                                                         style={{
                                                             fontFamily: 'Gotham',
                                                             fontWeight: 900,
@@ -276,13 +276,13 @@ export default function Home() {
                                                     </h1>
                                                 ) : null}
 
-                                                <h3 className="font-sans text-3xl font-extrabold leading-tight text-white">
+                                                <h3 className="font-sans text-xl font-extrabold leading-tight text-white">
                                                     {program?.title}
                                                 </h3>
-                                                <p className="mt-5 font-sans text-xl font-bold tracking-[0.03em] text-white">
+                                                <p className="mt-5 font-sans text-base font-bold tracking-[0.03em] text-white">
                                                     {displayDays}
                                                 </p>
-                                                <p className="mt-1 font-sans text-2xl font-black text-white/90">
+                                                <p className="mt-1 font-sans text-base font-black text-white/90">
                                                     {displayTime}
                                                 </p>
                                             </div>

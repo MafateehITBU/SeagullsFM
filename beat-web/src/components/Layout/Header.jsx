@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import logo from '../../assets/imgs/logo.png'
+import frequencyImg from '../../assets/imgs/home/frequency.png'
 import { useStaticInfo } from '../../context/StaticInfoContext.jsx'
 
 const navClass =
@@ -261,6 +262,15 @@ export default function Header() {
             Login
           </NavLink>
         </nav>
+
+        <div className="px-4 pb-5">
+          <img
+            src={frequencyImg}
+            alt=""
+            className="mx-auto h-auto w-full max-w-[220px] object-contain opacity-95"
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </header>
   )
