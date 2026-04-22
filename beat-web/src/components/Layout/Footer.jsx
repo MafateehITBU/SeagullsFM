@@ -53,7 +53,7 @@ export default function Footer() {
             </Link>
           </nav>
 
-          <div className="flex min-w-[140px] flex-col gap-2">
+          <div className="hidden md:flex min-w-[140px] flex-col gap-2">
             <p className={colTitleClass}>Get involved</p>
             <Link className={linkClass} to="/get-discovered">
               Get Discovered
