@@ -210,7 +210,9 @@ export default function Home() {
             </section>
 
             {/* Programs Section */}
-            <section className="relative mb-14 mt-5 w-full overflow-hidden px-4 md:px-6 md:mb-24 lg:mb-40">
+            <section
+                className="relative mb-14 mt-5 w-full overflow-hidden px-4 md:px-6 md:mb-24 lg:mb-40"
+            >
                 <img
                     src={bottomImg}
                     alt=""
@@ -239,7 +241,10 @@ export default function Home() {
                                     const imageUrl = program?.image?.url
 
                                     return (
-                                        <article key={program?._id ?? `mobile-slide-${idx}`} className="w-full shrink-0 rounded-3xl px-4 py-3">
+                                        <article
+                                            key={program?._id ?? `mobile-slide-${idx}`}
+                                            className="w-full shrink-0 rounded-3xl px-4 py-3"
+                                        >
                                             <div className="relative mx-auto mb-5 w-[70%] max-w-[500px]">
                                                 <img
                                                     src={bColor}
@@ -409,7 +414,11 @@ export default function Home() {
                                     </p>
                                 </div>
 
-                                <div className={isSwapped ? 'order-1 self-start lg:order-1' : 'order-1 self-start lg:order-2'}>
+                                <div
+                                    className={`${
+                                        isSwapped ? 'order-1 self-start lg:order-1' : 'order-1 self-start lg:order-2'
+                                    }`}
+                                >
                                     <div
                                         className={`relative mx-auto w-full max-w-[860px] lg:max-w-[1040px] ${
                                             index === 1 ? 'lg:-mt-70 lg:z-20' : ''
@@ -441,7 +450,7 @@ export default function Home() {
 
             {/* Download App Section */}
             <section
-                className="home-download-app mt-5 mb-20 md:mb-70 "
+                className="home-download-app mt-5 mb-20 md:mb-70"
                 aria-labelledby="download-app-heading"
             >
                 <div className="home-download-app-inner">
