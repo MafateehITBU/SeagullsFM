@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { Icon } from "@iconify/react";
 import axiosInstance from "../axiosConfig.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
-import AddNewsModal from "./modals/News/AddNewsModal.jsx";
-import UpdateNewsModal from "./modals/News/UpdateNewsModal.jsx";
 import DeleteModal from "./modals/DeleteModal.jsx";
+import RichTextViewButton from "./RichTextViewButton";
+import RichTextViewModal from "./RichTextViewModal";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
@@ -21,13 +22,13 @@ const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
 
 const NewsLayer = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [allNews, setAllNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedNews, setSelectedNews] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [viewContent, setViewContent] = useState(null);
 
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -149,22 +150,12 @@ const NewsLayer = () => {
       },
       {
         Header: "Content",
-        accessor: (row) => row.content || "-",
+        accessor: "content",
         Cell: ({ value }) => (
-          <span
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              maxWidth: "400px",
-              whiteSpace: "normal",
-              wordBreak: "break-word",
-              textAlign: "center",
-              margin: "0 auto",
-            }}
-          >
-            {value}
-          </span>
+          <RichTextViewButton
+            value={value}
+            onView={(html) => setViewContent(html)}
+          />
         ),
       },
       {
@@ -173,10 +164,7 @@ const NewsLayer = () => {
           <div className="d-flex gap-2 justify-content-center">
             <button
               className="btn btn-sm btn-primary"
-              onClick={() => {
-                setSelectedNews(row.original);
-                setShowUpdateModal(true);
-              }}
+              onClick={() => navigate(`/news/${row.original._id}/edit`)}
             >
               <Icon icon="mdi:pencil" />
             </button>
@@ -226,7 +214,7 @@ const NewsLayer = () => {
         <div className="w-35 w-md-100 w-sm-100">
           <button
             className="btn btn-success w-100 w-md-auto"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => navigate("/news/new")}
           >
             Add New News
           </button>
@@ -338,25 +326,19 @@ const NewsLayer = () => {
         )}
       </div>
 
-      <AddNewsModal
-        channelId={user?.channelId}
-        show={showAddModal}
-        handleClose={() => setShowAddModal(false)}
-        fetchNews={fetchNews}
-      />
-      <UpdateNewsModal
-        channelId={user?.channelId}
-        show={showUpdateModal}
-        handleClose={() => setShowUpdateModal(false)}
-        news={selectedNews}
-        fetchNews={fetchNews}
-      />
       <DeleteModal
         show={showDeleteModal}
         handleClose={() => setShowDeleteModal(false)}
         item={selectedNews}
         itemType="news"
         fetchData={fetchNews}
+      />
+
+      <RichTextViewModal
+        show={Boolean(viewContent)}
+        onHide={() => setViewContent(null)}
+        title="News Content"
+        html={viewContent}
       />
 
       {/*IMAGE PREVIEW OVERLAY */}

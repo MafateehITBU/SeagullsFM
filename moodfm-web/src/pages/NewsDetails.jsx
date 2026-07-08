@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
+import RichTextContent from '../components/RichTextContent';
 
 const NewsDetails = () => {
     const location = useLocation();
@@ -71,7 +72,11 @@ const NewsDetails = () => {
                     <h1 className="news-details-title">{news.title}</h1>
                     <p className="news-details-description">{news.description}</p>
                     <p className="news-details-published-at"><span style={{ fontWeight: '700' }}>Published:</span> {new Date(news.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
-                    <p className="news-details-body" dangerouslySetInnerHTML={{ __html: news.content.replace(/\n/g, '<br />') }}></p>
+                    <RichTextContent
+                        html={news.content}
+                        className="news-details-body"
+                        as="div"
+                    />
                 </div>
             </section>
 

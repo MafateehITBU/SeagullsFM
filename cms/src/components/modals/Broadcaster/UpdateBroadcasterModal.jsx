@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col, Image } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
+import RichTextEditor from "../../RichTextEditor";
 import { toast } from "react-toastify";
 
 const UpdateBroadcasterModal = ({
@@ -75,11 +76,7 @@ const UpdateBroadcasterModal = ({
 
           <Form.Group className="mb-3">
             <Form.Label>Description</Form.Label>
-            <Form.Control
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+            <RichTextEditor value={description} onChange={setDescription} />
           </Form.Group>
 
           <Form.Group className="mb-3">

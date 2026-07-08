@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
+import RichTextEditor from "../../RichTextEditor";
 import { toast } from "react-toastify";
 
 const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
@@ -84,11 +85,10 @@ const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Content</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={5}
+            <RichTextEditor
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={setContent}
+              minHeight={320}
             />
           </Form.Group>
 

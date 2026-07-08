@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { Icon } from "@iconify/react";
 import axiosInstance from "../axiosConfig.js";
@@ -6,9 +7,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
 import ProgramInterviews from "./ProgramInterviews.jsx";
-import AddProgramModal from "./modals/Program/AddProgramModal.jsx";
-import UpdateProgramModal from "./modals/Program/UpdateProgramModal.jsx";
 import DeleteModal from "./modals/DeleteModal.jsx";
+import RichTextViewButton from "./RichTextViewButton";
+import RichTextViewModal from "./RichTextViewModal";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
@@ -62,15 +63,15 @@ const formatDays = (days) => {
 
 const ProgramsLayer = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [allPrograms, setAllPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [selectedProgramInterviews, setSelectedProgramInterviews] =
     useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [viewDescription, setViewDescription] = useState(null);
 
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -155,22 +156,12 @@ const ProgramsLayer = () => {
       { Header: "Title", accessor: "title" },
       {
         Header: "Description",
-        accessor: (row) => row.description || "-",
+        accessor: "description",
         Cell: ({ value }) => (
-          <span
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              maxWidth: "250px",
-              whiteSpace: "normal",
-              wordBreak: "break-word",
-              textAlign: "center",
-              margin: "0 auto",
-            }}
-          >
-            {value}
-          </span>
+          <RichTextViewButton
+            value={value}
+            onView={(html) => setViewDescription(html)}
+          />
         ),
       },
       {
@@ -242,10 +233,7 @@ const ProgramsLayer = () => {
           <div className="d-flex gap-2 justify-content-center">
             <button
               className="btn btn-sm btn-primary"
-              onClick={() => {
-                setSelectedProgram(row.original);
-                setShowUpdateModal(true);
-              }}
+              onClick={() => navigate(`/programs/${row.original._id}/edit`)}
             >
               <Icon icon="mdi:pencil" />
             </button>
@@ -300,7 +288,7 @@ const ProgramsLayer = () => {
           <div className="w-35 w-md-100 w-sm-100">
             <button
               className="btn btn-success w-100 w-md-auto"
-              onClick={() => setShowAddModal(true)}
+              onClick={() => navigate("/programs/new")}
             >
               Add New Program
             </button>
@@ -330,12 +318,12 @@ const ProgramsLayer = () => {
             <div className="table-responsive">
               <table className="table bordered-table mb-0" {...getTableProps()}>
                 <thead>
-                  {headerGroups.map((hg) => (
-                    <tr {...hg.getHeaderGroupProps()} key={hg.id}>
-                      {hg.headers.map((col) => (
+                  {headerGroups.map((hg, hgIndex) => (
+                    <tr {...hg.getHeaderGroupProps()} key={`${hg.id}-${hgIndex}`}>
+                      {hg.headers.map((col, colIndex) => (
                         <th
                           {...col.getHeaderProps(col.getSortByToggleProps())}
-                          key={col.id}
+                          key={`${col.id}-${colIndex}`}
                           style={{ textAlign: "center", whiteSpace: "nowrap" }}
                         >
                           {col.render("Header")}{" "}
@@ -354,14 +342,15 @@ const ProgramsLayer = () => {
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                  {rows.map((row) => {
+                  {rows.map((row, rowIndex) => {
                     prepareRow(row);
+                    const rowKey = row.original?._id || `${row.id}-${rowIndex}`;
                     return (
-                      <tr {...row.getRowProps()} key={row.id}>
-                        {row.cells.map((cell) => (
+                      <tr {...row.getRowProps()} key={rowKey}>
+                        {row.cells.map((cell, cellIndex) => (
                           <td
                             {...cell.getCellProps()}
-                            key={cell.column.id}
+                            key={`${rowKey}-${cell.column.id}-${cellIndex}`}
                             style={{
                               textAlign: "center",
                               verticalAlign: "middle",
@@ -420,25 +409,19 @@ const ProgramsLayer = () => {
         )}
       </div>
 
-      <AddProgramModal
-        channelId={user?.channelId}
-        show={showAddModal}
-        handleClose={() => setShowAddModal(false)}
-        fetchPrograms={fetchPrograms}
-      />
-      <UpdateProgramModal
-        channelId={user?.channelId}
-        show={showUpdateModal}
-        handleClose={() => setShowUpdateModal(false)}
-        program={selectedProgram}
-        fetchPrograms={fetchPrograms}
-      />
       <DeleteModal
         show={showDeleteModal}
         handleClose={() => setShowDeleteModal(false)}
         item={selectedProgram}
         itemType="program"
         fetchData={fetchPrograms}
+      />
+
+      <RichTextViewModal
+        show={Boolean(viewDescription)}
+        onHide={() => setViewDescription(null)}
+        title="Program Description"
+        html={viewDescription}
       />
 
       {/*IMAGE PREVIEW OVERLAY */}

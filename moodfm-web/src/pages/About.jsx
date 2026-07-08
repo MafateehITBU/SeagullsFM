@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import { useStaticInfo } from '../context/StaticInfoContext';
+import RichTextContent from '../components/RichTextContent';
 import { Icon } from '@iconify/react';
 import aboutImg from '../assets/imgs/About/hero-img.png';
 import about2 from '../assets/imgs/About/about2.png';
@@ -158,9 +159,11 @@ const About = () => {
             <section className="who-we-are-section flex-column-start">
                 <h1 className="who-we-are-title mb-3">Who we Are</h1>
 
-                <p className="who-we-are-description">
-                    {formatTextWithSpecialChars(staticInfo.aboutUs)}
-                </p>
+                <RichTextContent
+                    html={staticInfo.aboutUs}
+                    className="who-we-are-description"
+                    as="div"
+                />
 
                 {/* Mood Profile – opens PDF in new tab for viewing */}
                 <a

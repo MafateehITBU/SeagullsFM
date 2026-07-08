@@ -7,9 +7,13 @@ import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminsPage";
 import UsersPage from "./pages/UsersPage";
 import StaticInfoPage from "./pages/StaticInfoPage";
+import StaticInfoAboutUsEditPage from "./pages/StaticInfoAboutUsEditPage";
 import BroadcasterPage from "./pages/BroadcasterPage";
+import BroadcasterFormPage from "./pages/BroadcasterFormPage";
 import ProgramsPage from "./pages/ProgramsPage";
+import ProgramFormPage from "./pages/ProgramFormPage";
 import NewsPage from "./pages/NewsPage";
+import NewsFormPage from "./pages/NewsFormPage";
 import EventPage from "./pages/EventPage";
 import AdvertisementPage from "./pages/AdvertisementPage";
 import InterviewApplicantsPage from "./pages/InterviewApplicantsPage";
@@ -29,7 +33,10 @@ function App() {
   const isLoggedIn = !!token && !!user?.id;
 
   return (
-    <BrowserRouter basename={process.env.NODE_ENV === "production" ? "/cms" : ""}>
+    <BrowserRouter
+      basename={process.env.NODE_ENV === "production" ? "/cms" : ""}
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       <RouteScrollToTop />
       <Routes>
         {/* Root route - redirect based on authentication */}
@@ -97,10 +104,37 @@ function App() {
         />
 
         <Route
+          path="/static-info/about-us/edit"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <StaticInfoAboutUsEditPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/broadcasters"
           element={
             <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
               <BroadcasterPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/broadcasters/new"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <BroadcasterFormPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/broadcasters/:id/edit"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <BroadcasterFormPage />
             </ProtectedRoute>
           }
         />
@@ -115,10 +149,46 @@ function App() {
         />
 
         <Route
+          path="/programs/new"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <ProgramFormPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/programs/:id/edit"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <ProgramFormPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/news"
           element={
             <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
               <NewsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/news/new"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <NewsFormPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/news/:id/edit"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+              <NewsFormPage />
             </ProtectedRoute>
           }
         />

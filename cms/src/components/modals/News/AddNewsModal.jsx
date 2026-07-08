@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
+import RichTextEditor from "../../RichTextEditor";
+import { hasRichTextContent } from "../../../utils/richTextUtils";
 import { toast } from "react-toastify";
 
 const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
@@ -16,7 +18,7 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!description.trim()) newErrors.description = "Description is required";
-    if (!content.trim()) newErrors.content = "Content is required";
+    if (!hasRichTextContent(content)) newErrors.content = "Content is required";
     if (!images.length) newErrors.images = "At least one image is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -99,12 +101,15 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Content</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
+            <RichTextEditor
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={setContent}
+              invalid={!!errors.content}
+              minHeight={320}
             />
+            {errors.content ? (
+              <div className="invalid-feedback d-block">{errors.content}</div>
+            ) : null}
           </Form.Group>
 
           <Form.Group className="mb-3">

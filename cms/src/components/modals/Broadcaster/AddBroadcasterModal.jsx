@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
+import RichTextEditor from "../../RichTextEditor";
+import { hasRichTextContent } from "../../../utils/richTextUtils";
 import { toast } from "react-toastify";
 
 const AddBroadcasterModal = ({
@@ -26,7 +28,7 @@ const AddBroadcasterModal = ({
   const validateForm = () => {
     const newErrors = {};
     if (!name.trim()) newErrors.name = "Name is required";
-    if (!description.trim()) newErrors.description = "Description is required";
+    if (!hasRichTextContent(description)) newErrors.description = "Description is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -99,16 +101,14 @@ const AddBroadcasterModal = ({
 
           <Form.Group className="mb-3">
             <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
+            <RichTextEditor
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              isInvalid={!!errors.description}
+              onChange={setDescription}
+              invalid={!!errors.description}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.description}
-            </Form.Control.Feedback>
+            {errors.description ? (
+              <div className="invalid-feedback d-block">{errors.description}</div>
+            ) : null}
           </Form.Group>
 
           {/* 🔹 Social Media Links */}

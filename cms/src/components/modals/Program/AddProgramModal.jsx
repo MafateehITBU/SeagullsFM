@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
+import RichTextEditor from "../../RichTextEditor";
+import { hasRichTextContent } from "../../../utils/richTextUtils";
 import { toast } from "react-toastify";
 
 const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
@@ -31,7 +33,7 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
-    if (!description.trim()) newErrors.description = "Description is required";
+    if (!hasRichTextContent(description)) newErrors.description = "Description is required";
     if (days.length === 0) newErrors.days = "At least one day is required";
     if (!startTime.trim()) newErrors.startTime = "Start Time is required";
     if (!endTime.trim()) newErrors.endTime = "End Time is required";
@@ -107,16 +109,14 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
+            <RichTextEditor
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              isInvalid={!!errors.description}
+              onChange={setDescription}
+              invalid={!!errors.description}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.description}
-            </Form.Control.Feedback>
+            {errors.description ? (
+              <div className="invalid-feedback d-block">{errors.description}</div>
+            ) : null}
           </Form.Group>
 
           {/* Checkboxes for the days of the week */}

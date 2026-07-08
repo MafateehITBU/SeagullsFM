@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { Icon } from "@iconify/react";
 import axiosInstance from "../axiosConfig.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
-import AddBroadcasterModal from "./modals/Broadcaster/AddBroadcasterModal.jsx";
-import UpdateBroadcasterModal from "./modals/Broadcaster/UpdateBroadcasterModal.jsx";
 import DeleteModal from "./modals/DeleteModal.jsx";
+import RichTextViewButton from "./RichTextViewButton";
+import RichTextViewModal from "./RichTextViewModal";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
@@ -21,13 +22,13 @@ const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
 
 const BroadcasterLayer = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [broadcasters, setBroadcasters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedBroadcaster, setSelectedBroadcaster] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [viewDescription, setViewDescription] = useState(null);
 
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -96,22 +97,12 @@ const BroadcasterLayer = () => {
       },
       {
         Header: "Description",
-        accessor: (row) => row.description || "-",
+        accessor: "description",
         Cell: ({ value }) => (
-          <span
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              maxWidth: "400px",
-              whiteSpace: "normal",
-              wordBreak: "break-word",
-              textAlign: "center",
-              margin: "0 auto",
-            }}
-          >
-            {value}
-          </span>
+          <RichTextViewButton
+            value={value}
+            onView={(html) => setViewDescription(html)}
+          />
         ),
       },
       {
@@ -120,10 +111,7 @@ const BroadcasterLayer = () => {
           <div className="d-flex gap-2 justify-content-center">
             <button
               className="btn btn-sm btn-primary"
-              onClick={() => {
-                setSelectedBroadcaster(row.original);
-                setShowUpdateModal(true);
-              }}
+              onClick={() => navigate(`/broadcasters/${row.original._id}/edit`)}
             >
               <Icon icon="mdi:pencil" />
             </button>
@@ -177,7 +165,7 @@ const BroadcasterLayer = () => {
         <div className="w-35 w-md-100 w-sm-100">
           <button
             className="btn btn-success w-100 w-md-auto"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => navigate("/broadcasters/new")}
           >
             Add New Broadcaster
           </button>
@@ -290,25 +278,19 @@ const BroadcasterLayer = () => {
         )}
       </div>
 
-      <AddBroadcasterModal
-        channelId={user?.channelId}
-        show={showAddModal}
-        handleClose={() => setShowAddModal(false)}
-        fetchBroadcasters={fetchBroadcasters}
-      />
-      <UpdateBroadcasterModal
-        channelId={user?.channelId}
-        show={showUpdateModal}
-        handleClose={() => setShowUpdateModal(false)}
-        broadcaster={selectedBroadcaster}
-        fetchBroadcasters={fetchBroadcasters}
-      />
       <DeleteModal
         show={showDeleteModal}
         handleClose={() => setShowDeleteModal(false)}
         item={selectedBroadcaster}
         itemType="broadcaster"
         fetchData={fetchBroadcasters}
+      />
+
+      <RichTextViewModal
+        show={Boolean(viewDescription)}
+        onHide={() => setViewDescription(null)}
+        title="Broadcaster Description"
+        html={viewDescription}
       />
 
       {/*IMAGE PREVIEW OVERLAY */}

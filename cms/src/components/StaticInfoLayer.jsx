@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosConfig";
 import { Icon } from "@iconify/react";
 import { useAuth } from "../context/AuthContext";
+import RichTextContent from "./RichTextContent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Static fields definition
 const STATIC_FIELDS = [
   { key: "favIcon", label: "Fav Icon", type: "image" },
-  { key: "aboutUS", label: "About Us", type: "textarea" },
+  { key: "aboutUS", label: "About Us", type: "richtext" },
   { key: "frequency", label: "Frequency", type: "text" },
   { key: "frequencyimg", label: "Frequency Image", type: "image" },
   { key: "metaTags", label: "Meta Tags", type: "text" },
@@ -28,6 +30,7 @@ const STATIC_FIELDS = [
 
 const StaticInfoLayer = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [staticInfo, setStaticInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -67,6 +70,11 @@ const StaticInfoLayer = () => {
 
   /*  EDIT  */
   const openEditModal = (fieldKey) => {
+    if (fieldKey === "aboutUS") {
+      navigate("/static-info/about-us/edit");
+      return;
+    }
+
     // Determine if this field is part of a nested object
     if (["facebook", "instagram", "twitter"].includes(fieldKey)) {
       setSelectedParentField("socialMediaLinks");
@@ -195,6 +203,11 @@ const StaticInfoLayer = () => {
                     >
                       {JSON.stringify(staticInfo[field.key], null, 2)}
                     </pre>
+                  ) : field.type === "richtext" ? (
+                    <RichTextContent
+                      html={staticInfo[field.key]}
+                      style={{ maxWidth: "100%" }}
+                    />
                   ) : (
                     <span>{staticInfo[field.key] || "-"}</span>
                   )}
@@ -218,7 +231,7 @@ const StaticInfoLayer = () => {
       {showEditModal && (
         <>
           <div className="modal fade show d-block">
-            <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-dialog modal-dialog-centered modal-lg">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5>Edit {selectedFieldConfig?.label}</h5>

@@ -3,6 +3,7 @@ import axiosInstance from '../axiosConfig'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import NoData from '../components/UI/NoData'
+import RichTextContent from '../components/RichTextContent'
 import { Icon } from '@iconify/react'
 
 import presentersHeroImg from "../assets/imgs/Presenters/presenters-hero.png"
@@ -120,14 +121,14 @@ const Presenters = () => {
                                 >
                                     {formatTextWithSpecialChars(currentPresenter.name)}
                                 </h3>
-                                <p 
+                                <RichTextContent
+                                    html={currentPresenter.description}
                                     className="presenter-description"
+                                    as="div"
                                     style={{
-                                        color: isMoe ? 'var(--color-yellow)' : 'var(--color-cyan)'
+                                        color: isMoe ? 'var(--color-yellow)' : 'var(--color-cyan)',
                                     }}
-                                >
-                                    {formatTextWithSpecialChars(currentPresenter.description)}
-                                </p>
+                                />
                             </div>
                         ) : presenters.length === 0 && (
                             <NoData message="No presenters available" icon="material-symbols:person-outline" />

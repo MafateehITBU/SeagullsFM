@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react'
 import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import NoData from '../components/UI/NoData'
+import RichTextContent from '../components/RichTextContent'
 import { formatTextWithSpecialChars } from '../utils/formatTextWithSpecialChars'
 
 // Function to format days
@@ -217,7 +218,7 @@ const ProgramDetails = () => {
                         <div className="program-details-content d-flex flex-column gap-5">
                             <div className="top-content">
                                 <h3 className='mb-3'>{program?.title}</h3>
-                                <p>{program?.description}</p>
+                                <RichTextContent html={program?.description} as="div" />
                             </div>
                             <div className="bottom-content">
                                 <p className='d-flex align-items-center gap-2'><Icon icon="material-symbols:calendar-today-outline-rounded" />Days: {formatDays(program?.days)}</p>
