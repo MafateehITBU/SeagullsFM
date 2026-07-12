@@ -1,4 +1,4 @@
-# Auto-deploy to server when you push to main (backend, cms, moodfm-web)
+# Auto-deploy to server when you push to main (backend, cms, moodfm-web, beat-web)
 name: Deploy to Server
 
 on:
