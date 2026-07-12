@@ -3,8 +3,8 @@ import heroBg from '../assets/imgs/home/hero-bg.png'
 import frequencyImg from '../assets/imgs/home/frequency.png'
 import mobileImg from '../assets/imgs/home/mobile.png'
 import playWhite from '../assets/imgs/home/b-white.png'
-import bColor from '../assets/imgs/home/b-color.png'
 import bottomImg from '../assets/imgs/home/bottom.png'
+import ProgramArtwork from '../components/ProgramArtwork.jsx'
 
 
 import axiosInstance from '../axiosConfig'
@@ -211,7 +211,7 @@ export default function Home() {
 
             {/* Programs Section */}
             <section
-                className="relative mb-14 mt-5 w-full overflow-hidden px-4 md:px-6 md:mb-24 lg:mb-40"
+                className="beat-section-x relative mb-14 mt-5 w-full overflow-hidden md:mb-24 lg:mb-10"
             >
                 <img
                     src={bottomImg}
@@ -245,37 +245,16 @@ export default function Home() {
                                             key={program?._id ?? `mobile-slide-${idx}`}
                                             className="w-full shrink-0 rounded-3xl px-4 py-3"
                                         >
-                                            <div className="relative mx-auto mb-5 w-[70%] max-w-[500px]">
-                                                <img
-                                                    src={bColor}
-                                                    alt=""
-                                                    className="h-auto w-full object-contain"
-                                                    aria-hidden="true"
-                                                />
-                                                {imageUrl ? (
-                                                    <img
-                                                        src={imageUrl}
-                                                        alt={program?.title || 'Program artwork'}
-                                                        className="absolute -inset-[1.5%] h-[103%] w-[103%] object-contain"
-                                                        loading="lazy"
-                                                    />
-                                                ) : null}
-                                            </div>
+                                            <ProgramArtwork
+                                                imageUrl={imageUrl}
+                                                title={program?.title}
+                                                maxWidthClass="w-[70%] max-w-[500px]"
+                                                wrapperClassName="mb-5"
+                                            />
 
                                             <div className="mb-2 self-start text-center">
                                                 {idx === 0 ? (
-                                                    <h1
-                                                        className="mb-6 font-sans text-2xl font-black uppercase leading-[0.92] tracking-[-0.03em]"
-                                                        style={{
-                                                            fontFamily: 'Gotham',
-                                                            fontWeight: 900,
-                                                            backgroundImage:
-                                                                'linear-gradient(90deg, #09d8c0 0%, #11b5db 30%, #179cee 62%, #1c86ff 100%)',
-                                                            WebkitBackgroundClip: 'text',
-                                                            backgroundClip: 'text',
-                                                            color: 'transparent',
-                                                        }}
-                                                    >
+                                                    <h1 className="main-show-title mb-6 text-2xl">
                                                         Main
                                                         Show
                                                     </h1>
@@ -303,18 +282,7 @@ export default function Home() {
                                         className="absolute left-2 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/35 backdrop-blur-sm transition-colors hover:bg-black/50"
                                         aria-label="Previous program"
                                     >
-                                        <span
-                                            className="text-2xl font-black leading-none"
-                                            style={{
-                                                fontFamily: 'Gotham',
-                                                fontWeight: 900,
-                                                backgroundImage:
-                                                    'linear-gradient(90deg, #09d8c0 0%, #11b5db 30%, #179cee 62%, #1c86ff 100%)',
-                                                WebkitBackgroundClip: 'text',
-                                                backgroundClip: 'text',
-                                                color: 'transparent',
-                                            }}
-                                        >
+                                        <span className="beat-gradient-text text-2xl leading-none">
                                             ‹
                                         </span>
                                     </button>
@@ -324,18 +292,7 @@ export default function Home() {
                                         className="absolute right-2 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/35 backdrop-blur-sm transition-colors hover:bg-black/50"
                                         aria-label="Next program"
                                     >
-                                        <span
-                                            className="text-2xl font-black leading-none"
-                                            style={{
-                                                fontFamily: 'Gotham',
-                                                fontWeight: 900,
-                                                backgroundImage:
-                                                    'linear-gradient(90deg, #09d8c0 0%, #11b5db 30%, #179cee 62%, #1c86ff 100%)',
-                                                WebkitBackgroundClip: 'text',
-                                                backgroundClip: 'text',
-                                                color: 'transparent',
-                                            }}
-                                        >
+                                        <span className="beat-gradient-text text-2xl leading-none">
                                             ›
                                         </span>
                                     </button>
@@ -373,7 +330,7 @@ export default function Home() {
                         return (
                             <article
                                 key={program?._id ?? `${program?.title ?? 'program'}-${index}`}
-                                className={`grid grid-cols-1 items-start gap-6 rounded-3xl p-4 lg:grid-cols-2 lg:items-start lg:gap-12 lg:p-6 ${
+                                className={`beat-section-inset grid grid-cols-1 items-start gap-6 rounded-3xl lg:grid-cols-2 lg:items-start lg:gap-12 ${
                                     index === 1 ? 'relative md:-mt-10' : ''
                                 }`}
                             >
@@ -385,18 +342,7 @@ export default function Home() {
                                     }`}
                                 >
                                     {index === 0 ? (
-                                        <h1
-                                            className="mb-10 font-sans text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em] lg:text-7xl"
-                                            style={{
-                                                fontFamily: 'Gotham',
-                                                fontWeight: 900,
-                                                backgroundImage:
-                                                    'linear-gradient(90deg, #09d8c0 0%, #11b5db 30%, #179cee 62%, #1c86ff 100%)',
-                                                WebkitBackgroundClip: 'text',
-                                                backgroundClip: 'text',
-                                                color: 'transparent',
-                                            }}
-                                        >
+                                        <h1 className="main-show-title mb-10 text-4xl lg:text-7xl">
                                             Main
                                             <br />
                                             Show
@@ -419,26 +365,13 @@ export default function Home() {
                                         isSwapped ? 'order-1 self-start lg:order-1' : 'order-1 self-start lg:order-2'
                                     }`}
                                 >
-                                    <div
-                                        className={`relative mx-auto w-full max-w-[860px] lg:max-w-[1040px] ${
+                                    <ProgramArtwork
+                                        imageUrl={imageUrl}
+                                        title={program?.title}
+                                        wrapperClassName={
                                             index === 1 ? 'lg:-mt-70 lg:z-20' : ''
-                                        }`}
-                                    >
-                                        <img
-                                            src={bColor}
-                                            alt=""
-                                            className="h-auto w-full object-contain"
-                                            aria-hidden="true"
-                                        />
-                                        {imageUrl ? (
-                                            <img
-                                                src={imageUrl}
-                                                alt={program?.title || 'Program artwork'}
-                                                className="absolute -inset-[10%] h-[120%] w-[120%] object-contain"
-                                                loading="lazy"
-                                            />
-                                        ) : null}
-                                    </div>
+                                        }
+                                    />
                                 </div>
                             </article>
                         )
@@ -450,22 +383,38 @@ export default function Home() {
 
             {/* Download App Section */}
             <section
-                className="home-download-app mt-5 mb-20 md:mb-70"
-                aria-labelledby="download-app-heading"
+                className="home-download-app-section  mb-20 md:mb-70"
+                aria-labelledby="download-app-intro-heading"
             >
-                <div className="home-download-app-inner">
-                    <div className="home-download-app-copy">
-                        <h2 id="download-app-heading" className="home-download-app-title">
-                            Download App
+                <div className="beat-section-x">
+                    <div className="beat-section-inset home-download-app-intro">
+                        <h2 id="download-app-intro-heading" className="home-download-app-intro-title">
+                            Take your mood
+                            <br />
+                            everywhere
                         </h2>
-                        <p className="home-download-app-sub text-white">& listen to it live.</p>
+                        <p className="home-download-app-intro-text">
+                            Listen to music that matches your
+                            <br />
+                            vibe, anytime and anywhere
+                        </p>
                     </div>
-                    <img
-                        src={mobileImg}
-                        alt=""
-                        className="home-download-app-phone"
-                        aria-hidden="true"
-                    />
+                </div>
+                <div className="home-download-app">
+                    <div className="home-download-app-inner">
+                        <div className="home-download-app-copy">
+                            <h2 id="download-app-heading" className="home-download-app-title">
+                                Download App
+                            </h2>
+                            <p className="home-download-app-sub text-white">& listen to it live.</p>
+                        </div>
+                        <img
+                            src={mobileImg}
+                            alt=""
+                            className="home-download-app-phone"
+                            aria-hidden="true"
+                        />
+                    </div>
                 </div>
             </section>
 
