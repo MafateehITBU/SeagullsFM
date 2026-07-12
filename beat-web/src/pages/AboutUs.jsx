@@ -143,7 +143,7 @@ export default function AboutUs() {
                 LEARN MORE
               </Link>
               <a
-                href="/MediaKit.pdf"
+                href="/mediaKitBeat.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-0 bg-transparent p-0 font-sans text-xs font-bold uppercase tracking-[0.12em] text-[#9fd4ff] no-underline transition-colors hover:text-[#c8e8ff] md:text-2xl"
