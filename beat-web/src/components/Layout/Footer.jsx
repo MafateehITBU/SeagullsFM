@@ -51,6 +51,9 @@ export default function Footer() {
             <Link className={linkClass} to="/login">
               Login
             </Link>
+            <Link className={linkClass} to="/privacy-policy">
+              Privacy Policy
+            </Link>
           </nav>
 
           <div className="hidden lg:flex min-w-[140px] flex-col gap-2">
