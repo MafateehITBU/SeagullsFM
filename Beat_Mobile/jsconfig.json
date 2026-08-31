@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "module": "commonjs",
+    "jsx": "react-native",
+    "moduleResolution": "node",
+    "target": "esnext"
+  },
+  "include": ["src/**/*", "index.js", "App.js"],
+  "exclude": ["node_modules"]
+}
