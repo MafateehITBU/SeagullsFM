@@ -9,12 +9,16 @@ const INTRO_GRADIENT =
 
 const STATS = [
   { end: 20, suffix: '+', label: 'years of music\nand culture' },
-  { end: 350, suffix: 'k+', label: 'Monthly listeners' },
+  { end: 2.7, suffix: 'M', decimals: 1, label: 'Monthly listeners' },
   { end: 20, suffix: '+', label: 'Shows and Segments' },
 ]
 
-function CountUp({ end, suffix = '', duration = 2800 }) {
-  const [count, setCount] = useState(0)
+function CountUp({ end, suffix = '', duration = 2800, decimals = 0 }) {
+  const formatValue = useCallback(
+    (value) => (decimals > 0 ? value.toFixed(decimals) : Math.floor(value)),
+    [decimals],
+  )
+  const [count, setCount] = useState(() => formatValue(0))
   const [hasAnimated, setHasAnimated] = useState(false)
   const countRef = useRef(null)
 
@@ -25,17 +29,17 @@ function CountUp({ end, suffix = '', duration = 2800 }) {
       const elapsed = Date.now() - startTime
       const progress = Math.min(elapsed / duration, 1)
       const easeOutCubic = 1 - (1 - progress) ** 3
-      setCount(Math.floor(end * easeOutCubic))
+      setCount(formatValue(end * easeOutCubic))
 
       if (progress < 1) {
         requestAnimationFrame(animate)
       } else {
-        setCount(end)
+        setCount(formatValue(end))
       }
     }
 
     requestAnimationFrame(animate)
-  }, [duration, end])
+  }, [duration, end, formatValue])
 
   useEffect(() => {
     const node = countRef.current
@@ -115,7 +119,7 @@ export default function AboutUs() {
           <div className="mt-8 flex flex-nowrap items-start justify-between gap-2 md:mt-14 md:justify-start md:gap-5 lg:gap-7 xl:gap-15">
             {STATS.map((stat) => (
               <div key={stat.label} className="min-w-0 flex-1 md:flex-none md:shrink-0">
-                <CountUp end={stat.end} suffix={stat.suffix} />
+                <CountUp end={stat.end} suffix={stat.suffix} decimals={stat.decimals ?? 0} />
                 <p className="mt-2 whitespace-pre-line font-sans text-[10px] font-medium leading-snug tracking-wide text-white sm:text-xs md:text-xl">
                   {stat.label}
                 </p>
