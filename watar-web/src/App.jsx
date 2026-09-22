@@ -4,7 +4,7 @@ import Header from './components/Layout/Header.jsx'
 import Footer from './components/Layout/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
-import PlaceholderPage from './pages/PlaceholderPage.jsx'
+import ComingSoon from './pages/ComingSoon.jsx'
 
 export default function App() {
   return (
@@ -14,9 +14,9 @@ export default function App() {
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<PlaceholderPage title="تسجيل" />} />
-          <Route path="/about-us" element={<PlaceholderPage title="عن وتر" />} />
-          <Route path="/news" element={<PlaceholderPage title="أخبار" />} />
+          <Route path="/login" element={<ComingSoon />} />
+          <Route path="/about-us" element={<ComingSoon />} />
+          <Route path="/news" element={<ComingSoon />} />
         </Routes>
       </div>
       <Footer />
