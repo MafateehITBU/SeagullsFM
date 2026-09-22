@@ -1,0 +1,225 @@
+@import 'tailwindcss';
+
+/* —— Local fonts only (no Google Fonts / CDN) —— */
+@font-face {
+  font-family: 'Tajawal';
+  src: url('./fonts/Tajawal-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('./fonts/Tajawal-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('./fonts/Tajawal-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('./fonts/Tajawal-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('./fonts/Tajawal-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TheMixArab';
+  src: url('./fonts/TheMixArab Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Google Sans Flex';
+  src: url('./fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf')
+    format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+  --font-mix: 'TheMixArab', 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+  --font-latin: 'Google Sans Flex', 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+
+  --color-watar-yellow: #faba09;
+  --color-watar-orange: #f18a16;
+  --color-watar-red: #dd542d;
+  --color-watar-pink: #c9274f;
+  --color-watar-magenta: #a91368;
+  --color-watar-deep-magenta: #b0006a;
+  --color-watar-hero-yellow: #ffc20e;
+  --color-watar-white: #ffffff;
+}
+
+:root {
+  --watar-yellow: #faba09;
+  --watar-orange: #f18a16;
+  --watar-red: #dd542d;
+  --watar-pink: #c9274f;
+  --watar-magenta: #a91368;
+  --watar-deep-magenta: #b0006a;
+  --watar-hero-yellow: #ffc20e;
+  --watar-white: #ffffff;
+  --watar-gradient: linear-gradient(
+    135deg,
+    #faba09 0%,
+    #f18a16 28%,
+    #dd542d 55%,
+    #c9274f 75%,
+    #a91368 100%
+  );
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+  color: var(--watar-white);
+  background: var(--watar-gradient);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--watar-white);
+  outline-offset: 3px;
+}
+
+.font-mix {
+  font-family: 'TheMixArab', 'Tajawal', sans-serif;
+}
+
+.font-latin {
+  font-family: 'Google Sans Flex', 'Tajawal', sans-serif;
+}
+
+.watar-page {
+  min-height: 100svh;
+  background: var(--watar-gradient);
+  background-attachment: fixed;
+}
+
+/* Sticky navbar */
+.watar-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: background-color 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.watar-nav.is-scrolled {
+  background: linear-gradient(
+    135deg,
+    rgba(250, 186, 9, 0.88) 0%,
+    rgba(241, 138, 22, 0.88) 28%,
+    rgba(221, 84, 45, 0.9) 55%,
+    rgba(201, 39, 79, 0.92) 75%,
+    rgba(169, 19, 104, 0.94) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Hero yellow panel */
+.watar-hero-panel {
+  background: var(--watar-hero-yellow);
+  color: var(--watar-deep-magenta);
+}
+
+/* Live CTA */
+.watar-live-btn {
+  background: var(--watar-deep-magenta);
+  color: var(--watar-white);
+  transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+
+.watar-live-btn:hover {
+  filter: brightness(1.06);
+}
+
+.watar-live-btn:active {
+  transform: scale(0.985);
+}
+
+.watar-live-mark {
+  background: var(--watar-yellow);
+}
+
+/* Program abstract shapes */
+.watar-shape {
+  background: rgba(176, 0, 106, 0.55);
+  border-radius: 42% 58% 63% 37% / 48% 42% 58% 52%;
+}
+
+.watar-shape-alt {
+  background: rgba(169, 19, 104, 0.45);
+  border-radius: 58% 42% 37% 63% / 42% 58% 42% 58%;
+}
+
+@keyframes watar-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.watar-reveal {
+  animation: watar-fade-up 0.7s ease both;
+}
+
+.watar-mobile-drawer {
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
