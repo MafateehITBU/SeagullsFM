@@ -86,7 +86,7 @@ export default function LiveStreamButton() {
           aria-pressed={playing}
           aria-busy={loading}
           aria-label={label}
-          className="watar-live-btn relative flex w-[42%] max-w-xl min-w-0 items-stretch overflow-hidden rounded-none p-0 shadow-none"
+          className="watar-live-btn relative flex w-[42%] max-w-xl min-w-0 cursor-pointer items-stretch overflow-hidden rounded-none p-0 shadow-none"
         >
           <span className="flex flex-1 items-center justify-center px-3 py-3 text-center font-sans text-base font-bold tracking-wide sm:text-lg md:py-4 md:text-2xl lg:text-3xl">
             {label}

@@ -179,6 +179,7 @@ a:focus-visible {
 .watar-live-btn {
   background: var(--watar-deep-magenta);
   color: var(--watar-white);
+  cursor: pointer;
   transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
 }
 
