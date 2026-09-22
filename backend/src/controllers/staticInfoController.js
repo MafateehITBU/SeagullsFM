@@ -2,7 +2,74 @@ import StaticInfo from "../models/StaticInfo.js";
 import Channel from "../models/Channel.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
+import path from "path";
 import sizeOf from "image-size";
+
+const SVG_MIME_TYPES = new Set([
+  "image/svg+xml",
+  "image/svg",
+]);
+
+const isSvgFile = (file) => {
+  if (!file) return false;
+  const mime = (file.mimetype || "").toLowerCase();
+  const ext = path.extname(file.originalname || "").toLowerCase();
+  if (ext === ".svg") return true;
+  return SVG_MIME_TYPES.has(mime);
+};
+
+const cloudinaryUploadOptions = (file, folder, rasterOptions = {}) => {
+  if (isSvgFile(file)) {
+    return {
+      folder,
+      resource_type: "image",
+      format: "svg",
+    };
+  }
+  return { folder, ...rasterOptions };
+};
+
+const validateFavIconDimensions = (file) => {
+  // SVGs are resolution-independent — skip pixel size checks
+  if (isSvgFile(file)) {
+    try {
+      const dimensions = sizeOf(file.path);
+      return {
+        width: dimensions.width || null,
+        height: dimensions.height || null,
+      };
+    } catch {
+      return { width: null, height: null };
+    }
+  }
+
+  const dimensions = sizeOf(file.path);
+  const favIconDimensions = {
+    width: dimensions.width,
+    height: dimensions.height,
+  };
+
+  if (dimensions.width !== dimensions.height) {
+    const error = new Error(
+      `Favicon must be square. Current dimensions: ${dimensions.width}x${dimensions.height}. Recommended sizes: 16x16, 32x32, 48x48, 64x64, or 128x128 pixels.`
+    );
+    error.statusCode = 400;
+    error.currentDimensions = favIconDimensions;
+    throw error;
+  }
+
+  const recommendedSizes = [16, 32, 48, 64, 128, 256];
+  if (!recommendedSizes.includes(dimensions.width)) {
+    const error = new Error(
+      `Favicon size should be one of: 16x16, 32x32, 48x48, 64x64, 128x128, or 256x256 pixels. Current size: ${dimensions.width}x${dimensions.height}`
+    );
+    error.statusCode = 400;
+    error.currentDimensions = favIconDimensions;
+    throw error;
+  }
+
+  return favIconDimensions;
+};
 
 // @desc    Create static info
 // @route   POST /api/staticinfo
@@ -152,51 +219,24 @@ export const createStaticInfo = async (req, res) => {
       });
     }
 
-    // Validate favIcon dimensions
+    // Validate favIcon dimensions (pixel checks skipped for SVG)
     const favIconFile = req.files.favIcon[0];
     let favIconDimensions = null;
     try {
-      const dimensions = sizeOf(favIconFile.path);
-      favIconDimensions = { width: dimensions.width, height: dimensions.height };
-
-      // Recommended favicon sizes: 16x16, 32x32, 48x48, or square (e.g., 64x64, 128x128)
-      if (dimensions.width !== dimensions.height) {
-        return res.status(400).json({
-          success: false,
-          message: `Favicon must be square. Current dimensions: ${dimensions.width}x${dimensions.height}. Recommended sizes: 16x16, 32x32, 48x48, 64x64, or 128x128 pixels.`,
-          currentDimensions: favIconDimensions,
-          recommendedSizes: [
-            "16x16",
-            "32x32",
-            "48x48",
-            "64x64",
-            "128x128",
-            "256x256",
-          ],
-        });
-      }
-
-      // Check if size is one of the recommended sizes
-      const recommendedSizes = [16, 32, 48, 64, 128, 256];
-      if (!recommendedSizes.includes(dimensions.width)) {
-        return res.status(400).json({
-          success: false,
-          message: `Favicon size should be one of: 16x16, 32x32, 48x48, 64x64, 128x128, or 256x256 pixels. Current size: ${dimensions.width}x${dimensions.height}`,
-          currentDimensions: favIconDimensions,
-          recommendedSizes: [
-            "16x16",
-            "32x32",
-            "48x48",
-            "64x64",
-            "128x128",
-            "256x256",
-          ],
-        });
-      }
+      favIconDimensions = validateFavIconDimensions(favIconFile);
     } catch (error) {
-      return res.status(400).json({
+      return res.status(error.statusCode || 400).json({
         success: false,
-        message: "Error reading favicon dimensions",
+        message: error.message || "Error reading favicon dimensions",
+        currentDimensions: error.currentDimensions,
+        recommendedSizes: [
+          "16x16",
+          "32x32",
+          "48x48",
+          "64x64",
+          "128x128",
+          "256x256",
+        ],
         error: error.message,
       });
     }
@@ -204,15 +244,15 @@ export const createStaticInfo = async (req, res) => {
     // Upload frequency image to Cloudinary
     let frequencyImgResult;
     try {
+      const frequencyFile = req.files.frequencyimg[0];
       frequencyImgResult = await cloudinary.uploader.upload(
-        req.files.frequencyimg[0].path,
-        {
-          folder: "seagulls/staticinfo/frequency",
+        frequencyFile.path,
+        cloudinaryUploadOptions(frequencyFile, "seagulls/staticinfo/frequency", {
           width: 800,
           crop: "scale",
-        }
+        })
       );
-      fs.unlinkSync(req.files.frequencyimg[0].path);
+      fs.unlinkSync(frequencyFile.path);
     } catch (uploadError) {
       if (req.files.frequencyimg) {
         req.files.frequencyimg.forEach((file) => {
@@ -230,12 +270,21 @@ export const createStaticInfo = async (req, res) => {
     // Upload favIcon to Cloudinary
     let favIconResult;
     try {
-      favIconResult = await cloudinary.uploader.upload(favIconFile.path, {
-        folder: "seagulls/staticinfo/favicon",
-        width: favIconDimensions.width,
-        height: favIconDimensions.height,
-        crop: "fill",
-      });
+      const favUploadOptions = cloudinaryUploadOptions(
+        favIconFile,
+        "seagulls/staticinfo/favicon",
+        favIconDimensions?.width && favIconDimensions?.height
+          ? {
+              width: favIconDimensions.width,
+              height: favIconDimensions.height,
+              crop: "fill",
+            }
+          : {}
+      );
+      favIconResult = await cloudinary.uploader.upload(
+        favIconFile.path,
+        favUploadOptions
+      );
       fs.unlinkSync(favIconFile.path);
     } catch (uploadError) {
       if (req.files.favIcon) {
@@ -270,8 +319,8 @@ export const createStaticInfo = async (req, res) => {
       favIcon: {
         public_id: favIconResult.public_id,
         url: favIconResult.secure_url,
-        width: favIconDimensions.width,
-        height: favIconDimensions.height,
+        width: favIconDimensions?.width ?? null,
+        height: favIconDimensions?.height ?? null,
       },
       phoneNumber,
       email,
@@ -507,13 +556,13 @@ export const updateStaticInfo = async (req, res) => {
           await cloudinary.uploader.destroy(staticInfo.frequencyimg.public_id);
         }
 
+        const frequencyFile = req.files.frequencyimg[0];
         const result = await cloudinary.uploader.upload(
-          req.files.frequencyimg[0].path,
-          {
-            folder: "seagulls/staticinfo/frequency",
+          frequencyFile.path,
+          cloudinaryUploadOptions(frequencyFile, "seagulls/staticinfo/frequency", {
             width: 800,
             crop: "scale",
-          }
+          })
         );
 
         staticInfo.frequencyimg = {
@@ -522,7 +571,7 @@ export const updateStaticInfo = async (req, res) => {
         };
         await staticInfo.save();
 
-        fs.unlinkSync(req.files.frequencyimg[0].path);
+        fs.unlinkSync(frequencyFile.path);
       } catch (uploadError) {
         if (req.files.frequencyimg) {
           req.files.frequencyimg.forEach((file) => {
@@ -544,75 +593,57 @@ export const updateStaticInfo = async (req, res) => {
       let favIconDimensions = null;
 
       try {
-        // Validate favIcon dimensions
-        const dimensions = sizeOf(favIconFile.path);
-        favIconDimensions = { width: dimensions.width, height: dimensions.height };
-
-        // Check if square
-        if (dimensions.width !== dimensions.height) {
-          if (req.files.frequencyimg) {
-            req.files.frequencyimg.forEach((file) => {
-              if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
-            });
-          }
-          fs.unlinkSync(favIconFile.path);
-          return res.status(400).json({
-            success: false,
-            message: `Favicon must be square. Current dimensions: ${dimensions.width}x${dimensions.height}. Recommended sizes: 16x16, 32x32, 48x48, 64x64, or 128x128 pixels.`,
-            currentDimensions: favIconDimensions,
-            recommendedSizes: [
-              "16x16",
-              "32x32",
-              "48x48",
-              "64x64",
-              "128x128",
-              "256x256",
-            ],
+        favIconDimensions = validateFavIconDimensions(favIconFile);
+      } catch (error) {
+        if (req.files.frequencyimg) {
+          req.files.frequencyimg.forEach((file) => {
+            if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
           });
         }
+        if (fs.existsSync(favIconFile.path)) fs.unlinkSync(favIconFile.path);
+        return res.status(error.statusCode || 400).json({
+          success: false,
+          message: error.message || "Error reading favicon dimensions",
+          currentDimensions: error.currentDimensions,
+          recommendedSizes: [
+            "16x16",
+            "32x32",
+            "48x48",
+            "64x64",
+            "128x128",
+            "256x256",
+          ],
+        });
+      }
 
-        // Check if size is one of the recommended sizes
-        const recommendedSizes = [16, 32, 48, 64, 128, 256];
-        if (!recommendedSizes.includes(dimensions.width)) {
-          if (req.files.frequencyimg) {
-            req.files.frequencyimg.forEach((file) => {
-              if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
-            });
-          }
-          fs.unlinkSync(favIconFile.path);
-          return res.status(400).json({
-            success: false,
-            message: `Favicon size should be one of: 16x16, 32x32, 48x48, 64x64, 128x128, or 256x256 pixels. Current size: ${dimensions.width}x${dimensions.height}`,
-            currentDimensions: favIconDimensions,
-            recommendedSizes: [
-              "16x16",
-              "32x32",
-              "48x48",
-              "64x64",
-              "128x128",
-              "256x256",
-            ],
-          });
-        }
-
+      try {
         // Delete old favIcon from cloudinary if exists
         if (staticInfo.favIcon && staticInfo.favIcon.public_id) {
           await cloudinary.uploader.destroy(staticInfo.favIcon.public_id);
         }
 
-        // Upload new favIcon
-        const result = await cloudinary.uploader.upload(favIconFile.path, {
-          folder: "seagulls/staticinfo/favicon",
-          width: favIconDimensions.width,
-          height: favIconDimensions.height,
-          crop: "fill",
-        });
+        const favUploadOptions = cloudinaryUploadOptions(
+          favIconFile,
+          "seagulls/staticinfo/favicon",
+          favIconDimensions?.width && favIconDimensions?.height
+            ? {
+                width: favIconDimensions.width,
+                height: favIconDimensions.height,
+                crop: "fill",
+              }
+            : {}
+        );
+
+        const result = await cloudinary.uploader.upload(
+          favIconFile.path,
+          favUploadOptions
+        );
 
         staticInfo.favIcon = {
           public_id: result.public_id,
           url: result.secure_url,
-          width: favIconDimensions.width,
-          height: favIconDimensions.height,
+          width: favIconDimensions?.width ?? null,
+          height: favIconDimensions?.height ?? null,
         };
         await staticInfo.save();
 

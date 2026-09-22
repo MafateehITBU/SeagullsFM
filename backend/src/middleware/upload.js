@@ -39,6 +39,7 @@ const fileFilter = (req, file, cb) => {
     'image/gif',
     'image/bmp',
     'image/svg+xml',
+    'image/svg',
     'image/webp',
     
     // Archives
@@ -69,7 +70,14 @@ const fileFilter = (req, file, cb) => {
     'video/quicktime'
   ];
 
-  if (allowedFileTypes.includes(file.mimetype)) {
+  const ext = path.extname(file.originalname || '').toLowerCase();
+  // Some browsers report SVGs as text/xml or application/xml
+  const isSvg =
+    ext === '.svg' ||
+    file.mimetype === 'image/svg+xml' ||
+    file.mimetype === 'image/svg';
+
+  if (allowedFileTypes.includes(file.mimetype) || isSvg) {
     cb(null, true);
   } else {
     cb(new Error(`File type ${file.mimetype} is not allowed!`), false);

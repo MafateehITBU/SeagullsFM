@@ -255,8 +255,15 @@ const StaticInfoLayer = () => {
                       <input
                         type="file"
                         className="form-control"
+                        accept="image/*,.svg,image/svg+xml"
                         onChange={(e) => setFileValue(e.target.files[0])}
                       />
+                      <small className="text-muted d-block mt-2">
+                        Allowed: JPG, PNG, GIF, WEBP, BMP, SVG
+                        {selectedField === "favIcon"
+                          ? " (PNG/JPG favicons should be square: 16–256px)"
+                          : ""}
+                      </small>
                     </>
                   ) : selectedFieldConfig?.type === "textarea" ? (
                     <textarea
