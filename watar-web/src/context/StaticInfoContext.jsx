@@ -66,7 +66,7 @@ export const StaticInfoProvider = ({ children }) => {
         : ''
     const rawHref = fromApi || '/favicon.svg'
     const absoluteHref = new URL(rawHref, window.location.origin).toString()
-    const hrefWithBust = `${absoluteHref}${absoluteHref.includes('?') ? '&' : '?'}v=${Date.now()}`
+    const hrefWithBust = absoluteHref
 
     document
       .querySelectorAll(

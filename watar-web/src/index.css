@@ -3,14 +3,6 @@
 /* —— Local fonts only (no Google Fonts / CDN) —— */
 @font-face {
   font-family: 'Tajawal';
-  src: url('./fonts/Tajawal-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Tajawal';
   src: url('./fonts/Tajawal-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
@@ -82,14 +74,7 @@
   --watar-deep-magenta: #b0006a;
   --watar-hero-yellow: #ffc20e;
   --watar-white: #ffffff;
-  --watar-gradient: linear-gradient(
-    135deg,
-    #faba09 0%,
-    #f18a16 28%,
-    #dd542d 55%,
-    #c9274f 75%,
-    #a91368 100%
-  );
+  --watar-gradient: linear-gradient(125.6835deg, #FFC106 0%, #AB0067 100%);
 }
 
 *,
@@ -113,7 +98,6 @@ body {
   font-family: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
   color: var(--watar-white);
   background: var(--watar-gradient);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -145,7 +129,7 @@ a:focus-visible {
 .watar-page {
   min-height: 100svh;
   background: var(--watar-gradient);
-  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 /* Sticky navbar */
@@ -158,15 +142,10 @@ a:focus-visible {
 
 .watar-nav.is-scrolled {
   background: linear-gradient(
-    135deg,
-    rgba(250, 186, 9, 0.88) 0%,
-    rgba(241, 138, 22, 0.88) 28%,
-    rgba(221, 84, 45, 0.9) 55%,
-    rgba(201, 39, 79, 0.92) 75%,
-    rgba(169, 19, 104, 0.94) 100%
+    125.6835deg,
+    rgba(255, 193, 6, 0.84) 0%,
+    rgba(171, 0, 103, 0.78) 100%
   );
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Hero yellow panel */
@@ -222,5 +201,13 @@ a:focus-visible {
 }
 
 .watar-mobile-drawer {
-  transition: transform 0.28s ease, opacity 0.28s ease;
+  transition: transform 0.32s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watar-reveal,
+  .watar-mobile-drawer {
+    animation: none;
+    transition: none;
+  }
 }

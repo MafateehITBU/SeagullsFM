@@ -9,10 +9,11 @@ export default function LiveStreamButton() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    const audio = new Audio(STREAM_URL)
+  const ensureAudio = useCallback(() => {
+    if (audioRef.current) return audioRef.current
+
+    const audio = new Audio()
     audio.preload = 'none'
-    audioRef.current = audio
 
     const onPlaying = () => {
       setLoading(false)
@@ -34,21 +35,28 @@ export default function LiveStreamButton() {
     audio.addEventListener('pause', onPause)
     audio.addEventListener('waiting', onWaiting)
     audio.addEventListener('error', onError)
-
-    return () => {
+    audio._watarCleanup = () => {
       audio.pause()
       audio.removeEventListener('playing', onPlaying)
       audio.removeEventListener('pause', onPause)
       audio.removeEventListener('waiting', onWaiting)
       audio.removeEventListener('error', onError)
       audio.src = ''
+    }
+
+    audioRef.current = audio
+    return audio
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      audioRef.current?._watarCleanup?.()
       audioRef.current = null
     }
   }, [])
 
   const toggle = useCallback(async () => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = ensureAudio()
 
     if (!audio.paused) {
       audio.pause()
@@ -68,7 +76,7 @@ export default function LiveStreamButton() {
       setPlaying(false)
       setError('تعذّر تشغيل البث. حاول مرة أخرى.')
     }
-  }, [])
+  }, [ensureAudio])
 
   const label = loading
     ? 'جارٍ التحميل…'
@@ -77,7 +85,7 @@ export default function LiveStreamButton() {
       : 'إستمع مباشرة'
 
   return (
-    <section className="w-full pt-8 md:pt-10" aria-label="البث المباشر والبرامج">
+    <section className="w-full pt-12 md:pt-16" aria-label="البث المباشر والبرامج">
       {/* Live button left (~42% width) · برامجنا right — no outer margins */}
       <div dir="ltr" className="flex w-full items-stretch justify-between gap-4">
         <button
@@ -86,9 +94,9 @@ export default function LiveStreamButton() {
           aria-pressed={playing}
           aria-busy={loading}
           aria-label={label}
-          className="watar-live-btn relative flex w-[42%] max-w-xl min-w-0 cursor-pointer items-stretch overflow-hidden rounded-none p-0 shadow-none"
+          className="watar-live-btn relative flex w-[52%] max-w-xl min-w-0 cursor-pointer items-stretch overflow-hidden rounded-none p-0 shadow-none md:w-[42%]"
         >
-          <span className="flex flex-1 items-center justify-center px-3 py-3 text-center font-sans text-base font-bold tracking-wide sm:text-lg md:py-4 md:text-2xl lg:text-3xl">
+          <span className="flex flex-1 items-center justify-center px-3 py-3 text-center font-sans text-sm font-bold tracking-wide sm:text-base md:py-4 md:text-2xl lg:text-3xl">
             {label}
           </span>
           <span

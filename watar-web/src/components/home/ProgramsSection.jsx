@@ -5,13 +5,14 @@ import {
   formatProgramDays,
   formatProgramTime,
 } from '../../utils/programSchedule.js'
+import { optimizedImageUrl } from '../../utils/imageUrl.js'
 
 const CHANNEL =
   import.meta.env.VITE_STATICINFO_CHANNEL?.trim() || 'WatarFM'
 
 function MobileProgramCard({ program }) {
-  const imageUrl = program?.image?.url
-  const detailsUrl = program?.programDetailsImage?.url
+  const imageUrl = optimizedImageUrl(program?.image?.url, 700)
+  const detailsUrl = optimizedImageUrl(program?.programDetailsImage?.url, 400)
   const displayDays = formatProgramDays(program?.days)
   const displayTime = formatProgramTime(program?.startTime, program?.endTime)
   const title = program?.title || 'برنامج'

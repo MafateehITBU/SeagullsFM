@@ -2,11 +2,12 @@ import {
   formatProgramDays,
   formatProgramTime,
 } from '../../utils/programSchedule.js'
+import { optimizedImageUrl } from '../../utils/imageUrl.js'
 
 export default function ProgramShowcase({ program, index = 0 }) {
   const imageFirst = index % 2 === 1
-  const imageUrl = program?.image?.url
-  const detailsUrl = program?.programDetailsImage?.url
+  const imageUrl = optimizedImageUrl(program?.image?.url, 1000)
+  const detailsUrl = optimizedImageUrl(program?.programDetailsImage?.url, 800)
   const displayDays = formatProgramDays(program?.days)
   const displayTime = formatProgramTime(program?.startTime, program?.endTime)
   const title = program?.title || 'برنامج'

@@ -17,6 +17,11 @@ export default function App() {
           <Route path="/login" element={<ComingSoon />} />
           <Route path="/about-us" element={<ComingSoon />} />
           <Route path="/news" element={<ComingSoon />} />
+          <Route path="/events" element={<ComingSoon />} />
+          <Route path="/presenters" element={<ComingSoon />} />
+          <Route path="/privacy-policy" element={<ComingSoon />} />
+          <Route path="/get-discovered" element={<ComingSoon />} />
+          <Route path="/show-your-talent" element={<ComingSoon />} />
         </Routes>
       </div>
       <Footer />
