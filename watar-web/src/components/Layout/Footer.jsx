@@ -14,7 +14,7 @@ const NAV_LINKS = [
 ]
 
 const SHARE_LINKS = [
-  { label: 'اكتشف مومنتك', to: '/get-discovered' },
+  { label: 'اكتشف موهبتك', to: '/get-discovered' },
   { label: 'اعرض موهبتك', to: '/show-your-talent' },
 ]
 
