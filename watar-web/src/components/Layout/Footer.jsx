@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { label: 'جميع البرامج', to: '/#programs' },
   { label: 'الأخبار', to: '/news' },
   { label: 'الفعاليات', to: '/events' },
-  { label: 'المديرون', to: '/presenters' },
+  { label: 'المذيعون', to: '/presenters' },
   { label: 'تسجيل الدخول', to: '/login' },
   { label: 'سياسة الخصوصية', to: '/privacy-policy' },
 ]
