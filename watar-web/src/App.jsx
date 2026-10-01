@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Navigate, Routes, Route, useLocation } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Header from './components/Layout/Header.jsx'
 import Footer from './components/Layout/Footer.jsx'
@@ -6,10 +6,20 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
 
+/** Old site URLs used /ar and /en. Watar is Arabic-only, so those paths go home. */
+const LEGACY_LOCALE = /(^|\/)(ar|en)(\/|$)/i
+
+function LegacyLocaleRedirect() {
+  const { pathname } = useLocation()
+  if (!LEGACY_LOCALE.test(pathname)) return null
+  return <Navigate to="/" replace />
+}
+
 export default function App() {
   return (
     <div className="watar-page flex min-h-svh w-full flex-col text-right font-sans text-white">
       <ScrollToTop />
+      <LegacyLocaleRedirect />
       <Header />
       <div className="flex-1">
         <Routes>
