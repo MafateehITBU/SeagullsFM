@@ -8,9 +8,10 @@ echo "========== Deploy started at $(date) =========="
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-# 1. Pull latest from Git
-echo ">> Pulling latest code..."
-git pull origin main || git pull origin master
+# 1. Match GitHub main. A dirty server copy of a tracked file blocks git pull.
+echo ">> Updating code..."
+git fetch origin main
+git reset --hard origin/main
 
 # 2. Build moodfm-web
 echo ">> Building moodfm-web..."
