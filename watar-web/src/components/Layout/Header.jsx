@@ -8,7 +8,6 @@ const NAV_ITEMS = [
   { label: 'برامجنا', to: '/#programs', hash: 'programs' },
   { label: 'أخبار', to: '/news' },
   { label: 'الفعاليات', to: '/events' },
-  { label: 'إتصل بنا', to: '/#contact', hash: 'contact' },
 ]
 
 function externalHref(value) {
