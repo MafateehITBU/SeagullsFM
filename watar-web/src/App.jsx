@@ -5,6 +5,7 @@ import Footer from './components/Layout/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 /** Old site URLs used /ar and /en. Watar is Arabic-only, so those paths go home. */
 const LEGACY_LOCALE = /(^|\/)(ar|en)(\/|$)/i
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/privacy-policy" element={<ComingSoon />} />
           <Route path="/get-discovered" element={<ComingSoon />} />
           <Route path="/show-your-talent" element={<ComingSoon />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />
