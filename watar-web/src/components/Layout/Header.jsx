@@ -196,7 +196,7 @@ export default function Header() {
               key={item.label}
               to={item.to}
               onClick={(event) => handleNavClick(item, event)}
-              className="shrink-0 font-sans text-[15px] font-bold whitespace-nowrap text-white transition-opacity hover:opacity-80 xl:text-lg"
+              className="shrink-0 font-sans text-[17px] font-bold whitespace-nowrap text-white transition-opacity hover:opacity-80 xl:text-xl"
             >
               {item.label}
             </Link>
