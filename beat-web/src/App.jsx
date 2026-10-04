@@ -11,6 +11,7 @@ import News from './pages/News.jsx'
 import NewsDetails from './pages/NewsDetails.jsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
   return (
@@ -32,7 +33,7 @@ export default function App() {
           <Route path="/broadcaster" element={<ComingSoon />} />
           <Route path="/get-discovered" element={<ComingSoon />} />
           <Route path="/show-your-talent" element={<ComingSoon />} />
-          <Route path="*" element={<ComingSoon />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />

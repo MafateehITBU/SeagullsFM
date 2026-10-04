@@ -15,6 +15,7 @@ import ForgotPassword from "./context/ForgotPassword";
 import Profile from "./pages/Profile";
 import ProgramDetails from "./pages/ProgramDetails";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import NotFound from "./pages/NotFound";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
@@ -64,8 +65,7 @@ const App = () => {
           }
         />
 
-        {/* Unknown routes → redirect to home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <a
