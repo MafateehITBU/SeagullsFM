@@ -16,34 +16,69 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <section className="about-hero-section privacy-hero-section">
-        <div className="about-hero-container privacy-hero-container">
-          <h1 className="about-hero-title mb-3">404</h1>
-        </div>
-      </section>
-      <section
-        className="who-we-are-section flex-column-start privacy-content-section"
-        style={{ height: 'auto', minHeight: '50vh', paddingBottom: '4rem', textAlign: 'center' }}
+      <main
+        style={{
+          minHeight: '62vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          padding: '4.5rem 1.5rem 5rem',
+          backgroundColor: 'var(--background-color)',
+        }}
       >
-        <p className="who-we-are-title" style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>
+        <p
+          style={{
+            margin: 0,
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 800,
+            fontSize: 'clamp(4.5rem, 12vw, 7rem)',
+            lineHeight: 0.9,
+            letterSpacing: '-0.04em',
+            color: 'var(--navbar-footer-color)',
+          }}
+        >
+          404
+        </p>
+        <p
+          style={{
+            margin: '1.25rem 0 0',
+            maxWidth: '28rem',
+            fontFamily: 'Fractul, sans-serif',
+            fontSize: '1.75rem',
+            fontWeight: 700,
+            lineHeight: 1.3,
+            color: 'var(--text-primary)',
+          }}
+        >
           This page doesn’t exist
         </p>
-        <p className="who-we-are-description" style={{ marginBottom: '2rem' }}>
+        <p
+          style={{
+            margin: '0.75rem 0 0',
+            maxWidth: '26rem',
+            fontFamily: 'Fractul, sans-serif',
+            fontSize: '1.05rem',
+            lineHeight: 1.5,
+            color: 'var(--text-secondary)',
+          }}
+        >
           You will be redirected to the homepage in 5 seconds.
         </p>
         <Link
           to="/"
           className="news-hero-btn"
           style={{
+            marginTop: '1.75rem',
             backgroundColor: 'var(--navbar-footer-color)',
             color: 'var(--navbar-text)',
             textDecoration: 'none',
-            display: 'inline-block',
           }}
         >
           Back to home
         </Link>
-      </section>
+      </main>
       <Footer />
     </>
   )
