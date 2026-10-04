@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run this script on the server (or via GitHub Actions) from the repo root.
-# It pulls latest code, builds moodfm-web, beat-web, and cms, and restarts the backend.
+# It pulls latest code, builds moodfm-web, beat-web, watar-web, and cms, and restarts the backend.
 
 set -e
 echo "========== Deploy started at $(date) =========="
@@ -33,7 +33,14 @@ npm install
 npm run build
 cd "$REPO_ROOT"
 
-# 5. Backend: install deps and restart
+# 5. Build watar-web (Vite outputs to dist/)
+echo ">> Building watar-web..."
+cd watar-web
+npm install
+npm run build
+cd "$REPO_ROOT"
+
+# 6. Backend: install deps and restart
 echo ">> Installing backend dependencies..."
 cd backend
 npm install
