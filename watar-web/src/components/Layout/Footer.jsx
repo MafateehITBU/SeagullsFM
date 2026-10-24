@@ -5,7 +5,7 @@ import footerMark from '../../assets/footer.png'
 const NAV_LINKS = [
   { label: 'الرئيسية', to: '/' },
   { label: 'من نحن', to: '/about-us' },
-  { label: 'جميع البرامج', to: '/#programs' },
+  { label: 'جميع البرامج', to: '/programs' },
   { label: 'الأخبار', to: '/news' },
   { label: 'الفعاليات', to: '/events' },
   { label: 'المذيعون', to: '/presenters' },
@@ -82,14 +82,14 @@ export default function Footer() {
 
   return (
     <footer id="contact" className="scroll-mt-28" role="contentinfo">
-      <div className="mx-auto max-w-[1400px] px-6 pt-2 md:px-9">
+      <div className="watar-edge pt-2">
         <div className="h-px w-full bg-white/80" aria-hidden="true" />
       </div>
 
       {/* Desktop */}
       <div
         dir="rtl"
-        className="mx-auto hidden max-w-[1400px] items-start justify-between gap-10 px-8 py-16 lg:flex lg:gap-16 lg:px-10 lg:pb-20"
+        className="watar-edge hidden items-start justify-between gap-10 py-16 lg:flex lg:gap-16 lg:pb-20"
       >
         <div className="flex items-center gap-4 text-right">
           <img
@@ -101,7 +101,7 @@ export default function Footer() {
             loading="lazy"
             decoding="async"
           />
-          <p className="max-w-[18rem] font-sans text-sm font-medium leading-relaxed text-white/90">
+          <p className="max-w-[18rem] font-sans text-base font-medium leading-relaxed text-white/90">
             <span className="font-bold">وتر اف ام. حقوق الطبع والنشر © 2023</span>
             <br />
             شركة سيغلر برودكاست. جميع الحقوق محفوظة.
@@ -113,7 +113,7 @@ export default function Footer() {
             <Link
               key={item.to}
               to={item.to}
-              className="font-sans text-base font-medium text-white transition hover:opacity-80"
+              className="font-sans text-lg font-medium text-white transition hover:opacity-80"
             >
               {item.label}
             </Link>
@@ -121,12 +121,12 @@ export default function Footer() {
         </nav>
 
         <div className="flex max-w-[180px] flex-col items-start text-right">
-          <p className="mb-3 font-sans text-base font-bold text-white">شارك معنا</p>
+          <p className="mb-3 font-sans text-lg font-bold text-white">شارك معنا</p>
           {SHARE_LINKS.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="font-sans text-base font-medium leading-7 text-white transition hover:opacity-80"
+              className="font-sans text-lg font-medium leading-7 text-white transition hover:opacity-80"
             >
               {item.label}
             </Link>
@@ -134,12 +134,12 @@ export default function Footer() {
         </div>
 
         <div className="flex max-w-[320px] flex-col items-start text-right">
-          <p className="mb-3 font-sans text-base font-bold text-white">تواصل معنا</p>
+          <p className="mb-3 font-sans text-lg font-bold text-white">تواصل معنا</p>
           {loading ? (
-            <p className="text-sm text-white/70">جارٍ التحميل…</p>
+            <p className="text-base text-white/70">جارٍ التحميل…</p>
           ) : null}
           {phones.length > 0 ? (
-            <p className="mb-2 flex items-start gap-2 font-latin text-sm font-medium text-white">
+            <p className="mb-2 flex items-start gap-2 font-latin text-base font-medium text-white">
               <PhoneIcon />
               <span>
                 {phones.map((p, i) => (
@@ -158,7 +158,7 @@ export default function Footer() {
             </p>
           ) : null}
           {email ? (
-            <p className="mb-2 flex items-start gap-2 text-sm font-medium text-white">
+            <p className="mb-2 flex items-start gap-2 text-base font-medium text-white">
               <MailIcon />
               <a href={`mailto:${email}`} className="break-all font-latin hover:underline">
                 {email}
@@ -166,7 +166,7 @@ export default function Footer() {
             </p>
           ) : null}
           {address ? (
-            <p className="flex items-start gap-2 text-sm font-medium leading-relaxed text-white">
+            <p className="flex items-start gap-2 text-base font-medium leading-relaxed text-white">
               <PinIcon />
               <span className="whitespace-pre-line">{address}</span>
             </p>
@@ -175,7 +175,7 @@ export default function Footer() {
       </div>
 
       {/* Mobile */}
-      <div dir="rtl" className="mx-auto flex max-w-[1400px] flex-col items-center gap-8 px-6 py-12 text-center lg:hidden">
+      <div dir="rtl" className="watar-edge flex flex-col items-center gap-8 py-12 text-center lg:hidden">
         <div className="flex items-center gap-4 text-right">
           <img
             src={footerMark}
@@ -186,7 +186,7 @@ export default function Footer() {
             loading="lazy"
             decoding="async"
           />
-          <p className="max-w-[16rem] font-sans text-sm font-medium leading-relaxed text-white/90">
+          <p className="max-w-[16rem] font-sans text-base font-medium leading-relaxed text-white/90">
             <span className="font-bold">وتر اف ام. حقوق الطبع والنشر © 2023</span>
             <br />
             شركة سيغلر برودكاست. جميع الحقوق محفوظة.
@@ -199,7 +199,7 @@ export default function Footer() {
               <Link
                 key={item.to}
                 to={item.to}
-                className="font-sans text-base font-medium text-white"
+                className="font-sans text-lg font-medium text-white"
               >
                 {item.label}
               </Link>
@@ -207,12 +207,12 @@ export default function Footer() {
           </nav>
 
           <div className="flex flex-col items-start">
-            <p className="mb-2 font-sans text-base font-bold text-white">شارك معنا</p>
+            <p className="mb-2 font-sans text-lg font-bold text-white">شارك معنا</p>
             {SHARE_LINKS.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="font-sans text-base font-medium text-white"
+                className="font-sans text-lg font-medium text-white"
               >
                 {item.label}
               </Link>
@@ -220,9 +220,9 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col items-start gap-2">
-            <p className="font-sans text-base font-bold text-white">تواصل معنا</p>
+            <p className="font-sans text-lg font-bold text-white">تواصل معنا</p>
             {phones.length > 0 ? (
-              <p className="flex items-start gap-2 font-latin text-sm text-white">
+              <p className="flex items-start gap-2 font-latin text-base text-white">
                 <PhoneIcon />
                 <span>
                   {phones.map((p, i) => (
@@ -241,7 +241,7 @@ export default function Footer() {
               </p>
             ) : null}
             {email ? (
-              <p className="flex items-start gap-2 text-sm text-white">
+              <p className="flex items-start gap-2 text-base text-white">
                 <MailIcon />
                 <a href={`mailto:${email}`} className="break-all font-latin hover:underline">
                   {email}
@@ -249,7 +249,7 @@ export default function Footer() {
               </p>
             ) : null}
             {address ? (
-              <p className="flex items-start gap-2 font-sans text-sm leading-relaxed text-white">
+              <p className="flex items-start gap-2 font-sans text-base leading-relaxed text-white">
                 <PinIcon />
                 <span className="whitespace-pre-line">{address}</span>
               </p>

@@ -85,8 +85,10 @@ export default function LiveStreamButton() {
       : 'إستمع مباشرة'
 
   return (
-    <section className="w-full pt-12 md:pt-16" aria-label="البث المباشر والبرامج">
-      {/* Live button left (~42% width) · برامجنا right — no outer margins */}
+    <section
+      className="watar-edge w-full pt-12 md:pt-16"
+      aria-label="البث المباشر والبرامج"
+    >
       <div dir="ltr" className="flex w-full items-stretch justify-between gap-4">
         <button
           type="button"
@@ -113,7 +115,7 @@ export default function LiveStreamButton() {
 
         <h2
           id="programs-heading"
-          className="flex shrink-0 items-center px-4 font-mix text-[clamp(1.75rem,4.5vw,3.5rem)] font-bold leading-none text-white sm:px-6 md:px-8 lg:px-14"
+          className="flex shrink-0 items-center font-mix text-[clamp(1.75rem,4.5vw,3.5rem)] font-bold leading-none text-white"
         >
           <a href="#programs" className="text-white no-underline">
             برامجنا

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1698.2 1081.18">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-4 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-2" width="1698.2" height="1081.18"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="-191.06" y1="256.17" x2="785.31" y2="1145.14" gradientTransform="translate(750.73 -84) rotate(45)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9c1f65"/>
+      <stop offset=".99" stop-color="#ec752f"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="171.71" y1="-142.27" x2="1148.08" y2="746.71" gradientTransform="translate(235.44 -297.44) rotate(45)" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g class="cls-4">
+      <rect class="cls-3" x="197.83" y="585.29" width="557.85" height="557.85" rx="116.45" ry="116.45" transform="translate(-471.45 590.24) rotate(-45)"/>
+      <rect class="cls-1" x="197.83" y="-143.45" width="557.85" height="557.85" rx="116.45" ry="116.45" transform="translate(43.84 376.8) rotate(-45)"/>
+    </g>
+  </g>
+</svg>

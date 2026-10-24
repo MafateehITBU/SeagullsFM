@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@source './**/*.{js,jsx}';
 
 /* —— Local fonts only (no Google Fonts / CDN) —— */
 @font-face {
@@ -107,6 +108,22 @@ img {
   display: block;
 }
 
+img.watar-news-hero-art {
+  width: min(100%, 480px);
+  max-width: 480px;
+  height: auto;
+  max-height: 540px;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  img.watar-news-hero-art {
+    width: min(100%, 760px);
+    max-width: 760px;
+    max-height: 850px;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -130,6 +147,314 @@ a:focus-visible {
   min-height: 100svh;
   background: var(--watar-gradient);
   background-repeat: no-repeat;
+}
+
+.watar-news-page {
+  background: linear-gradient(90deg, #c44c49 0%, #9c2164 100%);
+}
+
+.watar-news-details {
+  background: linear-gradient(90deg, #d65d35 0%, #c74449 45%, #b51b60 75%, #a90067 100%);
+}
+
+.watar-about-page {
+  overflow-x: clip;
+  background: linear-gradient(
+    102deg,
+    #f18b24 0%,
+    #e86b32 30%,
+    #d45444 55%,
+    #c13a64 78%,
+    #ab0067 100%
+  );
+}
+
+.watar-about-diamonds-frame {
+  display: none;
+}
+
+img.watar-about-diamonds {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: 236px;
+  max-height: none;
+  object-fit: contain;
+  object-position: left center;
+}
+
+img.watar-about-illustration {
+  display: none;
+  width: min(86%, 320px);
+  max-width: 100%;
+  height: auto;
+  max-height: 230px;
+  margin-right: auto;
+  margin-left: 0;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.watar-about-gems {
+  position: absolute;
+  right: 0.15rem;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.05rem;
+  pointer-events: none;
+}
+
+.watar-about-diamond {
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 5px;
+  transform: rotate(45deg);
+}
+
+@media (min-width: 768px) {
+  .watar-about-diamonds-frame {
+    width: 230px;
+    height: 290px;
+    margin-left: 2.5rem;
+  }
+
+  img.watar-about-diamonds {
+    height: 290px;
+  }
+
+  img.watar-about-illustration {
+    width: min(58%, 420px);
+    max-height: 300px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .watar-about-diamonds-frame {
+    display: contents;
+  }
+
+  img.watar-about-diamonds {
+    position: absolute;
+    top: -124px;
+    left: 3.5rem;
+    z-index: 0;
+    width: auto;
+    max-width: none;
+    height: calc(100svh);
+    max-height: none;
+    margin-right: 0;
+    margin-left: 0;
+    object-fit: contain;
+    object-position: left top;
+  }
+
+  img.watar-about-illustration {
+    display: block;
+    position: absolute;
+    top: -8%;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    max-width: none;
+    height: 116%;
+    max-height: none;
+    margin-right: 0;
+    margin-left: 0;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .watar-about-gems {
+    right: 0.35rem;
+    gap: 1.2rem;
+  }
+
+  .watar-about-diamond {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+  }
+}
+
+.watar-programs-page {
+  background: linear-gradient(
+    110deg,
+    #f28c1b 0%,
+    #e96b2e 38%,
+    #d9583c 68%,
+    #c94848 100%
+  );
+}
+
+img.watar-program-photo {
+  display: block;
+  width: auto;
+  max-width: min(100%, 480px);
+  height: auto;
+  max-height: min(64vh, 520px);
+  object-fit: contain;
+}
+
+img.watar-program-logo {
+  display: block;
+  width: auto;
+  max-width: min(100%, 420px);
+  height: auto;
+  max-height: 150px;
+  margin-inline: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+  img.watar-program-photo {
+    max-width: min(100%, 640px);
+    max-height: calc(100svh - 148px);
+  }
+
+  img.watar-program-logo {
+    max-width: min(100%, 640px);
+    max-height: 280px;
+  }
+}
+
+.watar-broadcasters-page {
+  overflow-x: clip;
+  background: linear-gradient(
+    90deg,
+    #e56d34 0%,
+    #d65a40 28%,
+    #c94b49 55%,
+    #b83b58 78%,
+    #a42864 100%
+  );
+}
+
+.watar-broadcasters-hero {
+  position: relative;
+  overflow: visible;
+}
+
+.watar-broadcasters-art-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+img.watar-broadcasters-art {
+  display: block;
+  width: min(100%, 520px);
+  max-width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+@media (min-width: 1024px) {
+  .watar-broadcasters-hero {
+    height: calc(100svh - 124px);
+    clip-path: inset(-124px 0 0 0);
+  }
+
+  .watar-broadcasters-art-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 62%;
+    justify-content: flex-start;
+    overflow: visible;
+  }
+
+  img.watar-broadcasters-art {
+    position: absolute;
+    top: -124px;
+    left: 0;
+    width: auto;
+    max-width: none;
+    height: 122%;
+    max-height: none;
+    object-fit: contain;
+    object-position: left top;
+  }
+
+  .watar-broadcasters-copy {
+    position: relative;
+    z-index: 1;
+    width: min(40%, 36rem);
+    margin-left: auto;
+    padding-top: 7.25rem;
+    padding-right: 3.5rem;
+  }
+}
+
+.watar-broadcasters-diamonds {
+  position: absolute;
+  top: 3.15rem;
+  right: 0.2rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.85rem;
+  pointer-events: none;
+}
+
+.watar-broadcasters-diamond {
+  width: 42px;
+  height: 42px;
+  background: #fff;
+  border-radius: 6px;
+  transform: rotate(45deg);
+}
+
+@media (max-width: 1023px) {
+  .watar-broadcasters-copy [dir='rtl'] {
+    padding-right: 4.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .watar-broadcasters-diamonds {
+    right: -4.15rem;
+  }
+}
+
+img.watar-article-photo {
+  display: block;
+  width: 100%;
+  max-width: 610px;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  margin-inline: auto;
+  object-fit: cover;
+}
+
+.watar-article-body,
+.watar-article-body * {
+  color: #fff;
+  font-family: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+}
+
+.watar-article-body p {
+  margin: 0 0 0.65rem;
+}
+
+/* Side inset used by برامجنا. Use this for page edges. */
+.watar-edge {
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .watar-edge {
+    padding-inline: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .watar-edge {
+    padding-inline: 3.5rem;
+  }
 }
 
 /* Sticky navbar */
@@ -209,6 +534,201 @@ a:focus-visible {
   .watar-reveal,
   .watar-mobile-drawer {
     animation: none;
+    transition: none;
+  }
+}
+
+.watar-news-heading {
+  margin: 0;
+  color: #ffc106;
+  font-weight: 800;
+  font-size: clamp(2rem, 4.2vw, 3.35rem);
+  line-height: 1.25;
+  text-align: center;
+}
+
+.watar-news-stage {
+  position: relative;
+  height: 278px;
+  margin-top: 3.5rem;
+}
+
+.watar-news-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: flex;
+  width: 425px;
+  height: 278px;
+  margin-left: -212.5px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(23, 23, 23, 0.8);
+  border-radius: 38px;
+  background: #fff;
+  transform-origin: center center;
+  transition:
+    transform 700ms ease-in-out,
+    opacity 700ms ease-in-out;
+}
+
+.watar-news-card[data-pos='active'] {
+  z-index: 3;
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+.watar-news-card[data-pos='previous'],
+.watar-news-card[data-pos='next'] {
+  z-index: 1;
+  opacity: 0.55;
+  cursor: pointer;
+}
+
+.watar-news-card[data-pos='previous'] {
+  transform: translate(-450px, 0) scale(0.84);
+}
+
+.watar-news-card[data-pos='next'] {
+  transform: translate(450px, 0) scale(0.84);
+}
+
+.watar-news-card-image {
+  height: 63%;
+  background: #f4e8ee;
+}
+
+.watar-news-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.watar-news-card-panel {
+  display: flex;
+  height: 37%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  direction: rtl;
+  background: #fff;
+  padding: 10px 16px 12px;
+}
+
+.watar-news-card-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.watar-news-card-title {
+  margin: 0;
+  color: #ab0067;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: right;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.watar-news-card-desc {
+  margin: 2px 0 0;
+  color: #171717;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: right;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.watar-news-more {
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1px solid #ab0067;
+  border-radius: 7px;
+  background: #fff;
+  color: #ab0067;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.watar-news-more:hover {
+  background: #ab0067;
+  color: #fff;
+}
+
+a.watar-news-grid-more {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+@media (max-width: 1100px) {
+  .watar-news-stage {
+    height: 250px;
+  }
+
+  .watar-news-card {
+    width: 340px;
+    height: 250px;
+    margin-left: -170px;
+  }
+
+  .watar-news-card[data-pos='previous'] {
+    transform: translate(-340px, 0) scale(0.84);
+  }
+
+  .watar-news-card[data-pos='next'] {
+    transform: translate(340px, 0) scale(0.84);
+  }
+
+  .watar-news-card-title {
+    font-size: 18px;
+  }
+
+  .watar-news-card-desc {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 860px) {
+  .watar-news-stage {
+    display: flex;
+    height: auto;
+    justify-content: center;
+  }
+
+  .watar-news-card {
+    position: relative;
+    left: auto;
+    width: min(425px, 100%);
+    height: 280px;
+    margin-left: 0;
+  }
+
+  .watar-news-card[data-pos='previous'],
+  .watar-news-card[data-pos='next'] {
+    display: none;
+  }
+
+  .watar-news-card[data-pos='active'] {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watar-news-card {
     transition: none;
   }
 }

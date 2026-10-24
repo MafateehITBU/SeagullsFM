@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import axiosInstance from '../../axiosConfig'
 import ProgramShowcase from './ProgramShowcase.jsx'
 import {
   formatProgramDays,
   formatProgramTime,
 } from '../../utils/programSchedule.js'
 import { optimizedImageUrl } from '../../utils/imageUrl.js'
-
-const CHANNEL =
-  import.meta.env.VITE_STATICINFO_CHANNEL?.trim() || 'WatarFM'
+import { fetchWatarPrograms } from '../../utils/watarPrograms.js'
 
 function MobileProgramCard({ program }) {
   const imageUrl = optimizedImageUrl(program?.image?.url, 700)
@@ -77,13 +74,7 @@ export default function ProgramsSection() {
       try {
         setLoading(true)
         setError(null)
-        const response = await axiosInstance.get('/program')
-        const list = Array.isArray(response.data?.data) ? response.data.data : []
-        const filtered = list.filter(
-          (program) =>
-            program?.isActive !== false &&
-            program?.channelId?.name === CHANNEL,
-        )
+        const filtered = await fetchWatarPrograms()
         if (!cancelled) setPrograms(filtered)
       } catch (err) {
         console.error('Failed to load programs:', err)
@@ -116,7 +107,7 @@ export default function ProgramsSection() {
   return (
     <section
       id="programs"
-      className="mx-auto w-full max-w-[1400px] scroll-mt-28 px-5 pb-6 pt-6 md:px-10 md:pt-8 lg:px-14"
+      className="watar-edge w-full scroll-mt-28 pb-6 pt-6 md:pt-8"
       aria-labelledby="programs-heading"
     >
       {loading ? (

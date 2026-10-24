@@ -5,7 +5,7 @@ import { useStaticInfo } from '../../context/StaticInfoContext.jsx'
 const NAV_ITEMS = [
   { label: 'تسجيل', to: '/login' },
   { label: 'عن وتر', to: '/about-us' },
-  { label: 'برامجنا', to: '/#programs', hash: 'programs' },
+  { label: 'برامجنا', to: '/programs' },
   { label: 'أخبار', to: '/news' },
   { label: 'الفعاليات', to: '/events' },
 ]
@@ -183,7 +183,7 @@ export default function Header() {
     <header className={`watar-nav ${scrolled ? 'is-scrolled' : ''}`} role="banner">
       <div
         dir="rtl"
-        className="mx-auto hidden h-[124px] max-w-[1440px] items-center gap-4 px-6 pt-3 lg:flex xl:gap-6 xl:px-10"
+        className="watar-edge mx-auto hidden h-[124px] items-center gap-4 pt-3 lg:flex xl:gap-6"
       >
         <Logo logoUrl={logoUrl} />
         <Frequencies className="flex" />
@@ -212,7 +212,7 @@ export default function Header() {
 
       <div
         dir="rtl"
-        className="mx-auto flex h-[112px] max-w-[1440px] items-center justify-between px-5 pt-2.5 lg:hidden"
+        className="watar-edge mx-auto flex h-[112px] items-center justify-between pt-2.5 lg:hidden"
       >
         <Logo logoUrl={logoUrl} />
         <button

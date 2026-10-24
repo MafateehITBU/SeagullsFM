@@ -56,11 +56,11 @@ export default function DownloadAppSection() {
     >
       <div
         dir="ltr"
-        className="flex min-h-[520px] w-full flex-col-reverse items-center justify-center gap-8 py-16 md:min-h-[560px] lg:min-h-[580px] lg:flex-row lg:items-center lg:justify-end lg:gap-6 lg:py-20"
+        className="watar-edge flex min-h-[520px] w-full flex-col-reverse items-center justify-center gap-8 py-16 md:min-h-[560px] lg:min-h-[580px] lg:flex-row lg:items-center lg:justify-end lg:gap-6 lg:py-20"
       >
         <div
           dir="rtl"
-          className="flex w-full max-w-xl flex-col items-start px-5 text-start md:px-10 lg:w-auto lg:max-w-xl lg:shrink-0 lg:px-0"
+          className="flex w-full max-w-xl flex-col items-start text-start lg:w-auto lg:max-w-xl lg:shrink-0"
         >
           <h2
             id="download-app-heading"
@@ -91,7 +91,7 @@ export default function DownloadAppSection() {
           </div>
         </div>
 
-        <div className="relative flex min-h-[320px] w-full shrink-0 items-end justify-center pe-4 sm:pe-6 md:min-h-[480px] md:pe-8 lg:w-auto lg:shrink-0 lg:justify-end lg:pe-14">
+        <div className="relative flex min-h-[320px] w-full shrink-0 items-end justify-center md:min-h-[480px] lg:w-auto lg:shrink-0 lg:justify-end">
           <img
             src={appArt}
             alt="تطبيق وتر على الهاتف"

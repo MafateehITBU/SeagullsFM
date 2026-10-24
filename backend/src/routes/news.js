@@ -2,6 +2,7 @@ import express from 'express';
 import {
     createNews,
     getAllNews,
+    getNewsBySlug,
     getNewsById,
     updateNews,
     deleteNews
@@ -13,6 +14,7 @@ const router = express.Router();
 
 // Public routes
 router.get('/', getAllNews);
+router.get('/slug/:slug', getNewsBySlug);
 router.get('/:id', getNewsById);
 
 // Protected routes (Admin, SuperAdmin)

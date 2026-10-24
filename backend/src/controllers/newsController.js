@@ -3,6 +3,15 @@ import Channel from "../models/Channel.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 import path from "path";
+import { slugMapForArticles } from "../utils/newsSlug.js";
+
+function withPublicSlug(articles) {
+  const slugById = slugMapForArticles(articles);
+  return articles.map((article) => ({
+    ...article.toObject(),
+    slug: slugById.get(String(article._id)),
+  }));
+}
 
 // @desc Create a news article
 // @route POST /api/news
@@ -111,10 +120,41 @@ export const getAllNews = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate("channelId", "name");
 
+    const data = withPublicSlug(newsArticles);
+
     res.status(200).json({
       success: true,
-      count: newsArticles.length,
-      data: newsArticles,
+      count: data.length,
+      data,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", error: error.message });
+  }
+};
+
+// @desc Get a news article by public title slug
+// @route GET /api/news/slug/:slug
+// @access Public
+export const getNewsBySlug = async (req, res) => {
+  try {
+    const slug = decodeURIComponent(req.params.slug || "");
+    const newsArticles = await News.find()
+      .sort({ createdAt: -1 })
+      .populate("channelId", "name");
+    const data = withPublicSlug(newsArticles);
+    const news = data.find((article) => article.slug === slug);
+
+    if (!news) {
+      return res
+        .status(404)
+        .json({ success: false, message: "News article not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: news,
     });
   } catch (error) {
     res
