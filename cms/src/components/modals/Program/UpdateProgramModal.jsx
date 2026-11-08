@@ -79,7 +79,10 @@ const UpdateProgramModal = ({ program, show, handleClose, fetchPrograms }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to update program");
+      const data = err.response?.data;
+      toast.error(
+        data?.message || data?.errors?.[0]?.message || "Failed to update program"
+      );
     } finally {
       setIsSubmitting(false);
     }

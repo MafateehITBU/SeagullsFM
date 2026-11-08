@@ -36,7 +36,7 @@ const programSchema = new mongoose.Schema(
       type: String,
       required: [true, "Description is required"],
       trim: true,
-      maxlength: [500, "Description cannot exceed 500 characters"],
+      maxlength: [5000, "Description cannot exceed 5000 characters"],
     },
     days: {
       type: [String],

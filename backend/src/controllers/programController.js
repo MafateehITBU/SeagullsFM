@@ -72,10 +72,10 @@ export const createProgram = async (req, res) => {
       });
     }
 
-    if (description.length > 500) {
+    if (description.length > 5000) {
       return res.status(400).json({
         success: false,
-        message: "Description cannot exceed 500 characters",
+        message: "Description cannot exceed 5000 characters",
       });
     }
 
@@ -296,10 +296,10 @@ export const updateProgram = async (req, res) => {
     }
 
     if (description !== undefined) {
-      if (description.length > 500) {
+      if (description.length > 5000) {
         return res.status(400).json({
           success: false,
-          message: "Description cannot exceed 500 characters",
+          message: "Description cannot exceed 5000 characters",
         });
       }
       updateData.description = description;

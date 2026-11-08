@@ -48,8 +48,8 @@ const programValidation = [
     .trim()
     .notEmpty()
     .withMessage('Description is required')
-    .isLength({ max: 500 })
-    .withMessage('Description cannot exceed 500 characters'),
+    .isLength({ max: 5000 })
+    .withMessage('Description cannot exceed 5000 characters'),
   body('days')
     .custom((value) => {
       // Accept array (from form-data or already parsed) or string
@@ -144,8 +144,8 @@ const updateProgramValidation = [
       return value;
     })
     .trim()
-    .isLength({ max: 500 })
-    .withMessage('Description cannot exceed 500 characters'),
+    .isLength({ max: 5000 })
+    .withMessage('Description cannot exceed 5000 characters'),
   body('days')
     .optional()
     .custom((value) => {

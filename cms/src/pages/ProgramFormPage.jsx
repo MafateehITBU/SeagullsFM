@@ -211,8 +211,11 @@ const ProgramFormPage = () => {
 
       navigate("/programs");
     } catch (err) {
+      const data = err.response?.data;
       toast.error(
-        err.response?.data?.message || `Failed to ${isEdit ? "update" : "add"} program`
+        data?.message ||
+          data?.errors?.[0]?.message ||
+          `Failed to ${isEdit ? "update" : "add"} program`
       );
     } finally {
       setIsSubmitting(false);
