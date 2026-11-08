@@ -11,6 +11,7 @@ import News from './pages/News.jsx'
 import NewsDetails from './pages/NewsDetails.jsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
+import Programs from './pages/Programs.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
@@ -28,7 +29,7 @@ export default function App() {
           <Route path="/presenters" element={<Presenters />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/login" element={<ComingSoon />} />
-          <Route path="/programs" element={<ComingSoon />} />
+          <Route path="/programs" element={<Programs />} />
           <Route path="/events" element={<ComingSoon />} />
           <Route path="/broadcaster" element={<ComingSoon />} />
           <Route path="/get-discovered" element={<ComingSoon />} />
