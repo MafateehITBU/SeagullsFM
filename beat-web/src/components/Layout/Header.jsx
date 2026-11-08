@@ -136,6 +136,9 @@ export default function Header() {
             <NavLink to="/about-us" className={navActive}>
               About Us
             </NavLink>
+            <NavLink to="/programs" className={navActive}>
+              Programs
+            </NavLink>
             <NavLink to="/news" className={navActive}>
               News
             </NavLink>
@@ -251,6 +254,9 @@ export default function Header() {
           </NavLink>
           <NavLink to="/about-us" className={mobileNavActive} onClick={closeMenu}>
             About Us
+          </NavLink>
+          <NavLink to="/programs" className={mobileNavActive} onClick={closeMenu}>
+            Programs
           </NavLink>
           <NavLink to="/news" className={mobileNavActive} onClick={closeMenu}>
             News

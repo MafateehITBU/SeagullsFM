@@ -217,7 +217,7 @@ const ProgramDetails = () => {
                         {/* Content on the right */}
                         <div className="program-details-content d-flex flex-column gap-5">
                             <div className="top-content">
-                                <h3 className='mb-3'>{program?.title}</h3>
+                                <h3 className='mb-3'>{formatTextWithSpecialChars(program?.title)}</h3>
                                 <RichTextContent html={program?.description} as="div" />
                             </div>
                             <div className="bottom-content">

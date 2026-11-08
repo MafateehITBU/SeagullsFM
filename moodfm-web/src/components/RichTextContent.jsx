@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import DOMPurify from 'dompurify'
+import { formatTextWithSpecialChars } from '../utils/formatTextWithSpecialChars'
 
 const ALLOWED_TAGS = [
   'h1',
@@ -30,6 +31,14 @@ function stripFontStyles(html) {
   return html.replace(/font-family\s*:[^;"]+;?/gi, '')
 }
 
+function wrapSpecialCharsInHtml(html) {
+  return html.replace(/(<[^>]+>)|(&amp;)|(['\u2018\u2019\u201C\u201D\-]|4)/g, (match, tag, amp, special) => {
+    if (tag) return tag
+    if (amp) return '<span class="ampersand-fallback">&amp;</span>'
+    return `<span class="ampersand-fallback">${special}</span>`
+  })
+}
+
 function sanitizeRichHtml(html) {
   DOMPurify.addHook('uponSanitizeAttribute', (node, data) => {
     if (data.attrName === 'style' && data.attrValue) {
@@ -46,14 +55,14 @@ function sanitizeRichHtml(html) {
   })
 
   DOMPurify.removeHook('uponSanitizeAttribute')
-  return clean
+  return wrapSpecialCharsInHtml(clean)
 }
 
 function renderPlainText(text) {
   const lines = text.split(/(?:\r?\n|<br\s*\/?>)/gi)
   return lines.map((line, index) => (
     <span key={`${index}-${line.slice(0, 12)}`}>
-      {line}
+      {formatTextWithSpecialChars(line)}
       {index < lines.length - 1 ? <br /> : null}
     </span>
   ))
