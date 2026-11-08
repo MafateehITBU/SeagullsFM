@@ -7,6 +7,7 @@ import Footer from '../components/Layout/Footer'
 import NoData from '../components/UI/NoData'
 import RichTextContent from '../components/RichTextContent'
 import { formatTextWithSpecialChars } from '../utils/formatTextWithSpecialChars'
+import { segmentsForProgram } from '../utils/programSegments'
 
 // Function to format days
 const formatDays = (days) => {
@@ -230,6 +231,51 @@ const ProgramDetails = () => {
                         </div>
                     </>)}
             </section >
+
+            {(() => {
+                const categories = segmentsForProgram(program?.title)
+                if (!categories.length) return null
+
+                return (
+                    <section className="program-segments-section my-5" aria-labelledby="program-segments-heading">
+                        <div className="program-segments-header text-center">
+                            <h2 id="program-segments-heading">Show Segments</h2>
+                            <p>
+                                Games, challenges, and bits that keep
+                                <br />
+                                {formatTextWithSpecialChars(program?.title)} moving all show long.
+                            </p>
+                        </div>
+
+                        <div className="program-segments-list">
+                            {categories.map((category) => (
+                                <div key={category.title} className="program-segments-category">
+                                    <div className="program-segments-category-heading">
+                                        <h3>{formatTextWithSpecialChars(category.title)}</h3>
+                                        <span className="program-segments-category-rule" aria-hidden="true" />
+                                    </div>
+
+                                    <ul className="program-segments-grid">
+                                        {category.segments.map((segment) => (
+                                            <li key={segment.title} className="program-segment-card">
+                                                <div className="program-segment-card-title">
+                                                    <h4>{formatTextWithSpecialChars(segment.title)}</h4>
+                                                    {segment.note ? (
+                                                        <span className="program-segment-card-note">
+                                                            {segment.note}
+                                                        </span>
+                                                    ) : null}
+                                                </div>
+                                                <p>{formatTextWithSpecialChars(segment.description)}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )
+            })()}
 
             {/* Interview Section */}
             < section className="interview-section my-5" >
