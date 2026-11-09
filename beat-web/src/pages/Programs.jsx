@@ -197,15 +197,21 @@ function segmentsForProgram(title) {
   return entry?.blocks ?? []
 }
 
+function SegmentsDivider({ label }) {
+  return (
+    <div className="flex items-center gap-4">
+      <p className="beat-gradient-text m-0 shrink-0 font-sans text-xs font-black uppercase tracking-[0.28em] sm:text-sm">
+        {label}
+      </p>
+      <span className="h-px flex-1 bg-gradient-to-r from-[#11b5db]/55 to-transparent" aria-hidden="true" />
+    </div>
+  )
+}
+
 function SegmentBlock({ block }) {
   return (
     <div className="space-y-5">
-      <div className="flex items-center gap-4">
-        <p className="beat-gradient-text m-0 shrink-0 font-sans text-xs font-black uppercase tracking-[0.28em] sm:text-sm">
-          {block.label}
-        </p>
-        <span className="h-px flex-1 bg-gradient-to-r from-[#11b5db]/55 to-transparent" aria-hidden="true" />
-      </div>
+      {block.label ? <SegmentsDivider label={block.label} /> : null}
 
       <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2">
         {block.segments.map((segment) => (
@@ -357,8 +363,14 @@ export default function Programs() {
 
                 {blocks.length > 0 ? (
                   <div className="mt-12 space-y-10 border-t border-white/10 pt-10 lg:mt-14 lg:pt-12">
+                    {/diana/i.test(program?.title ?? '') ? (
+                      <SegmentsDivider label="Show segments" />
+                    ) : null}
                     {blocks.map((block) => (
-                      <SegmentBlock key={`${program?._id}-${block.label}`} block={block} />
+                      <SegmentBlock
+                        key={`${program?._id}-${block.label || 'segments'}`}
+                        block={block}
+                      />
                     ))}
                   </div>
                 ) : null}
