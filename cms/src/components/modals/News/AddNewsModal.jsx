@@ -4,6 +4,7 @@ import axiosInstance from "../../../axiosConfig";
 import RichTextEditor from "../../RichTextEditor";
 import { hasRichTextContent } from "../../../utils/richTextUtils";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
   const [title, setTitle] = useState("");
@@ -59,7 +60,7 @@ const AddNewsModal = ({ channelId, show, handleClose, fetchNews }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to add news");
+      toast.error(getApiErrorMessage(err, "Failed to add news"));
     } finally {
       setIsSubmitting(false);
     }

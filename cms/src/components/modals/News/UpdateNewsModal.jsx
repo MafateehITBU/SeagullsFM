@@ -3,6 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import RichTextEditor from "../../RichTextEditor";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
   const [title, setTitle] = useState("");
@@ -52,7 +53,7 @@ const UpdateNewsModal = ({ news, show, handleClose, fetchNews }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to update news");
+      toast.error(getApiErrorMessage(err, "Failed to update news"));
     } finally {
       setIsSubmitting(false);
     }

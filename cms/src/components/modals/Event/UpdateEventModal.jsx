@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col, Image } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const UpdateEventModal = ({ event, show, handleClose, fetchEvents }) => {
   const [type, setType] = useState("");
@@ -88,7 +89,7 @@ const UpdateEventModal = ({ event, show, handleClose, fetchEvents }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to update event");
+      toast.error(getApiErrorMessage(err, "Failed to update event"));
     } finally {
       setIsSubmitting(false);
     }

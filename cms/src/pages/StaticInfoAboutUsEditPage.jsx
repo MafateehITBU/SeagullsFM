@@ -9,6 +9,7 @@ import RichTextEditor from "../components/RichTextEditor";
 import useConfirmNavigateBack from "../hooks/useConfirmNavigateBack";
 import axiosInstance from "../axiosConfig";
 import { useAuth } from "../context/AuthContext";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const StaticInfoAboutUsEditPage = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const StaticInfoAboutUsEditPage = () => {
         setInitialValue(value);
         setAboutUs(value);
       } catch (error) {
-        toast.error("Failed to load About Us content");
+        toast.error(getApiErrorMessage(error, "Failed to load About Us content"));
         navigate("/static-info");
       } finally {
         setLoading(false);
@@ -64,7 +65,7 @@ const StaticInfoAboutUsEditPage = () => {
       toast.success("About Us updated successfully");
       navigate("/static-info");
     } catch (error) {
-      toast.error("Failed to update About Us");
+      toast.error(getApiErrorMessage(error, "Failed to update About Us"));
     } finally {
       setIsSubmitting(false);
     }

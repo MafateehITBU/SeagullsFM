@@ -4,6 +4,7 @@ import axiosInstance from "../../../axiosConfig";
 import RichTextEditor from "../../RichTextEditor";
 import { hasRichTextContent } from "../../../utils/richTextUtils";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
   const [title, setTitle] = useState("");
@@ -81,7 +82,7 @@ const AddProgramModal = ({ channelId, show, handleClose, fetchPrograms }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to add program");
+      toast.error(getApiErrorMessage(err, "Failed to add program"));
     } finally {
       setIsSubmitting(false);
     }

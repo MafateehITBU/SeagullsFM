@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AddInterviewModal from "./modals/Program/AddInterviewModal.jsx";
 import UpdateInterviewModal from "./modals/Program/UpdateInterviewModal.jsx";
 import DeleteModal from "./modals/DeleteModal";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const GlobalFilter = ({ globalFilter, onChange }) => (
   <input
@@ -52,7 +53,7 @@ const ProgramInterviews = ({ program, channelId }) => {
       setPage(1);
     } catch (err) {
       console.error(err);
-      toast.error("Failed to fetch interviews.");
+      toast.error(getApiErrorMessage(err, "Failed to fetch interviews"));
     } finally {
       setLoading(false);
     }

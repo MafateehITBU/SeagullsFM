@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
@@ -113,7 +114,7 @@ const AddAdminModal = ({ show, handleClose, fetchAdmins }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to add admin");
+      toast.error(getApiErrorMessage(err, "Failed to add admin"));
     } finally {
       setIsSubmitting(false);
     }

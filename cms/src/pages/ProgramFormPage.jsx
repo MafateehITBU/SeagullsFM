@@ -10,6 +10,7 @@ import useConfirmNavigateBack from "../hooks/useConfirmNavigateBack";
 import axiosInstance from "../axiosConfig";
 import { useAuth } from "../context/AuthContext";
 import { hasRichTextContent } from "../utils/richTextUtils";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const ALL_DAYS = [
   "Monday",
@@ -71,7 +72,7 @@ const ProgramFormPage = () => {
         setPreview(program.image?.url || null);
         setPreviewDetailsImage(program.programDetailsImage?.url || null);
       } catch (error) {
-        toast.error("Failed to load program");
+        toast.error(getApiErrorMessage(error, "Failed to load program"));
         navigate("/programs");
       } finally {
         setLoading(false);
@@ -211,12 +212,10 @@ const ProgramFormPage = () => {
 
       navigate("/programs");
     } catch (err) {
-      const data = err.response?.data;
-      toast.error(
-        data?.message ||
-          data?.errors?.[0]?.message ||
-          `Failed to ${isEdit ? "update" : "add"} program`
-      );
+      toast.error(getApiErrorMessage(
+        err,
+        `Failed to ${isEdit ? "update" : "add"} program`
+      ));
     } finally {
       setIsSubmitting(false);
     }

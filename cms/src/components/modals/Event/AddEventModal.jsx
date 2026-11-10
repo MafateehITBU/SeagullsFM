@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
   const [type, setType] = useState("event");
@@ -76,7 +77,7 @@ const AddEventModal = ({ channelId, show, handleClose, fetchEvents }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to add event");
+      toast.error(getApiErrorMessage(err, "Failed to add event"));
     } finally {
       setIsSubmitting(false);
     }

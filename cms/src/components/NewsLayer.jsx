@@ -10,6 +10,7 @@ import DeleteModal from "./modals/DeleteModal.jsx";
 import RichTextViewButton from "./RichTextViewButton";
 import RichTextViewModal from "./RichTextViewModal";
 import { useAuth } from "../context/AuthContext.jsx";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
   <input
@@ -48,7 +49,7 @@ const NewsLayer = () => {
       setAllNews(filtered);
       setPage(1);
     } catch (error) {
-      toast.error("Failed to fetch data");
+      toast.error(getApiErrorMessage(error, "Failed to fetch data"));
     } finally {
       setLoading(false);
     }

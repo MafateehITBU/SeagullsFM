@@ -4,6 +4,7 @@ import axiosInstance from "../../../axiosConfig";
 import RichTextEditor from "../../RichTextEditor";
 import { hasRichTextContent } from "../../../utils/richTextUtils";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const AddBroadcasterModal = ({
   channelId,
@@ -73,7 +74,7 @@ const AddBroadcasterModal = ({
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to add broadcaster");
+      toast.error(getApiErrorMessage(err, "Failed to add broadcaster"));
     } finally {
       setIsSubmitting(false);
     }

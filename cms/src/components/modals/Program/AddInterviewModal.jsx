@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const AddInterviewModal = ({
   channelId,
@@ -70,7 +71,7 @@ const AddInterviewModal = ({
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to add interview");
+      toast.error(getApiErrorMessage(err, "Failed to add interview"));
     } finally {
       setIsSubmitting(false);
     }

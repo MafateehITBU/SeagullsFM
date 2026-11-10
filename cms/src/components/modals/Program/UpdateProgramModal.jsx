@@ -3,6 +3,7 @@ import { Modal, Button, Form, Row, Col, Image } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import RichTextEditor from "../../RichTextEditor";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const UpdateProgramModal = ({ program, show, handleClose, fetchPrograms }) => {
   const [title, setTitle] = useState("");
@@ -79,10 +80,7 @@ const UpdateProgramModal = ({ program, show, handleClose, fetchPrograms }) => {
       handleClose();
     } catch (err) {
       console.error(err);
-      const data = err.response?.data;
-      toast.error(
-        data?.message || data?.errors?.[0]?.message || "Failed to update program"
-      );
+      toast.error(getApiErrorMessage(err, "Failed to update program"));
     } finally {
       setIsSubmitting(false);
     }

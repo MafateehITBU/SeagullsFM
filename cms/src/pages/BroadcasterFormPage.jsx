@@ -10,6 +10,7 @@ import useConfirmNavigateBack from "../hooks/useConfirmNavigateBack";
 import axiosInstance from "../axiosConfig";
 import { useAuth } from "../context/AuthContext";
 import { hasRichTextContent } from "../utils/richTextUtils";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const BroadcasterFormPage = () => {
   const { id } = useParams();
@@ -48,7 +49,7 @@ const BroadcasterFormPage = () => {
         setSocialLinks(broadcaster.socialLinks || { ig: "", FB: "", YT: "" });
         setPreview(broadcaster.image?.url || null);
       } catch (error) {
-        toast.error("Failed to load broadcaster");
+        toast.error(getApiErrorMessage(error, "Failed to load broadcaster"));
         navigate("/broadcasters");
       } finally {
         setLoading(false);
@@ -141,10 +142,10 @@ const BroadcasterFormPage = () => {
 
       navigate("/broadcasters");
     } catch (err) {
-      toast.error(
-        err.response?.data?.message ||
-          `Failed to ${isEdit ? "update" : "add"} broadcaster`
-      );
+      toast.error(getApiErrorMessage(
+        err,
+        `Failed to ${isEdit ? "update" : "add"} broadcaster`
+      ));
     } finally {
       setIsSubmitting(false);
     }

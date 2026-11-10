@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import RichTextContent from "./RichTextContent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getApiErrorMessage } from "../utils/apiError";
 
 // Static fields definition
 const STATIC_FIELDS = [
@@ -62,7 +63,7 @@ const StaticInfoLayer = () => {
 
       setStaticInfo(matched || null);
     } catch (err) {
-      toast.error("Failed to load static information");
+      toast.error(getApiErrorMessage(err, "Failed to load static information"));
     } finally {
       setLoading(false);
     }
@@ -130,7 +131,7 @@ const StaticInfoLayer = () => {
       fetchStaticInfo();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to update");
+      toast.error(getApiErrorMessage(err, "Failed to update"));
     }
   };
 

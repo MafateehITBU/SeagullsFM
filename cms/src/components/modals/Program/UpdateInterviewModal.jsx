@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const UpdateInterviewModal = ({
   show,
@@ -75,7 +76,7 @@ const UpdateInterviewModal = ({
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to update interview");
+      toast.error(getApiErrorMessage(err, "Failed to update interview"));
     } finally {
       setIsSubmitting(false);
     }

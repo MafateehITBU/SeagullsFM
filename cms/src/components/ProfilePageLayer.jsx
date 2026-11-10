@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Cookie from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const ProfilePageLayer = () => {
   const { user, loading, updateUser } = useAuth();
@@ -50,7 +51,7 @@ const ProfilePageLayer = () => {
       setChannel(res.data.data.name);
     } catch (error) {
       console.error("Error fetching channel name:", error);
-      toast.error("Failed to fetch channel name");
+      toast.error(getApiErrorMessage(error, "Failed to fetch channel name"));
     }
   };
 

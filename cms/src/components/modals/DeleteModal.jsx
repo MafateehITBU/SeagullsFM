@@ -2,6 +2,7 @@ import { Modal, Button } from "react-bootstrap";
 import axiosInstance from "../../axiosConfig";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 const DeleteModal = ({
   show,
@@ -20,14 +21,7 @@ const DeleteModal = ({
       handleClose();
     } catch (error) {
       console.error(`Error deleting ${itemType}:`, error);
-
-      // Check if backend sent a custom message
-      const errMsg =
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong";
-
-      toast.error(`Failed to delete ${itemType}: ${errMsg}`);
+      toast.error(getApiErrorMessage(error, `Failed to delete ${itemType}`));
     } finally {
       setLoading(false);
     }

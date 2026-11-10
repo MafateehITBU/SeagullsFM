@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
 import DeleteModal from "./modals/DeleteModal.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
   <input
@@ -49,7 +50,7 @@ const UploadedTracksLayer = () => {
       setAllTracks(filtered);
       setPage(1);
     } catch (error) {
-      toast.error("Failed to fetch data");
+      toast.error(getApiErrorMessage(error, "Failed to fetch data"));
     } finally {
       setLoading(false);
     }
@@ -72,7 +73,7 @@ const UploadedTracksLayer = () => {
       toast.success("Track status updated successfully");
       fetchTracks();
     } catch (error) {
-      toast.error("Failed to update track status");
+      toast.error(getApiErrorMessage(error, "Failed to update track status"));
     }
   };
 
@@ -99,7 +100,7 @@ const UploadedTracksLayer = () => {
       setApproveTrackId(null);
       fetchTracks();
     } catch (error) {
-      toast.error("Failed to approve track");
+      toast.error(getApiErrorMessage(error, "Failed to approve track"));
     }
   };
 

@@ -3,6 +3,7 @@ import axiosInstance from "../axiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import { getApiErrorMessage } from "../utils/apiError";
 
 
 const ResetPassword = () => {
@@ -21,7 +22,7 @@ const ResetPassword = () => {
             toast.success("OTP sent successfully", { position: "top-right" })
             setStep(2);
         } catch (error) {
-            toast.error(error.response?.data?.message || "Error sending OTP", { position: "top-right" })
+            toast.error(getApiErrorMessage(error, "Error sending OTP"), { position: "top-right" })
         }
     };
 
@@ -31,7 +32,7 @@ const ResetPassword = () => {
             await axiosInstance.post("/admin/verify-otp", { email, otp: fullOtp });
             setStep(3);
         } catch (error) {
-            toast.error(error.response?.data?.message || "Invalid OTP. Please try again.", { position: "top-right" })
+            toast.error(getApiErrorMessage(error, "Invalid OTP. Please try again."), { position: "top-right" })
         }
     };
 
@@ -54,7 +55,7 @@ const ResetPassword = () => {
             toast.success("Password successfully reset.", { position: "top-right" });
             navigate('/login');
         } catch (error) {
-            toast.error(error.response?.data?.message || "Something went wrong. Please try again.", { position: "top-right" });
+            toast.error(getApiErrorMessage(error, "Something went wrong. Please try again."), { position: "top-right" });
         }
     };
 

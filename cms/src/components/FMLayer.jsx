@@ -4,6 +4,7 @@ import axiosInstance from "../axiosConfig.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const FMLayer = () => {
   const [fms, setFms] = useState([]);
@@ -23,7 +24,7 @@ const FMLayer = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching FM stations:", error);
-      toast.error("Failed to fetch FM stations");
+      toast.error(getApiErrorMessage(error, "Failed to fetch FM stations"));
       setLoading(false);
     }
   };

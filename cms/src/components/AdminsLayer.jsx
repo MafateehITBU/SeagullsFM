@@ -8,6 +8,7 @@ import { FaSortUp, FaSortDown, FaSort } from 'react-icons/fa';
 import AddAdminModal from './modals/Admin/AddAdminModal.jsx';
 import UpdateAdminModal from './modals/Admin/UpdateAdminModal.jsx';
 import DeleteModal from './modals/DeleteModal.jsx';
+import { getApiErrorMessage } from "../utils/apiError";
 
 const GlobalFilter = ({ globalFilter, setGlobalFilter }) => (
     <input
@@ -47,7 +48,7 @@ const AdminsLayer = () => {
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
-            toast.error('Failed to fetch data');
+            toast.error(getApiErrorMessage(error, 'Failed to fetch data'));
             setLoading(false);
         }
     };
@@ -68,7 +69,7 @@ const AdminsLayer = () => {
             toast.success(res.data.message, { position: "top-right" });
             fetchAdmins();
         } catch (error) {
-            toast.error('Failed to Toggle Activation.', { position: "top-right" });
+            toast.error(getApiErrorMessage(error, 'Failed to toggle activation'), { position: "top-right" });
         }
     };
 

@@ -10,6 +10,7 @@ import useConfirmNavigateBack from "../hooks/useConfirmNavigateBack";
 import axiosInstance from "../axiosConfig";
 import { useAuth } from "../context/AuthContext";
 import { hasRichTextContent } from "../utils/richTextUtils";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const NewsFormPage = () => {
   const { id } = useParams();
@@ -53,7 +54,7 @@ const NewsFormPage = () => {
         setDescription(newsItem.description || "");
         setContent(newsItem.content || "");
       } catch (error) {
-        toast.error("Failed to load news article");
+        toast.error(getApiErrorMessage(error, "Failed to load news article"));
         navigate("/news");
       } finally {
         setLoading(false);
@@ -153,9 +154,10 @@ const NewsFormPage = () => {
 
       navigate("/news");
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || `Failed to ${isEdit ? "update" : "add"} news`
-      );
+      toast.error(getApiErrorMessage(
+        err,
+        `Failed to ${isEdit ? "update" : "add"} news`
+      ));
     } finally {
       setIsSubmitting(false);
     }

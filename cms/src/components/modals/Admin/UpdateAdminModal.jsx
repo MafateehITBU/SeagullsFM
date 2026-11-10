@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const UpdateAdminModal = ({ show, handleClose, admin, fetchAdmins }) => {
@@ -111,7 +112,7 @@ const UpdateAdminModal = ({ show, handleClose, admin, fetchAdmins }) => {
       handleClose();
     } catch (error) {
       console.error("Error updating admin:", error);
-      toast.error(error.response?.data?.message || "Failed to update admin");
+      toast.error(getApiErrorMessage(error, "Failed to update admin"));
     }
   };
 

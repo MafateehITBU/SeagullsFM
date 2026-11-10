@@ -3,6 +3,7 @@ import { Modal, Button, Form, Row, Col, Image } from "react-bootstrap";
 import axiosInstance from "../../../axiosConfig";
 import RichTextEditor from "../../RichTextEditor";
 import { toast } from "react-toastify";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const UpdateBroadcasterModal = ({
   broadcaster,
@@ -50,9 +51,7 @@ const UpdateBroadcasterModal = ({
       handleClose();
     } catch (err) {
       console.error(err);
-      toast.error(
-        err.response?.data?.message || "Failed to update broadcaster"
-      );
+      toast.error(getApiErrorMessage(err, "Failed to update broadcaster"));
     } finally {
       setIsSubmitting(false);
     }
